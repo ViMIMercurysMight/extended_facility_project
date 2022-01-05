@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "YHnPBjf6+/FX6uBuyMfZmad24yclmwvmMiPQeEGRZZrmbDw1A16+deeqXTXQ0diD72xlmCTHHx1bsC1M8RXxRA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\Web.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ViMi\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.14.0\\microsoft.visualstudio.azure.containers.tools.targets.1.14.0.nupkg.sha512"
+  ],
+  "logs": []
+}
