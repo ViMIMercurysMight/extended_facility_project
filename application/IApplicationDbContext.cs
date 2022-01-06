@@ -12,7 +12,7 @@ namespace Application
         DbSet<Domain.Entities.Facility> Facility { set; get; }
         DbSet<Domain.Entities.Patient>  Patient { set; get; }
 
-        void SaveChanges();
+        int SaveChanges();
 
     }
 }

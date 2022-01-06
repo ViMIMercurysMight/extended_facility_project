@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace web
@@ -26,10 +27,10 @@ namespace web
         {
 
             string conn = Configuration.GetConnectionString("facilityAppCon");
-            //services.AddDb
+            services.AddDbContext<Infrastructure.ApplicationContext>(
+                options => options.UseSqlServer(conn));
 
-            services.AddCors();
-            
+
 
             services.AddControllersWithViews();
         }

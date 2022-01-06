@@ -4,14 +4,82 @@
     "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\Web.csproj": {
+    "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\Web.csproj",
-        "projectName": "Web",
-        "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\Web.csproj",
+        "projectUniqueName": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\application\\Application.csproj",
+        "projectName": "Application",
+        "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\application\\Application.csproj",
         "packagesPath": "C:\\Users\\ViMi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\obj\\",
+        "outputPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\ViMi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\domain\\Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\domain\\Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\domain\\Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\ViMi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -43,7 +111,154 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\infrastructure\\Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\infrastructure\\Infrastructure.csproj",
+        "projectName": "Infrastructure",
+        "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\ViMi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\ViMi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\application\\Application.csproj": {
+                "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\application\\Application.csproj"
+              },
+              "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\domain\\Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\Web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\Web.csproj",
+        "projectName": "Web",
+        "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\Web.csproj",
+        "packagesPath": "C:\\Users\\ViMi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\web\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\ViMi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\ViMi\\source\\repos\\trainee_web_app\\infrastructure\\Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
               "version": "[1.14.0, )"

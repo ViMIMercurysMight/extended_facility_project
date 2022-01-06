@@ -11,21 +11,21 @@ namespace Application.Facility
 
         private IApplicationDbContext _context;
 
-        FacilityService(IApplicationDbContext context) => _context = context;
+        public FacilityService(IApplicationDbContext context) => _context = context;
 
 
-        void CreateFacility()
+        public void CreateFacility()
         {
 
         }
 
 
-        void UpdateFacility()
+        public void UpdateFacility()
         {
 
         }
 
-        void DeleteFacility()
+        public void DeleteFacility()
         {
 
         }
