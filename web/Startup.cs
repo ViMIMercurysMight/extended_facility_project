@@ -26,9 +26,8 @@ namespace web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            string conn = Configuration.GetConnectionString("facilityAppCon");
-            services.AddDbContext<Infrastructure.ApplicationContext>(
-                options => options.UseSqlServer(conn));
+    //        string conn = Configuration.GetConnectionString("facilityAppCon");
+            services.AddDbContext<Infrastructure.ApplicationContext>();
 
 
 

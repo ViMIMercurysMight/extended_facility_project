@@ -5,16 +5,29 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using web.Models;
+using Web.Models;
+using Infrastructure;
+using Application;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
-namespace web.Controllers
+
+namespace Web.Controllers
 {
     public class PatientController : Controller
     {
         private readonly ILogger<PatientController> _logger;
 
-        public PatientController(ILogger<PatientController> logger)
+        private readonly Application.Patient.PatientService _patientService;
+        private readonly Infrastructure.ApplicationContext _context;
+
+        public PatientController(
+            ILogger<PatientController> logger,
+            Infrastructure.ApplicationContext context
+            )
         {
+            _context = context;
+            _patientService = new Application.Patient.PatientService(context);
             _logger = logger;
         }
 
@@ -23,10 +36,7 @@ namespace web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+  
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -36,61 +46,76 @@ namespace web.Controllers
 
 
         [HttpGet("patient/{id}")]
-        public IActionResult GetPatient( int? id )
+        async public Task<IActionResult> GetPatient( int? id )
         {
-
             if (id == null)
                 return NotFound();
-
-            var model = 1;
-
-            return View( model );
+            else
+            {
+                var model = await _context.Patient.FindAsync(id);
+                return View(model);
+            }
+        
         }
 
 
         [HttpGet]
-        public IActionResult GetPatient( int page, int pageSize )
+        public async Task<IActionResult> GetPatient( int page, int pageSize )
         {
-
-            var model = 1;
+            var model = await _context.Patient
+                    .Skip(page * pageSize)
+                    .Except(_context.Patient.Skip((page * pageSize) + pageSize))
+                    .Include(e => e.Facility)
+                    .ToListAsync();
 
             return View( model );
         }
 
 
         [HttpPost("patient/{id}")]
-        public IActionResult PostPatient( int? id )
+        public IActionResult PostPatient( [FromBody][Bind("FirstName", "LastName", "DateOfBirth", "FacilityId")] Domain.Entities.Patient patient )
         {
-            if (id == null)
-                return NotFound();
-
-            var model = 1;
-
-            return View( model );
+           try {
+                _patientService.CreatePatient(patient);
+            } catch (Exception ex) {
+                return View(ex.Message);
+            }
+            return View();
         }
-        
+
+
 
         [HttpPut("patient/{id}")]
-        public IActionResult PutPatient( int? id )
+        public IActionResult PutPatient( [FromBody][Bind("Id", "FirstName", "LastName", "DateOfBirth", "FacilityId")] Domain.Entities.Patient patient )
         {
-            if (id == null)
-                return NotFound();
-
-            var model = 1;
-
-            return View( model );
+            try {
+                _patientService.UpdatePatient(patient);
+            }
+            catch (Exception ex) {
+                return View(ex.Message);
+            }
+            
+            return View( );
         }
 
+
+
         [HttpDelete("patient/{id}")]
-        public IActionResult DeletePatient( int? id )
+        public IActionResult DeletePatient( [FromQuery]int? id )
         {
             if (id == null)
                 return NotFound();
 
-            var model = 1;
+            try
+            {
+                _patientService.DeletePatient((int)id);
+            }
+            catch (Exception ex) {
+                return View(ex.Message);
+            }
 
-
-            return View( model );
+            
+            return View(  );
         }
 
     }

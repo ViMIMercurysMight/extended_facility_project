@@ -13,7 +13,7 @@ namespace Domain.Entities
     {
 
         [Key]
-       [System.ComponentModel.DataAnnotations.Schema.DatabaseGenerated(
+        [System.ComponentModel.DataAnnotations.Schema.DatabaseGenerated(
              System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -33,8 +33,9 @@ namespace Domain.Entities
 
 
 
-        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("FacilityID")]
-        public int? FacilityID { get; set; }
+        [System.ComponentModel.DataAnnotations.Schema.Column("FacilityId")]
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
+        public int? FacilityId { get; set; }
 
         public Facility Facility { set; get; }
 
