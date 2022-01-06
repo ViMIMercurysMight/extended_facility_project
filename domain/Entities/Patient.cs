@@ -17,6 +17,7 @@ namespace Domain.Entities
              System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+
         [Required]
         [System.ComponentModel.DataAnnotations.Schema.Column( TypeName = "nvarchar(125)") ]
         public string FirstName { set; get; }
@@ -32,10 +33,10 @@ namespace Domain.Entities
         public DateTime DateOfBirth { set; get; }
 
 
-
         [System.ComponentModel.DataAnnotations.Schema.Column("FacilityId")]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
         public int? FacilityId { get; set; }
+
 
         public Facility Facility { set; get; }
 

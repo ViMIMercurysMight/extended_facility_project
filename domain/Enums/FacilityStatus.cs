@@ -8,8 +8,8 @@ namespace Domain.Enums
 {
     public enum FacilityStatus
     {
-        ACTIVE   = 0,
-        INACTIVE = 1,
-        ON_HOLD  = 2,
+        ACTIVE   = 1,
+        INACTIVE = 2,
+        ON_HOLD  = 3,
     }
 }

@@ -31,11 +31,7 @@ namespace Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        public IActionResult Index() => View();
   
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -75,29 +71,32 @@ namespace Web.Controllers
         [HttpPost("patient/{id}")]
         public IActionResult PostPatient( [FromBody][Bind("FirstName", "LastName", "DateOfBirth", "FacilityId")] Domain.Entities.Patient patient )
         {
-           try {
+           try
+            {
                 _patientService.CreatePatient(patient);
-            } catch (Exception ex) {
+            } 
+            catch (Exception ex)
+            {
                 return View(ex.Message);
             }
             return View();
         }
 
 
-
         [HttpPut("patient/{id}")]
         public IActionResult PutPatient( [FromBody][Bind("Id", "FirstName", "LastName", "DateOfBirth", "FacilityId")] Domain.Entities.Patient patient )
         {
-            try {
+            try
+            {
                 _patientService.UpdatePatient(patient);
             }
-            catch (Exception ex) {
+            catch (Exception ex) 
+            {
                 return View(ex.Message);
             }
             
             return View( );
         }
-
 
 
         [HttpDelete("patient/{id}")]

@@ -74,6 +74,30 @@ namespace Infrastructure.Database
                 name: "IX_Patient_FacilityId",
                 table: "Patient",
                 column: "FacilityId");
+
+
+
+            migrationBuilder.InsertData(
+             table: "FacilityStatus",
+         columns: new[] { "Id", "Name" },
+         values: new object[,]
+         {
+                { "1","Active" },
+                { "2","Inactive" },
+                { "3","OnHold" }
+     });
+
+
+
+            migrationBuilder.Sql(@"    CREATE PROCEDURE GetCountOfFacilities 
+                                   @itemsCount INTEGER OUTPUT
+                                       AS
+                                           SELECT @itemsCount = COUNT(*) FROM Facility;
+                                       RETURN 0;
+                           "
+  );
+
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -86,6 +110,9 @@ namespace Infrastructure.Database
 
             migrationBuilder.DropTable(
                 name: "FacilityStatus");
+
+            migrationBuilder.Sql(
+                @"DROP PROCEDURE GetCountOfFacilities;");
         }
     }
 }

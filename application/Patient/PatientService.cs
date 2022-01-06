@@ -12,25 +12,21 @@ namespace Application.Patient
         private IApplicationDbContext _context;
         
         public PatientService(IApplicationDbContext context)
+            => _context = context;
+
+
+        public void CreatePatient( Domain.Entities.Patient patient )
         {
-            _context = context;
-        } 
-
-
-
-        public void CreatePatient( Domain.Entities.Patient patient)
-        {
-
             _context.Patient.Add(patient);
-
             _context.SaveChanges();
 
         }
 
 
-        public void DeletePatient(int id )
+        public void DeletePatient( int id )
         {
-            Domain.Entities.Patient patient = _context.Patient.FirstOrDefault(p => p.Id == id);
+            Domain.Entities.Patient patient =
+                _context.Patient.FirstOrDefault( p => p.Id == id ;
 
             if( patient != null)
             {
@@ -45,7 +41,6 @@ namespace Application.Patient
         {
 
             _context.Patient.Update(patient);
-
             _context.SaveChanges();
         }
 

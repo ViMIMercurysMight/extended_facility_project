@@ -34,27 +34,38 @@ namespace Web.Controllers
         }
 
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
 
 
         [HttpGet("Facility/{id}")]
         public async Task<IActionResult> GetFacility( int? id)
         {
-            return View();
+
+            if (id == null)
+                return NotFound();
+            else
+            {
+                var model = await _context.Facility.FindAsync(id);
+                return View(model);
+            }
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetFacility( int page, int pageSize)
         {
-            return View();
+            var model = await _context.Facility
+                   .Skip(page * pageSize)
+                   .Except(_context.Facility.Skip((page * pageSize) + pageSize))
+                   .Include(e => e.FacilityStatus )
+                   .ToListAsync();
+
+            return View( model );
         }
 
 
         [HttpPost("Facility/{id}")]
-        public async Task<IActionResult> PostFacility([FromBody][Bind("")] Domain.Entities.Facility facility )
+        public async Task<IActionResult> PostFacility([FromBody][Bind("Name", "Address", "PhoneNumber", "Email")] Domain.Entities.Facility facility )
         {
 
             try
@@ -72,7 +83,7 @@ namespace Web.Controllers
 
 
         [HttpPut("Facility/{id}")]
-        public async Task<IActionResult> PutFacility([FromBody][Bind("")] Domain.Entities.Facility facility)
+        public async Task<IActionResult> PutFacility([FromBody][Bind("Id", "Name", "Address", "PhoneNumber", "Email", "FacilityStatusId")] Domain.Entities.Facility facility)
         {
             try
             {

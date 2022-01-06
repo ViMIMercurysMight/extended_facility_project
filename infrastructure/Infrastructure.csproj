@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -22,10 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\application\Application.csproj" />
     <ProjectReference Include="..\domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\Migrations\" />
   </ItemGroup>
 
 </Project>

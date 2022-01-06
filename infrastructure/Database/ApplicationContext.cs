@@ -13,7 +13,8 @@ using Domain.Entities;
 namespace Infrastructure
 {
     public class ApplicationContext 
-        : DbContext, IApplicationDbContext
+        : DbContext
+        , IApplicationDbContext
     
     {
         public DbSet<Facility> Facility { get; set; }
@@ -30,11 +31,7 @@ namespace Infrastructure
 
 
         public override int SaveChanges()
-        {
-           return  base.SaveChanges();
-         
-        }
-
+            => base.SaveChanges();
 
     }
 }

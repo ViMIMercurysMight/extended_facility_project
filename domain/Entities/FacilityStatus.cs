@@ -13,6 +13,7 @@ namespace Domain.Entities
         [System.ComponentModel.DataAnnotations.Key]
         public int Id { get; set; }
 
+
         [System.ComponentModel.DataAnnotations.MaxLength(255)]
         public string Name { get; set; }
     }

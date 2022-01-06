@@ -14,9 +14,8 @@ namespace Application.Facility
         private readonly IApplicationDbContext _context;
         
         public FacilityService(IApplicationDbContext context)
-        {
-            _context = context;
-        }
+                  =>   _context = context;
+        
 
 
 
@@ -24,7 +23,6 @@ namespace Application.Facility
         {
 
             _context.Facility.Add( facility );
-
             _context.SaveChanges();
         }
 
@@ -33,7 +31,6 @@ namespace Application.Facility
         {
 
             _context.Facility.Update(facility);
-
             _context.SaveChanges();
         }
 
@@ -41,7 +38,8 @@ namespace Application.Facility
         public void DeleteFacility( int id )
         {
 
-            Domain.Entities.Facility facility = _context.Facility.FirstOrDefault(p => p.Id == id);
+            Domain.Entities.Facility facility =
+                _context.Facility.FirstOrDefault( p => p.Id == id );
 
             if( facility != null )
             {
