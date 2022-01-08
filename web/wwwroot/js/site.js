@@ -3,6 +3,17 @@
 
 // Write your JavaScript code.
 import { VueAppConfig } from "./components/App";
-import Vue from "vue"
+import store from "./store";
 
-window.onload = _ => new Vue(VueAppConfig);
+import Vue from "vue"
+import Vuex from "vuex";
+
+
+
+Vue.use(Vuex);
+
+window.onload = _ => new Vue({
+    ...VueAppConfig,
+    store : store,
+
+    } );

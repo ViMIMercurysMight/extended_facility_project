@@ -1,4 +1,4 @@
-﻿Vue.component('pagination', {
+﻿export default {
     props: ["pageCount", 'changePageCallback'],
     template: `<ul class='nav'> 
                     <a

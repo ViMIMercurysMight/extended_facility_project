@@ -1,16 +1,15 @@
-﻿import Vue from "vue";
-
-import PatientForm from "./PatientForm";
-import PatientItem from "./PatientItem";
+﻿import PatientForm  from "./PatientForm";
+import PatientItem  from "./PatientItem";
 import PatientTable from "./PatientTable";
 
 
-Vue.component("PatientRoot", {
+export default {
 
     components: {
-        PatientForm,
-        PatientItem,
-        PatientTable,
+        "patient-form" : PatientForm,
+        "patient-item" : PatientItem,
+        "patient-table" : PatientTable,
     }
 
-});
+
+};

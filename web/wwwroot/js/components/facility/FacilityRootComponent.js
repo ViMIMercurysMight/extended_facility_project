@@ -1,16 +1,14 @@
-﻿import Vue from "vue";
-
-import ItemForm from "./ItemForm";
-import Table from "./Table";
-import TableItem from "./TableItem";
+﻿import ItemForm  from "./ItemForm"  ;
+import Table     from "./Table"     ;
+import TableItem from "./TableItem" ;
 
 
-Vue.component("Facility", {
+export default {
 
     components: {
-        ItemForm,
-        Table,
-        TableItem
+        "item-form"     : ItemForm,
+        "facility-list" : Table,
+        "facility-item" : TableItem
     }
 
-});
+};

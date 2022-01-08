@@ -1,7 +1,4 @@
-﻿
-
-
-Vue.component("facility-item", {
+﻿export default {
 
     props: ["item", "updateCallback", "removeCallback"],
     template: ` 
@@ -19,4 +16,4 @@ Vue.component("facility-item", {
             `,
 
 
-});
+};

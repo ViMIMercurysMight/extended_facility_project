@@ -1,10 +1,4 @@
-﻿
-
-
-
-
-Vue.component('facility-list',
-    {
+﻿export default {
 
         props: ["items", "createCallback", 'updateCallback', 'removeCallback', 'pageCount', 'changePageCallback'],
 
@@ -45,4 +39,4 @@ Vue.component('facility-list',
         
              </div>`
 
-    });
+    };

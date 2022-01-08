@@ -1,16 +1,16 @@
-﻿import ItemForm from "./ItemForm";
-import Pagination from "./common/Pagination";
+﻿import Pagination from "./common";
 
 import FacilityRoot from "./facility/FacilityRootComponent";
-import PatientRoot from "./patient/PatientRootComponent";
+import PatientRoot  from "./patient/PatientRootComponent";
 
 
-const VueAppConfig = {
+export default {
     el: '#app',
 
     components: {
-        FacilityRoot,
-        PatientRoot
+        "facility"   : FacilityRoot,
+        "patient"    : PatientRoot,
+        "pagination" : Pagination
     },
 
     data: {
@@ -85,6 +85,3 @@ const VueAppConfig = {
     }
 
 };
-
-
-export VueAppConfig;

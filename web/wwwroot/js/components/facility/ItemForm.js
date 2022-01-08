@@ -1,4 +1,4 @@
-﻿Vue.component('item-form', {
+﻿export default {
 
     props: ["item", 'callback', "statuses", "statusDisplay"],
 
@@ -42,4 +42,4 @@
                 `
 
 
-});
+};
