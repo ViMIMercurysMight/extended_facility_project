@@ -22,12 +22,20 @@ namespace Infrastructure
 
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Facility>()
+                .Property( f => f.FacilityStatusId )
+                .IsRequired()
+                .HasDefaultValue( Domain.Enums.FacilityStatus.INACTIVE );
+        }
+
+
         protected override void OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
                 "Data Source=.\\SQLEXPRESS;Initial Catalog=facilityDB;Integrated Security=True");
         }
-
 
 
         public override int SaveChanges()

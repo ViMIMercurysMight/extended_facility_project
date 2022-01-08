@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Enums
 {
+    //The enumeration matches the indexes in the facilityStatus table
     public enum FacilityStatus
     {
         ACTIVE   = 1,

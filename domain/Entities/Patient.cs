@@ -33,6 +33,7 @@ namespace Domain.Entities
         public DateTime DateOfBirth { set; get; }
 
 
+        [Required]
         [System.ComponentModel.DataAnnotations.Schema.Column("FacilityId")]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
         public int? FacilityId { get; set; }

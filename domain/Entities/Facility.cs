@@ -28,6 +28,7 @@ namespace Domain.Entities
         public string Email { get; set; }
 
 
+        [Required]
         [System.ComponentModel.DataAnnotations.Schema.Column("StatusId")]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
         public int? FacilityStatusId { get; set; }
