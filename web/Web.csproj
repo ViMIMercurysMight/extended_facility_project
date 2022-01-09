@@ -7,6 +7,98 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="facility-vue-app\src\api\AppDBApi.ts" />
+    <None Remove="facility-vue-app\src\api\TestAppDBApi.ts" />
+    <None Remove="facility-vue-app\src\api\TestServerQuery.ts" />
+    <None Remove="facility-vue-app\src\components\common\Pagination.vue" />
+    <None Remove="facility-vue-app\src\components\facility\FacilityRootComponent.vue" />
+    <None Remove="facility-vue-app\src\components\facility\ItemForm.vue" />
+    <None Remove="facility-vue-app\src\components\facility\Table.vue" />
+    <None Remove="facility-vue-app\src\components\facility\TableItem.vue" />
+    <None Remove="facility-vue-app\src\components\patient\PatientForm.vue" />
+    <None Remove="facility-vue-app\src\components\patient\PatientItem.vue" />
+    <None Remove="facility-vue-app\src\components\patient\PatientRootComponent.vue" />
+    <None Remove="facility-vue-app\src\components\patient\PatientTable.vue" />
+    <None Remove="facility-vue-app\src\store\modules\facility.ts" />
+    <None Remove="facility-vue-app\src\store\modules\patient.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="facility-vue-app\src\api\AppDBApi.ts">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\api\TestAppDBApi.ts">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\api\TestServerQuery.ts">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\common\Pagination.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\facility\FacilityRootComponent.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\facility\ItemForm.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\facility\Table.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\facility\TableItem.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\patient\PatientForm.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\patient\PatientItem.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\patient\PatientRootComponent.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\components\patient\PatientTable.vue">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\store\actions.ts">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\store\index.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\store\modules\facility.ts">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\store\modules\patient.ts">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\store\mutations.ts">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="facility-vue-app\src\store\MutationTypes.ts">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
