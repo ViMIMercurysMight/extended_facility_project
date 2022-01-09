@@ -26,7 +26,7 @@ namespace Application.Patient
         public void DeletePatient( int id )
         {
             Domain.Entities.Patient patient =
-                _context.Patient.FirstOrDefault( p => p.Id == id ;
+                _context.Patient.FirstOrDefault( p => p.Id == id );
 
             if( patient != null)
             {

@@ -31,7 +31,7 @@ namespace Domain.Entities
         [Required]
         [System.ComponentModel.DataAnnotations.Schema.Column("StatusId")]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
-        public int? FacilityStatusId { get; set; }
+        public int FacilityStatusId { get; set; }
 
 
         public virtual FacilityStatus FacilityStatus { get; set; }

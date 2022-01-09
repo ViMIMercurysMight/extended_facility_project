@@ -1,8 +1,8 @@
 ﻿
 
-class TestDbAPI {
+export default class TestDbAPI {
 
-    Facility = [
+   static Facility = [
         {},
         {},
         {},
@@ -10,7 +10,7 @@ class TestDbAPI {
         {},
     ];
 
-    Patient = [
+    static Patient = [
         {},
         {},
         {},
@@ -19,21 +19,21 @@ class TestDbAPI {
     ];
 
 
-    FacilityStatus = [
+   static FacilityStatus = [
         { Id: 1, },
         { Id: 2, },
         { Id: 3, }
     ];
 
 
-    getRange(start, end, arr) {
+    static getRange(start, end, arr) {
         return this.arr.slice(
             this.arr.indexOf(this.arr[perPage * currentPage]),
-            this.arr.indexOf(this.arr[perPage * currentPage + perPage]);
+            this.arr.indexOf(this.arr[perPage * currentPage + perPage]));
     }
 
 
-    updateData(id, arr, obj) {
+    static updateData(id, arr, obj) {
         const item = arr.find(elem => elem.Id == id);
         if (item) 
             arr[arr.findIndex(elem => elem.Id == id)] = obj;
@@ -41,7 +41,7 @@ class TestDbAPI {
     }
 
 
-    removeData(id, arr) {
+    static removeData(id, arr) {
         const item = arr.find(elem => elem.Id == id);
         if (item) {
             let arrTmp = [];
@@ -55,7 +55,7 @@ class TestDbAPI {
     }
 
 
-    create(controllerName, obj) {
+    static create(controllerName, obj) {
         switch (controllerName) {
             case "Facility": return this.Facility.push(obj);
             case "Patient": return this.Patient.push(obj);
@@ -65,7 +65,7 @@ class TestDbAPI {
 
 
 
-    delete(controllerName, id) {
+    static delete(controllerName, id) {
         switch (controllerName) {
             case "Facility": return this.removeData(id, this.Facility);
             case "Patient": return this.removeData(id, this.Patient);
@@ -74,16 +74,16 @@ class TestDbAPI {
     }
 
 
-    update(controllerName, obj) {
+    static update(controllerName, obj) {
         switch (controllerName) {
-            case "Facility": return this.updateData(id, this.Facility, obj);
-            case "Patient": return this.updateData(id, this.Patient, obj);
-            case "FacilityStatus": return this.updateData(id, this.FacilityStatus, obj);
+            case "Facility": return this.updateData(obj.Id, this.Facility, obj);
+            case "Patient": return this.updateData(obj.Id, this.Patient, obj);
+            case "FacilityStatus": return this.updateData(obj.Id, this.FacilityStatus, obj);
         }
     }
 
 
-    getCountOfPages(controllerName, perPage) {
+    static getCountOfPages(controllerName, perPage) {
         switch (controllerName) {
             case "Facility": return Math.ceil(this.Facility.length / perPage);
             case "Patient": return Math.ceil(this.Patient.length / perPage);;
@@ -92,7 +92,7 @@ class TestDbAPI {
     }
 
 
-    getItem(controllerName, id) {
+   static getItem(controllerName, id) {
         switch (controllerName) {
             case "Facility": return this.Facility.find(elem => elem.Id == id);
             case "Patient": return this.Patient.find(elem => elem.Id == id);
@@ -101,7 +101,7 @@ class TestDbAPI {
     }
 
 
-    getItemPage(controllerName, perPage, currentPage) {
+    static getItemPage(controllerName, perPage, currentPage) {
         switch (controllerName) {
             case "Facility": return this.getRange(perPage, currentPage, this.Facility);
             case "Patient": return this.getRange(perPage, currentPage, this.Patient);
@@ -110,7 +110,7 @@ class TestDbAPI {
     }
 
 
-    getAll(controllerName) {
+    static getAll(controllerName) {
         switch (controllerName) {
             case "Facility": return this.Facility;
             case "Patient": return this.Patient;

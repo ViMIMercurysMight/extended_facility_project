@@ -29,6 +29,7 @@ namespace web
     //        string conn = Configuration.GetConnectionString("facilityAppCon");
             services.AddDbContext<Infrastructure.ApplicationContext>();
 
+            services.AddCors();
 
 
             services.AddControllersWithViews();

@@ -14,5 +14,15 @@
       "library": "vue-router@4.0.12",
       "destination": "wwwroot/lib/vue-router/"
     }
-  ]
+  ,
+{
+  "library": "axios@0.24.0",
+  "destination": "wwwroot/axios/"
+}
+,
+{
+  "library": "axios@0.24.0",
+  "destination": "wwwroot/lib/axios/"
+}
+]
 }

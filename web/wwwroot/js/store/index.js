@@ -1,15 +1,13 @@
-﻿export default {
-
-    state: {
-        count: 0;
-    },
+﻿import Facility from "./modules/facility";
+import Patient  from "./modules/patient";
 
 
-    mutations: {
-        increment(state) {
-            state.count++;
-        }
+export default {
+
+    modules: {
+        Facility: Facility,
+        Patient : Patient
     }
 
 
-}
+};

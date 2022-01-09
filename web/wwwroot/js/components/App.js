@@ -8,9 +8,9 @@ export default {
     el: '#app',
 
     components: {
+        "pagination": Pagination,
         "facility"   : FacilityRoot,
         "patient"    : PatientRoot,
-        "pagination" : Pagination
     },
 
     data: {

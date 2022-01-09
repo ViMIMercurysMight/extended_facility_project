@@ -2,11 +2,12 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-import { VueAppConfig } from "./components/App";
+import VueAppConfig  from "./App";
 import store from "./store";
 
-import Vue from "vue"
-import Vuex from "vuex";
+
+import Vue from "./vue"
+import Vuex from "./vuex";
 
 
 

@@ -1,9 +1,9 @@
-﻿import axios from "axios";
+﻿import axios from "../../lib/axios";
 
 
-class DbAPI {
+export default class DbAPI {
 
-    create(controllerName, obj) {
+   static create(controllerName, obj) {
         axios({
             method: "POST",
             url: `/${controllerName}/Create/`,
@@ -18,7 +18,7 @@ class DbAPI {
     }
 
 
-    delete(controllerName, id) {
+   static delete(controllerName, id) {
         axios({
             method: "DELETE",
             url: `/${controllerName}/Delete/`,
@@ -33,7 +33,7 @@ class DbAPI {
     }
 
 
-    update(controllerName, obj) {
+    static update(controllerName, obj) {
         axios({
             method: "PUT",
             url: `/${controllerName}/Update/`,
@@ -46,21 +46,21 @@ class DbAPI {
     }
 
 
-    getCountOfPages( controllerName ) {
+    static getCountOfPages( controllerName ) {
         axios
             .get(`/${controllerName}/GetCountOfPages`)
             .then(response => this.pageCount = response.data);
     }
 
 
-    getItem(controllerName, id) {
+    static getItem(controllerName, id) {
         axios
             .get(`/${controllerName}/${id}`)
             .then(response => this.data = response.data);
     }
 
 
-    getItemPage(controllerName, perPage, currentPage) {
+    static getItemPage(controllerName, perPage, currentPage) {
         axios
             .get(`/${controllerName}/GetPageItemJson`,{
                 params: {
@@ -72,7 +72,7 @@ class DbAPI {
     }
 
 
-    getAll(controllerName) {
+    static getAll(controllerName) {
         axios
             .get(`/${controllerName}/GetAll`)
             .then(response => this.pageItem = response.data);
