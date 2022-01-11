@@ -16,88 +16,83 @@ export default {
     namespaced: true,
 
     state: {
-        patient  : [],
-        facility : [],
-
-        page     : [],
+        facilitiList: [],
     },
 
 
     mutations: {
-        [UPDATE_PATIENT](state : any, obj : any) {
-          //  DbApi.update("Patient", obj);
-        },
-
-        [CREATE_PATIENT](state : any, obj : any ) {
-         //   DbApi.create("Patient", obj);
-        },
 
 
-        [DELETE_PATIENT](state : any, id : number) {
-         //   DbApi.delete("Patient", id);
-        },
+        setFacilitiesList(state: any, payload: any) {
+            state.facilitiList = payload.data;
+        }
 
-
-     //   updatePage(state : any, perPage : number, currentPage : number) {
-
-//        }
 
     },
 
 
     actions: {
-        [UPDATE_PATIENT](context : any, obj : any) {
-            context.commit(UPDATE_PATIENT, obj);
-            context.commit('updatePage', 10, 1);
+
+        updatePageCount(context: any) {
+            DbApi.getCountOfPages(
+                "Patient",
+                context.rootState.perPage,
+                (data: any) => { context.commit("setPageCount", { data: data }, { root: true }); },
+                (_: any) => console.log("loadErrorPageCount")
+            );
         },
 
 
-        [CREATE_PATIENT](context : any) {
-            context.commit(CREATE_PATIENT);
+        loadPage(context: any) {
 
+            DbApi.getItemPage(
+                "Patient",
+                context.rootState.perPage,
+                context.rootState.currentPage,
+                (data: any) => { context.commit("setLoadedPage", { data: data }, { root: true }); },
+                (_: any) => console.log("errorOfLoadPage")
+            );
         },
 
 
-        [DELETE_PATIENT](context : any) {
-            context.commit(DELETE_PATIENT);
-        }
-    },
-
-
-    getters: {
-        getPage: (state : any) => (perPage : number, currentPage : number) => {
-          //  return DbApi.getItemPage("Patient", perPage, currentPage);
+        loadFacilities(context: any) {
+            DbApi.getAll(
+                "Patient",
+                (data: any) => { context.commit("setFacilitiesList", { data: data }); },
+                (_: any) => console.log("errorOfLoadFacilityStatuses")
+            );
         },
 
-        getItem: (state : any ) => (id : number ) => {
-        //    return DbApi.getItem("Patient", id);
+
+        [CREATE_PATIENT](context: any, payload: any) {
+            DbApi.create("Patient", payload.data, async (data: any) => {
+                await context.dispatch("loadPage");
+                await context.dispatch("updatePageCount");
+            },
+                (_: any) => console.log("ErrorOfCreationFacility")
+            );
         },
 
-        getCountOfPage: (state:any) => (perPage:number) => {
-         //   return DbApi.getCountOfPages("Patient", perPage);
+
+        [DELETE_PATIENT](context: any, payload: any) {
+            DbApi.delete("Patient", payload.data,
+                async (data: any) => {
+                    await context.dispatch("loadPage");
+                    await context.dispatch("updatePageCount");
+                }, (_: any) => console.log("ErrorOfDeletion"));
         },
 
-        getFacilities: (state:any) => {
-          //  return DbApi.getAll("Facility");
-        }
+
+        [UPDATE_PATIENT](context: any, payload: any) {
+            DbApi.update("Patient", payload.data,
+                async (data: any) => {
+                    await context.dispatch("loadPage");
+                }, (_: any) => console.log("ErrorOfUpdateItem")
+            );
+
+        },
 
     }
 
-
 }
 
-
-
-
-
-/*
-
-    shop.buyProducts(
-products,
-// обработка успешного исхода
-() => commit(types.CHECKOUT_SUCCESS),
-// обработка неудачного исхода
-() => commit(types.CHECKOUT_FAILURE, savedCartItems)
-)
-
- */

@@ -31,7 +31,7 @@ namespace Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index() => View();
+        public IActionResult Index() => Json("Main Patient Page Index Action");
   
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -41,15 +41,15 @@ namespace Web.Controllers
         }
 
 
-        [HttpGet("patient/{id}")]
-        async public Task<IActionResult> GetPatient( int? id )
+        [HttpGet("Patient/{id:int}")]
+        async public Task<IActionResult> GetPatient( int id )
         {
             if (id == null)
                 return NotFound();
             else
             {
                 var model = await _context.Patient.FindAsync(id);
-                return View(model);
+                return Json(model);
             }
         
         }
@@ -58,17 +58,26 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPatient( int page, int pageSize )
         {
-            var model = await _context.Patient
+            try
+            {
+                var model = await _context.Patient
                     .Skip(page * pageSize)
                     .Except(_context.Patient.Skip((page * pageSize) + pageSize))
                     .Include(e => e.Facility)
                     .ToListAsync();
 
-            return View( model );
+                return Json(model);
+
+            } catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+
+
         }
 
 
-        [HttpPost("patient/{id}")]
+        [HttpPost("Patient/{id}")]
         public IActionResult PostPatient( [FromBody][Bind("FirstName", "LastName", "DateOfBirth", "FacilityId")] Domain.Entities.Patient patient )
         {
            try
@@ -77,13 +86,13 @@ namespace Web.Controllers
             } 
             catch (Exception ex)
             {
-                return View(ex.Message);
+                return Json(ex.Message);
             }
-            return View();
+            return Json( true );
         }
 
 
-        [HttpPut("patient/{id}")]
+        [HttpPut("Patient/{id}")]
         public IActionResult PutPatient( [FromBody][Bind("Id", "FirstName", "LastName", "DateOfBirth", "FacilityId")] Domain.Entities.Patient patient )
         {
             try
@@ -92,15 +101,15 @@ namespace Web.Controllers
             }
             catch (Exception ex) 
             {
-                return View(ex.Message);
+                return Json(ex.Message);
             }
             
-            return View( );
+            return Json( true );
         }
 
 
-        [HttpDelete("patient/{id}")]
-        public IActionResult DeletePatient( [FromQuery]int? id )
+        [HttpDelete]
+        public IActionResult DeletePatient( int? id )
         {
             if (id == null)
                 return NotFound();
@@ -110,12 +119,59 @@ namespace Web.Controllers
                 _patientService.DeletePatient((int)id);
             }
             catch (Exception ex) {
-                return View(ex.Message);
+                return Json(ex.Message);
             }
 
             
-            return View(  );
+            return Json( true  );
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+
+            try
+            {
+                var model = await _context.Facility.ToListAsync();
+                return Json(model);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult GetCountOfPages(int perPage)
+        {
+            var listCount = 0;
+
+            using (_context)
+            {
+
+                SqlParameter param = new()
+                {
+                    ParameterName = "@count",
+                    SqlDbType = System.Data.SqlDbType.Int,
+                    Direction = System.Data.ParameterDirection.Output,
+
+                };
+                _context.Database.ExecuteSqlRaw("GetCountOfPatient @count OUT", param);
+
+
+                listCount = (int)param.Value;
+            }
+
+            if (listCount == 0)
+                return Json(listCount);
+
+            return Json(listCount % perPage == 0
+        ? (listCount / perPage) - 1
+        : listCount / perPage);
+        }
+
 
     }
 }

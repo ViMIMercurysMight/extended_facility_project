@@ -13,4 +13,31 @@
         state.pageItems = payload.data;
     },
 
+
+    isUpdateNow(state: any, payload: any) {
+        state.isUpdateNow = payload.data;
+    },
+
+
+    isCreateNow(state: any, payload: any) {
+        state.isCreateNow = payload.data;
+    },
+
+
+    setUpdateItem(state: any, payload: any) {
+        state.updateItem = payload.data;
+    },
+
+
+    reset(state: any) {
+        state.updateItem = {};
+        state.isUpdateNow = false;
+        state.isCreateNow = false;
+        state.currentPage = 0;
+        state.pageCount = 10;
+        state.pageItems = [];
+    }
+
+
+
 }

@@ -98,6 +98,8 @@ namespace Infrastructure.Database
   );
 
 
+
+        
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -113,6 +115,7 @@ namespace Infrastructure.Database
 
             migrationBuilder.Sql(
                 @"DROP PROCEDURE GetCountOfFacilities;");
+
         }
     }
 }

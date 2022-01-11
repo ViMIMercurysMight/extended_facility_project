@@ -6,6 +6,9 @@ import Mutations from "@/store/mutations";
 export default createStore({
     state: {
         pageItems: [],
+        isUpdateNow: false,
+        isCreateNow: false,
+        updateItem: {},
         pageCount: 10,
         currentPage: 0,
         perPage: 10

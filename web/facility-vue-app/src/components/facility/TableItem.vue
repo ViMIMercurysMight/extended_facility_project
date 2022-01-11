@@ -1,13 +1,13 @@
 ﻿<template>
     <tr>
-        <td> {{ item.id }}                 </td>
-        <td> {{ item.name }}               </td>
-        <td> {{ item.address}}             </td>
-        <td> {{ item.phoneNumber}}         </td>
-        <td> {{ item.email}}               </td>
-        <td> {{ item.facilityStatus.name}} </td>
-        <td> <button v-on:click='removeCallback(item.id)' class='btn btn-danger'> Delete </button></td>
-        <td> <button v-on:click='updateCallback(item)' class='btn btn-warning'>    Update </button></td>
+        <td> {{ item.id ? item.id : 0 }}                 </td>
+        <td> {{ item.name ? item.name : "" }}               </td>
+        <td> {{ item.address ? item.address : ""}}             </td>
+        <td> {{ item.phoneNumber ? item.phoneNumber : ""}}         </td>
+        <td> {{ item.email ? item.email : ""}}               </td>
+        <td> {{ item.facilityStatus ? item.facilityStatus.name : ""}} </td>
+        <td> <button v-on:click='removeCallback(item.id ? item.id : 0)' class='btn btn-danger'> Delete </button></td>
+        <td> <button v-on:click='updateCallback(item ? item : {})' class='btn btn-warning'>    Update </button></td>
     </tr>
 </template>
 

@@ -1,27 +1,25 @@
 ﻿<template>
-    <patient-list :items='pageItems'
-                   :page-count='pageCount'
-                   :change-page-callback='changePage'
-                   :update-callback='showUpdateForm'
-                   :create-callback='showCreateForm'
-                   :remove-callback='remove'>
-    </patient-list>
+    <div class="patients">
+        <patient-list :change-page-callback='changePage'
+                      :update-callback='showUpdateForm'
+                      :create-callback='showCreateForm'
+                      :remove-callback='remove'>
+        </patient-list>
 
 
-    <patient-form v-show='isUpdateNow'
-               :item='updateItem'
-               :statuses='statusesList'
-               v-bind:status-display='true'
-               :callback='update'>
-    </patient-form>
+        <patient-form v-if='this.$store.state.isUpdateNow'
+                      :item='this.$store.state.updateItem'
+                      :facility-display='true'
+                      :callback='update'>
+        </patient-form>
 
 
-    <patient-form v-show='isCreateNow'
-               :item='{}'
-               :statuses='statusesList'
-               v-bind:status-display='false'
-               :callback="create">
-    </patient-form>
+        <patient-form v-if='this.$store.state.isCreateNow'
+                      :facility-display='true'
+                      :item="{}"
+                      :callback="create">
+        </patient-form>
+    </div>
 </template>
 
 
@@ -42,73 +40,60 @@
             "patient-form": ItemForm,
             "patient-list": Table,
         },
-
-        data() {
-            return {
-                pageCount: 0,
-                pageItems: [],
-                statusesList: [],
-                isUpdateNow: false,
-                updateItem: {},
-                isCreateNow: false,
-                currentPage: 0,
-            }
+        mounted: function () {
+            this.$store.commit("reset");
+            this.$store.dispatch("Patient/updatePageCount");
+            this.$store.dispatch("Patient/loadPage");
+            this.$store.dispatch("Patient/loadFacilities");
         },
 
-        mounted: function () {
-
-            // 1--GetCountOfPage
-            // 2--GetPageItemJson
-            // 3--GetFacilityStatusesJson
-
+        updated: function () {
+            console.log(this.$store.state);
         },
 
         methods: {
 
             updatePageCount: function () {
-                // 1-- GetCountOfPage
-
+                this.$store.dispatch("Patient/updatePageCount");
             },
+
 
             changePage: function (page: number) {
-
-                //    this.currentPage = page;
-
-                // 1-- GetPageItemJson { params page: currentPage }
-
+                this.$store.commit("setCurrentPage", { data: page });
+                this.$store.dispatch("Patient/loadPage");
             },
+
 
             remove: function (id: number) {
-                // 1-- Delete { params id : id }
-            },
-
-
-            update: function (updatedItem: any) {
-                // 1-- Update data : { ....updatedItem }
-
-
-                //   this.isUpdateNow = false;
-
-            },
-
-
-            showCreateForm: function () {
-                //     this.isCreateNow = true;
-            },
-
-
-            showUpdateForm: function (updateItem: any) {
-                //     this.updateItem = updateItem;
-                //      this.isUpdateNow = true;
+                this.$store.dispatch("Patient/deletePatient", { data: id })
             },
 
 
             create: function (data: any) {
-                //    this.isCreateNow = false;
+                this.$store.dispatch("Patient/createPatient", { data: data });
+                this.$store.commit("isCreateNow", { data: false });
+
+            },
+
+
+            update: function (updatedItem: any) {
+                this.$store.dispatch("Patient/updatePatient", { data: updatedItem });
+                this.$store.commit("isUpdateNow", { data: false });
+            },
 
 
 
-            }
+            showCreateForm: function () {
+                this.$store.commit("isCreateNow", { data: true });
+            },
+
+
+            showUpdateForm: function (updateItem: any) {
+                this.$store.commit("setUpdateItem", { data: updateItem });
+                this.$store.commit("isUpdateNow", { data: true });
+            },
+
+
 
         }
     });

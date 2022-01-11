@@ -89,7 +89,7 @@ export default class DbAPI {
         ,rejectCallBack  : any
     ) {
         axios
-            .get(`${DbAPI.SERVER_BASE}/${controllerName}/GetFacility`,{
+            .get(`${DbAPI.SERVER_BASE}/${controllerName}/Get${controllerName}`,{
                 params: {
                     page: currentPage,
                     pageSize : perPage

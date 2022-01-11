@@ -1,60 +1,42 @@
 import { UPDATE_PATIENT, CREATE_PATIENT, DELETE_PATIENT, } from "../MutationTypes";
+import DbApi from "@/api/AppDBApi";
 export default {
     namespaced: true,
     state: {
-        patient: [],
-        facility: [],
-        page: [],
+        facilitiList: [],
     },
     mutations: {
-        [UPDATE_PATIENT](state, obj) {
-            //  DbApi.update("Patient", obj);
-        },
-        [CREATE_PATIENT](state, obj) {
-            //   DbApi.create("Patient", obj);
-        },
-        [DELETE_PATIENT](state, id) {
-            //   DbApi.delete("Patient", id);
-        },
-        //   updatePage(state : any, perPage : number, currentPage : number) {
-        //        }
+        setFacilitiesList(state, payload) {
+            state.facilitiList = payload.data;
+        }
     },
     actions: {
-        [UPDATE_PATIENT](context, obj) {
-            context.commit(UPDATE_PATIENT, obj);
-            context.commit('updatePage', 10, 1);
+        updatePageCount(context) {
+            DbApi.getCountOfPages("Patient", context.rootState.perPage, (data) => { context.commit("setPageCount", { data: data }, { root: true }); }, (_) => console.log("loadErrorPageCount"));
         },
-        [CREATE_PATIENT](context) {
-            context.commit(CREATE_PATIENT);
+        loadPage(context) {
+            DbApi.getItemPage("Patient", context.rootState.perPage, context.rootState.currentPage, (data) => { context.commit("setLoadedPage", { data: data }, { root: true }); }, (_) => console.log("errorOfLoadPage"));
         },
-        [DELETE_PATIENT](context) {
-            context.commit(DELETE_PATIENT);
-        }
-    },
-    getters: {
-        getPage: (state) => (perPage, currentPage) => {
-            //  return DbApi.getItemPage("Patient", perPage, currentPage);
+        loadFacilities(context) {
+            DbApi.getAll("Patient", (data) => { context.commit("setFacilitiesList", { data: data }); }, (_) => console.log("errorOfLoadFacilityStatuses"));
         },
-        getItem: (state) => (id) => {
-            //    return DbApi.getItem("Patient", id);
+        [CREATE_PATIENT](context, payload) {
+            DbApi.create("Patient", payload.data, async (data) => {
+                await context.dispatch("loadPage");
+                await context.dispatch("updatePageCount");
+            }, (_) => console.log("ErrorOfCreationFacility"));
         },
-        getCountOfPage: (state) => (perPage) => {
-            //   return DbApi.getCountOfPages("Patient", perPage);
+        [DELETE_PATIENT](context, payload) {
+            DbApi.delete("Patient", payload.data, async (data) => {
+                await context.dispatch("loadPage");
+                await context.dispatch("updatePageCount");
+            }, (_) => console.log("ErrorOfDeletion"));
         },
-        getFacilities: (state) => {
-            //  return DbApi.getAll("Facility");
-        }
+        [UPDATE_PATIENT](context, payload) {
+            DbApi.update("Patient", payload.data, async (data) => {
+                await context.dispatch("loadPage");
+            }, (_) => console.log("ErrorOfUpdateItem"));
+        },
     }
 };
-/*
-
-    shop.buyProducts(
-products,
-// обработка успешного исхода
-() => commit(types.CHECKOUT_SUCCESS),
-// обработка неудачного исхода
-() => commit(types.CHECKOUT_FAILURE, savedCartItems)
-)
-
- */
 //# sourceMappingURL=patient.js.map

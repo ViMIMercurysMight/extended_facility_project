@@ -40,7 +40,7 @@ export default class DbAPI {
     }
     static getItemPage(controllerName, perPage, currentPage, sucessCallBack, rejectCallBack) {
         axios
-            .get(`${DbAPI.SERVER_BASE}/${controllerName}/GetFacility`, {
+            .get(`${DbAPI.SERVER_BASE}/${controllerName}/Get${controllerName}`, {
             params: {
                 page: currentPage,
                 pageSize: perPage

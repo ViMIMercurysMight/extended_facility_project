@@ -1,26 +1,25 @@
 ﻿<template>
-    <facility-list :items='pageItems'
-                   :page-count='pageCount'
-                   :change-page-callback='changePage'
-                   :update-callback='showUpdateForm'
-                   :create-callback='showCreateForm'
-                   :remove-callback='remove'>
-    </facility-list>
+    <div class="facility">
+        <facility-list :change-page-callback='changePage'
+                       :update-callback='showUpdateForm'
+                       :create-callback='showCreateForm'
+                       :remove-callback='remove'>
+        </facility-list>
 
 
-    <item-form v-if='isUpdateNow'
-               :item='updateItem'
-               :status-display='true'
-               :callback='update'>
-    </item-form>
+        <item-form v-if='this.$store.state.isUpdateNow'
+                   :item='this.$store.state.updateItem'
+                   :status-display='true'
+                   :callback='update'>
+        </item-form>
 
 
-    <item-form v-if='isCreateNow'
-               :item='{}'
-               :statuses='statusesList'
-               :status-display='false'
-               :callback="create">
-    </item-form>
+        <item-form v-if='this.$store.state.isCreateNow'
+                   :item="{}"
+                   :status-display='false'
+                   :callback="create">
+        </item-form>
+    </div>
 </template>
 
 
@@ -40,16 +39,9 @@
         },
 
 
-        data() {
-            return {
-                isUpdateNow  : false,
-                isCreateNow: false,
-
-                updateItem: {},
-            }
-        },
 
         mounted: function () {
+            this.$store.commit("reset");
             this.$store.dispatch("Facility/updatePageCount");
             this.$store.dispatch("Facility/loadPage");
             this.$store.dispatch("Facility/loadFacilityStatuses");
@@ -79,25 +71,26 @@
 
             create: function (data: any) {
                 this.$store.dispatch("Facility/createFacility", { data: data });
-                this.isCreateNow = false;
+                this.$store.commit("isCreateNow", { data: false });
+               
             },
 
 
             update: function (updatedItem: any) {
                 this.$store.dispatch("Facility/updateFacility", { data: updatedItem });
-                this.isUpdateNow = false; 
+                this.$store.commit("isUpdateNow", { data: false });
             },
 
 
 
             showCreateForm: function () {
-                     this.isCreateNow = true;
+                this.$store.commit("isCreateNow", { data: true });
             },
 
 
             showUpdateForm: function (updateItem: any) {
-                     this.updateItem = updateItem;
-                     this.isUpdateNow = true;
+                this.$store.commit("setUpdateItem", { data: updateItem });
+                this.$store.commit("isUpdateNow", { data: true });
             },
 
 
