@@ -74,3 +74,6 @@ C:\Users\ViMi\source\repos\trainee_web_app\web\obj\Debug\net5.0\Web.dll
 C:\Users\ViMi\source\repos\trainee_web_app\web\obj\Debug\net5.0\ref\Web.dll
 C:\Users\ViMi\source\repos\trainee_web_app\web\obj\Debug\net5.0\Web.pdb
 C:\Users\ViMi\source\repos\trainee_web_app\web\obj\Debug\net5.0\Web.genruntimeconfig.cache
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\facility-vue-app\package-lock.json
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\facility-vue-app\package.json
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\facility-vue-app\tsconfig.json

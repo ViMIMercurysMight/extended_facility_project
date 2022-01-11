@@ -5,7 +5,7 @@
            v-on:click='changePageCallback( 0 )'
            href=''> 0 </a>
         <a class='nav-link'
-           v-for='i in pageCount'
+           v-for='i in this.$store.state.pageCount'
            onclick="return false;"
            v-bind:key="i"
            v-on:click='changePageCallback( i )'
@@ -21,7 +21,7 @@
 
     export default defineComponent({
         name : "pagination",
-        props: ["pageCount", 'changePageCallback'],
+        props: ['changePageCallback'],
     });
 
 </script>

@@ -2,80 +2,111 @@
 
 
 export default class DbAPI {
-    /*
-   static create(controllerName, obj) {
+
+    static SERVER_BASE = "https://localhost:44303";
+
+    static create(
+         controllerName : string 
+        ,obj            : any    
+        ,sucessCallBack : any    
+        ,rejectCallBack : any    
+    ) {
         axios({
             method: "POST",
-            url: `/${controllerName}/Create/`,
+            url: `${DbAPI.SERVER_BASE}/${controllerName}/Post${controllerName}/`,
 
             data: {
                 ...obj
             }
-        }).then(_ => {
-            this.changePage(this.currentPage);
-            this.updatePageCount();
-        });
+        }).then(_ => sucessCallBack()).catch(_ => rejectCallBack());
     }
 
 
-   static delete(controllerName, id) {
+    static delete(
+         controllerName  : string
+        ,id              : number
+        ,successCallBack : any   
+        ,rejectCallBack  : any   
+    ) {
         axios({
             method: "DELETE",
-            url: `/${controllerName}/Delete/`,
+            url: `${DbAPI.SERVER_BASE}/${controllerName}/Delete${controllerName}/`,
 
             params: {
                 id: id
             }
-        }).then(_ => {
-            this.changePage(this.currentPage);
-            this.updatePageCount();
-        });
+        }).then(_ => successCallBack()).catch(_ => rejectCallBack());
     }
 
 
-    static update(controllerName, obj) {
+    static update(
+         controllerName  : string
+        ,obj             : any
+        ,successCallBack : any
+        ,rejectCallBack  : any
+    ) {
         axios({
             method: "PUT",
-            url: `/${controllerName}/Update/`,
+            url: `${DbAPI.SERVER_BASE}/${controllerName}/Put${controllerName}/`,
 
 
             data: {
                 ...obj
             }
-        }).then(_ => this.changePage(this.currentPage));
+        }).then(_ => successCallBack()).catch(_ => rejectCallBack());
     }
 
 
-    static getCountOfPages( controllerName ) {
+    static getCountOfPages(
+         controllerName     : string
+        ,perPage            : number
+        ,successCallBack    : any
+        ,rejectCallBack     : any
+    ) {
         axios
-            .get(`/${controllerName}/GetCountOfPages`)
-            .then(response => this.pageCount = response.data);
+            .get(`${DbAPI.SERVER_BASE}/${controllerName}/GetCountOfPages`, { params: { perPage : perPage }})
+            .then(response => successCallBack(response.data)).catch(_ => rejectCallBack() );
     }
 
 
-    static getItem(controllerName, id) {
+    static getItem(
+         controllerName  : string
+        ,id              : number
+        ,sucessCallBack  : any
+        ,rejectCallBack  : any
+    ) {
         axios
-            .get(`/${controllerName}/${id}`)
-            .then(response => this.data = response.data);
+            .get(`${DbAPI.SERVER_BASE}/${controllerName}/${id}`)
+            .then(response => sucessCallBack(response.data)).catch(_ => rejectCallBack());
     }
 
 
-    static getItemPage(controllerName, perPage, currentPage) {
+    static getItemPage(
+         controllerName  : string
+        ,perPage         : number
+        ,currentPage     : number
+        ,sucessCallBack  : any
+        ,rejectCallBack  : any
+    ) {
         axios
-            .get(`/${controllerName}/GetPageItemJson`,{
+            .get(`${DbAPI.SERVER_BASE}/${controllerName}/GetFacility`,{
                 params: {
                     page: currentPage,
-                    perPage : perPage
+                    pageSize : perPage
                 }
             })
-            .then(response => this.pageItems = response.data);
+            .then(response => sucessCallBack(response.data)).catch(_ => rejectCallBack());
     }
 
 
-    static getAll(controllerName) {
+    static getAll(
+         controllerName: string
+        ,sucessCallBack: any
+        ,rejectCallBack: any
+    ) {
         axios
-            .get(`/${controllerName}/GetAll`)
-            .then(response => this.pageItem = response.data);
+            .get(`${DbAPI.SERVER_BASE}/${controllerName}/GetAll`)
+            .then(response => sucessCallBack(response.data)).catch(_ => rejectCallBack());
     }
-    */
+    
 }

@@ -37,36 +37,81 @@ namespace Web.Controllers
         public IActionResult Index() => View();
 
 
-        [HttpGet("Facility/{id}")]
-        public async Task<IActionResult> GetFacility( int? id)
+        [HttpGet("Facility/{id:int}")]
+        public async Task<IActionResult> GetFacility(int id)
         {
-
-            if (id == null)
-                return NotFound();
-            else
+            try
             {
                 var model = await _context.Facility.FindAsync(id);
-                return View(model);
+                return Json(model);
             }
+            catch( Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+
+
+        [HttpGet]
+        public IActionResult GetCountOfPages( int perPage )
+        {
+            var listCount = 0;
+
+            using (_context)
+            {
+
+                SqlParameter param = new()
+                {
+                    ParameterName = "@count",
+                    SqlDbType = System.Data.SqlDbType.Int,
+                    Direction = System.Data.ParameterDirection.Output,
+
+                };
+                _context.Database.ExecuteSqlRaw("GetCountOfFacilities @count OUT", param);
+
+
+                listCount = (int)param.Value;
+            }
+
+            if (listCount == 0)
+                return Json(listCount);
+
+            return Json(listCount % perPage == 0
+        ? (listCount / perPage) - 1
+        : listCount / perPage);
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetFacility( int page, int pageSize)
         {
-            var model = await _context.Facility
-                   .Skip(page * pageSize)
-                   .Except(_context.Facility.Skip((page * pageSize) + pageSize))
-                   .Include(e => e.FacilityStatus )
-                   .ToListAsync();
+            try
+            {
+                if (_context.Facility.Count() > 0)
+                {
 
-            return View( model );
+                    var model = await _context.Facility
+                           .Skip(page * pageSize)
+                           .Except(_context.Facility.Skip((page * pageSize) + pageSize))
+                           .Include(e => e.FacilityStatus)
+                           .ToListAsync();
+
+                    return Json(model);
+                } else
+                {
+                    return Json(new { });
+                }
+            } catch( Exception ex)
+            {
+                return Json(ex.Message);
+            }
         }
 
 
-        [HttpPost("Facility/{id}")]
-        public async Task<IActionResult> PostFacility([FromBody][Bind("Name", "Address", "PhoneNumber", "Email")] Domain.Entities.Facility facility )
-        {
+        [HttpPost]
+        public  IActionResult PostFacility([FromBody][Bind("Name", "Address", "PhoneNumber", "Email")] Domain.Entities.Facility facility )
+         {
 
             try
             {
@@ -74,32 +119,32 @@ namespace Web.Controllers
             }
             catch (Exception ex)
             {
-                return View(ex.Message);
+                return Json(ex.Message);
             }
 
-            return  View();
+            return  Json( true );
 
         }
 
 
-        [HttpPut("Facility/{id}")]
-        public async Task<IActionResult> PutFacility([FromBody][Bind("Id", "Name", "Address", "PhoneNumber", "Email", "FacilityStatusId")] Domain.Entities.Facility facility)
+        [HttpPut]
+        public  IActionResult PutFacility([FromBody][Bind("Id", "Name", "Address", "PhoneNumber", "Email", "FacilityStatusId")] Domain.Entities.Facility facility)
         {
             try
             {
-                _facilityService.UpdateFacility( facility );
+                 _facilityService.UpdateFacility( facility );
             }
             catch (Exception ex)
             {
-                return View(ex.Message);
+                return Json(ex.Message);
             }
 
-            return View();
+            return Json( true );
         }
 
 
-        [HttpDelete("Facility/{id}")]
-        public async Task<IActionResult> DeleteFacility( int? id )
+        [HttpDelete]
+        public  IActionResult DeleteFacility( int? id )
         {
             if (id == null)
                 return NotFound();
@@ -107,14 +152,30 @@ namespace Web.Controllers
 
             try
             {
-                _facilityService.DeleteFacility((int)id);
+                 _facilityService.DeleteFacility((int)id);
             }
             catch (Exception ex)
             {
-                return View(ex.Message);
+                return Json(ex.Message);
             }
 
-            return View();
+            return Json( true );
+        }
+
+
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+
+
+            return Json(new[]
+            {
+                 new { Name = "Inactive", Id = Domain.Enums.FacilityStatus.INACTIVE },
+                 new { Name = "Active", Id = Domain.Enums.FacilityStatus.ACTIVE },
+                 new { Name = "OnHold", Id = Domain.Enums.FacilityStatus.ON_HOLD },
+
+            } ); 
         }
 
     }

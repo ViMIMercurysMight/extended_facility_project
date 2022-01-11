@@ -1,28 +1,5 @@
 {
   "version": "1.0",
   "defaultProvider": "cdnjs",
-  "libraries": [
-    {
-      "library": "vue@3.2.26",
-      "destination": "wwwroot/lib/vue/"
-    },
-    {
-      "library": "vuex@4.0.2",
-      "destination": "wwwroot/lib/vuex/"
-    },
-    {
-      "library": "vue-router@4.0.12",
-      "destination": "wwwroot/lib/vue-router/"
-    }
-  ,
-{
-  "library": "axios@0.24.0",
-  "destination": "wwwroot/axios/"
-}
-,
-{
-  "library": "axios@0.24.0",
-  "destination": "wwwroot/lib/axios/"
-}
-]
+
 }

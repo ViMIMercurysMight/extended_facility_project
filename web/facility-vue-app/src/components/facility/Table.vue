@@ -1,6 +1,5 @@
 ﻿<template>
     <div>
-
         <table class='table thead-dark'>
             <thead>
                 <tr>
@@ -16,15 +15,15 @@
             </thead>
 
             <tbody>
-                <facility-item v-for='item in items'
-                               :update-callback='updateCallback'
-                               :remove-callback='removeCallback'
+                <facility-item v-for='item in this.$store.state.pageItems'
+                               :key ="item.Id"
+                               :update-callback ="updateCallback"
+                               :remove-callback ="removeCallback"
                                :item='item'></facility-item>
             </tbody>
         </table>
 
         <pagination :page-count='pageCount' :change-page-callback='changePageCallback'></pagination>
-
         <button v-on:click='createCallback' class='btn btn-info'> Create </button>
 
     </div>
@@ -35,11 +34,20 @@
 <script lang="ts">
     import { defineComponent } from "vue";
 
+
+    import Pagination from "@/components/common/Pagination.vue"
+    import FacilityItem from "@/components/facility/TableItem.vue";
+
     export default defineComponent({
         name : "facility-list",
         props: ["items", "createCallback", 'updateCallback', 'removeCallback', 'pageCount', 'changePageCallback'],
 
-        data:() {
+        components: {
+            "pagination": Pagination,
+            "facility-item": FacilityItem
+        },
+
+        data() {
              return {
                 showUpdate: false,
                 updatedItemId: -1,

@@ -1,18 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-      HOME PAGE
-  </div>
+    <div class="home">
+        <img alt="Vue logo" src="../assets/logo.png">
+        <h3> HOME PAGE OF FACILITY-VUE-APP</h3>
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import FacilityRoot from '@/components/FacilityRoot.vue'; // @ is an alias to /src
-
-export default defineComponent({
-  name: 'Home',
-  components: {
-    FacilityRoot,
-  },
-});
+    import { defineComponent } from 'vue';
+    
+    export default defineComponent({
+        name: 'Home'
+    });
 </script>
+
+
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+    h3 {
+        margin: 40px 0 0;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        display: inline-block;
+        margin: 0 10px;
+    }
+
+    a {
+        color: #42b983;
+    }
+</style>

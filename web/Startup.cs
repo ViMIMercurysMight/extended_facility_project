@@ -50,7 +50,7 @@ namespace web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseRouting();
 
             app.UseAuthorization();
