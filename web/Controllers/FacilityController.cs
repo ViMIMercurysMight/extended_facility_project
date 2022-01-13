@@ -66,8 +66,8 @@ namespace Web.Controllers
 
             try
             {
-                var res = await _facilityService.CreateFacility( facility );
-                return Json(res);
+                await _facilityService.CreateFacility( facility );
+                return Json( facility );
             }
             catch (Exception ex)
             {
@@ -83,8 +83,8 @@ namespace Web.Controllers
         {
             try
             {
-                var res = await _facilityService.UpdateFacility( facility );
-                return Json(res);
+                 await _facilityService.UpdateFacility( facility );
+                return Json(facility);
             }
             catch (Exception ex)
             {
@@ -97,18 +97,16 @@ namespace Web.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteFacility( int? id )
         {
-
             try
             {
-                var res = await _facilityService.DeleteFacility((int)id);
-                return Json(res);
+                await _facilityService.DeleteFacility((int)id);
+                return Json((int)id);
             }
             catch (Exception ex)
             {
                 return Json(ex.Message);
             }
 
-            return Json( true );
         }
 
 

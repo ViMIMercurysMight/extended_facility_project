@@ -7,32 +7,33 @@ export default {
     },
     mutations: {
         setFacilityStatuses(state, payload) {
-            state.statusesList = payload.data;
+            state.statusesList = payload;
         }
     },
     actions: {
         [LOAD_PAGE](context) {
             DbApi.getItemPage("Facility", context.rootState.perPage, context.rootState.currentPage, (data) => {
                 console.log(data);
-                context.commit(SET_LOADED_PAGE, { data: data.pageItems }, { root: true });
-                context.commit(SET_PAGE_COUNT, { data: data.pageCount }, { root: true });
+                context.commit(SET_LOADED_PAGE, data.pageItems, { root: true });
+                context.commit(SET_PAGE_COUNT, data.pageCount, { root: true });
             }, (_) => console.log("errorOfLoadPage"));
         },
         [LOAD_FACILITY_STATUSES](context) {
-            DbApi.getAll("Facility", (data) => { context.commit("setFacilityStatuses", { data: data }); }, (_) => console.log("errorOfLoadFacilityStatuses"));
+            DbApi.getAll("Facility", (data) => { context.commit("setFacilityStatuses", data); }, (_) => console.log("errorOfLoadFacilityStatuses"));
         },
         [CREATE_FACILITY](context, payload) {
-            DbApi.create("Facility", payload.data, async (data) => {
+            DbApi.create("Facility", payload, async (_) => {
                 await context.dispatch(LOAD_PAGE);
             }, (_) => console.log("ErrorOfCreationFacility"));
         },
         [DELETE_FACILITY](context, payload) {
-            DbApi.delete("Facility", payload.data, async (data) => {
+            DbApi.delete("Facility", payload, async (data) => {
                 await context.dispatch(LOAD_PAGE);
+                console.log("DELETE_FACILITY " + payload);
             }, (_) => console.log("ErrorOfDeletion"));
         },
         [UPDATE_FACILITY](context, payload) {
-            DbApi.update("Facility", payload.data, async (data) => {
+            DbApi.update("Facility", payload, async (data) => {
                 await context.dispatch(LOAD_PAGE);
             }, (_) => console.log("ErrorOfUpdateItem"));
         },

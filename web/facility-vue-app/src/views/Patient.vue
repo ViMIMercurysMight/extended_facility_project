@@ -38,16 +38,14 @@
         DELETE_PATIENT,
         CREATE_PATIENT,
 
-        SET_PAGE_COUNT,
+
         SET_CURRENT_PAGE,
-        SET_LOADED_PAGE,
         IS_UPDATE_NOW,
         IS_CREATE_NOW,
         SET_UPDATE_ITEM,
         RESET,
         LOAD_PAGE,
         LOAD_FACILITIES,
-        LOAD_FACILITY_STATUSES
     } from "@/store/MutationTypes";
 
 
@@ -73,38 +71,38 @@
 
   
             changePage: function (page: number) {
-                this.$store.commit(SET_CURRENT_PAGE, { data: page });
+                this.$store.commit(SET_CURRENT_PAGE,  page );
                 this.$store.dispatch("Patient/" + LOAD_PAGE);
             },
 
 
             remove: function (id: number) {
-                this.$store.dispatch("Patient/" + DELETE_PATIENT, { data: id })
+                this.$store.dispatch("Patient/" + DELETE_PATIENT, id )
             },
 
 
             create: function (data: any) {
-                this.$store.dispatch("Patient/" + CREATE_PATIENT, { data: data });
-                this.$store.commit(IS_CREATE_NOW, { data: false });
+                this.$store.dispatch("Patient/" + CREATE_PATIENT,  data );
+                this.$store.commit(IS_CREATE_NOW, false );
 
             },
 
 
             update: function (updatedItem: any) {
-                this.$store.dispatch("Patient/" + UPDATE_PATIENT, { data: updatedItem });
-                this.$store.commit(IS_UPDATE_NOW, { data: false });
+                this.$store.dispatch("Patient/" + UPDATE_PATIENT, updatedItem );
+                this.$store.commit(IS_UPDATE_NOW,  false );
             },
 
 
 
             showCreateForm: function () {
-                this.$store.commit(IS_CREATE_NOW, { data: true });
+                this.$store.commit(IS_CREATE_NOW,  true );
             },
 
 
             showUpdateForm: function (updateItem: any) {
-                this.$store.commit(SET_UPDATE_ITEM, { data: updateItem });
-                this.$store.commit(IS_UPDATE_NOW, { data: true });
+                this.$store.commit(SET_UPDATE_ITEM, updateItem );
+                this.$store.commit(IS_UPDATE_NOW,  true );
             },
 
 

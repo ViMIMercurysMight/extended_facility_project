@@ -1,22 +1,22 @@
 import { SET_PAGE_COUNT, SET_CURRENT_PAGE, SET_LOADED_PAGE, IS_UPDATE_NOW, IS_CREATE_NOW, SET_UPDATE_ITEM, RESET, } from "@/store/MutationTypes";
 export default {
     [SET_PAGE_COUNT](state, payload) {
-        state.pageCount = payload.data;
+        state.pageCount = payload;
     },
     [SET_CURRENT_PAGE](state, payload) {
-        state.currentPage = payload.data;
+        state.currentPage = payload;
     },
     [SET_LOADED_PAGE](state, payload) {
-        state.pageItems = payload.data;
+        state.pageItems = payload;
     },
     [IS_UPDATE_NOW](state, payload) {
-        state.isUpdateNow = payload.data;
+        state.isUpdateNow = payload;
     },
     [IS_CREATE_NOW](state, payload) {
-        state.isCreateNow = payload.data;
+        state.isCreateNow = payload;
     },
     [SET_UPDATE_ITEM](state, payload) {
-        state.updateItem = payload.data;
+        state.updateItem = payload;
     },
     [RESET](state) {
         state.updateItem = {};

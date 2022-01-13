@@ -11,33 +11,33 @@
 
 
 export default {
-    [SET_PAGE_COUNT](state: any, payload: any) {
-        state.pageCount = payload.data;
+    [SET_PAGE_COUNT](state: any, payload: number) {
+        state.pageCount = payload;
     },
 
 
-    [SET_CURRENT_PAGE](state: any, payload: any) {
-        state.currentPage = payload.data;
+    [SET_CURRENT_PAGE](state: any, payload: number) {
+        state.currentPage = payload;
     },
 
 
     [SET_LOADED_PAGE](state: any, payload: any) {
-        state.pageItems = payload.data;
+        state.pageItems = payload;
     },
 
 
-    [IS_UPDATE_NOW](state: any, payload: any) {
-        state.isUpdateNow = payload.data;
+    [IS_UPDATE_NOW](state: any, payload: boolean) {
+        state.isUpdateNow = payload;
     },
 
 
-    [IS_CREATE_NOW](state: any, payload: any) {
-        state.isCreateNow = payload.data;
+    [IS_CREATE_NOW](state: any, payload: boolean) {
+        state.isCreateNow = payload;
     },
 
 
     [SET_UPDATE_ITEM](state: any, payload: any) {
-        state.updateItem = payload.data;
+        state.updateItem = payload;
     },
 
 

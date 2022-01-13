@@ -27,7 +27,7 @@ export default {
     mutations: {
 
         setFacilitiesList(state: any, payload: any) {
-            state.facilitiList = payload.data;
+            state.facilitiList = payload;
         }
 
     },
@@ -40,8 +40,8 @@ export default {
                 context.rootState.perPage,
                 context.rootState.currentPage,
                 (data: any) => {
-                    context.commit(SET_PAGE_COUNT, { data: data.pageCount }, { root: true });
-                    context.commit(SET_LOADED_PAGE, { data: data.pageItems }, { root: true });
+                    context.commit(SET_PAGE_COUNT, data.pageCount , { root: true });
+                    context.commit(SET_LOADED_PAGE, data.pageItems , { root: true });
                 },
                 (_: any) => console.log("errorOfLoadPage")
             );
@@ -51,14 +51,14 @@ export default {
         [LOAD_FACILITIES](context: any) {
             DbApi.getAll(
                 "Patient",
-                (data: any) => { context.commit("setFacilitiesList", { data: data }); },
+                (data: any) => { context.commit("setFacilitiesList",  data ); },
                 (_: any) => console.log("errorOfLoadFacilityStatuses")
             );
         },
 
 
         [CREATE_PATIENT](context: any, payload: any) {
-            DbApi.create("Patient", payload.data, async (data: any) => {
+            DbApi.create("Patient", payload, async (_: any) => {
                 await context.dispatch(LOAD_PAGE);
             },
                 (_: any) => console.log("ErrorOfCreationFacility")
@@ -66,8 +66,8 @@ export default {
         },
 
 
-        [DELETE_PATIENT](context: any, payload: any) {
-            DbApi.delete("Patient", payload.data,
+        [DELETE_PATIENT](context: any, payload: number) {
+            DbApi.delete("Patient", payload,
                 async (data: any) => {
                     await context.dispatch(LOAD_PAGE);
                 }, (_: any) => console.log("ErrorOfDeletion"));
@@ -75,7 +75,7 @@ export default {
 
 
         [UPDATE_PATIENT](context: any, payload: any) {
-            DbApi.update("Patient", payload.data,
+            DbApi.update("Patient", payload,
                 async (data: any) => {
                     await context.dispatch(LOAD_PAGE);
                 }, (_: any) => console.log("ErrorOfUpdateItem")

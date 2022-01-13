@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+using AutoMapper;
 
 namespace Application.Facility
 {
@@ -23,39 +23,63 @@ namespace Application.Facility
 
 
 
-        public async Task<Common.PaginatedList<FacilityDTO, Domain.Entities.Facility>> GetPage( int page, int pageSize)
-          =>  new Common.PaginatedList<FacilityDTO, Domain.Entities.Facility>( page, pageSize, _context.Facilities, Map, "FacilityStatus");
+        public async Task<Common.PaginatedList<FacilityDTO, Domain.Entities.Facility, Domain.Entities.FacilityStatus>> GetPage( int page, int pageSize)
+          =>  new Common.PaginatedList<FacilityDTO, Domain.Entities.Facility, Domain.Entities.FacilityStatus>( 
+              page,
+              pageSize,
+              _context.Facilities, 
+              Map,
+              p =>  p.FacilityStatus);
 
 
-        //new Domain.Entities.Facility() { Name = facility.Name, Address = facility.Address, Email = facility.Email, PhoneNumber = facility.PhoneNumber }
         public async Task<int> CreateFacility( FacilityDTO facility )
         {
-            await _context.Facilities.AddAsync( Map(facility ));
-           return await _context.SaveChanges();
+            try
+            {
+                await _context.Facilities.AddAsync(Map(facility));
+                return await _context.SaveChanges();
+
+            } catch(ApplicationException ex)
+            {
+                throw ex;
+            }
         }
 
 
         public async Task<int> UpdateFacility( FacilityDTO facility )
         {
+            try
+            {
+                _context.Facilities.Update(Map(facility));
+               return  await _context.SaveChanges();
 
-            _context.Facilities.Update( Map(facility) );
-            return await _context.SaveChanges();
+            } catch(ApplicationException ex)
+            {
+                throw ex;
+            }
+           
         }
 
 
         public async Task<int> DeleteFacility( int id )
         {
-
-            Domain.Entities.Facility facility =
-                _context.Facilities.FirstOrDefault( p => p.Id == id );
-
-            if( facility != null )
+            try
             {
+                Domain.Entities.Facility facility =
+                _context.Facilities.FirstOrDefault(p => p.Id == id);
+
+                if (facility == null)
+                    throw new ApplicationException("Facility Not Found");
+
                 _context.Facilities.Remove(facility);
-               return await _context.SaveChanges();
+                return await _context.SaveChanges();
+
+            }
+            catch (ApplicationException ex)
+            {
+                throw ex;
             }
 
-            return -1;
         }
 
 
@@ -64,33 +88,29 @@ namespace Application.Facility
 
 
 
-        private static Domain.Entities.Facility Map(FacilityDTO facility) 
-            => new()
-        {
-            Address = facility.Address,
-            Email   = facility.Email,
-            FacilityStatusId = facility.FacilityStatusId ,
-            Id   = facility.Id,
-            Name = facility.Name,
-            PhoneNumber = facility.PhoneNumber
-        };
+        private static Domain.Entities.Facility Map(FacilityDTO facility)
+            => (new Mapper(
+                new MapperConfiguration(
+                    cfg => cfg.CreateMap<FacilityDTO, Domain.Entities.Facility>()
+                    )
+                ).Map<Domain.Entities.Facility>(facility));
+
+       
 
 
-        private static FacilityDTO Map(Domain.Entities.Facility facility) 
-            => new()
-        {
-            Id      = facility.Id,
-            Name    = facility.Name,
-            Address  = facility.Address,
-            Email    = facility.Email,
-            PhoneNumber = facility.PhoneNumber,
-            FacilityStatus = new FacilityStatusDTO()
-            {
-                Id   = facility.FacilityStatus.Id,
-                Name = facility.FacilityStatus.Name
+        private static FacilityDTO Map(Domain.Entities.Facility facility)
+             => (new Mapper(new MapperConfiguration(
+                cfg => cfg.CreateMap<Domain.Entities.Facility, FacilityDTO>()
+                .ForMember(
+                    "FacilityStatus",
+                    opt => opt.MapFrom<FacilityStatusDTO>(
+                              c => new FacilityStatusDTO()
+                              {
+                                  Id = c.FacilityStatus.Id,
+                                  Name = c.FacilityStatus.Name
 
-            }
-        };
+                              }))))).Map<FacilityDTO>(facility);
+    
 
 
 }

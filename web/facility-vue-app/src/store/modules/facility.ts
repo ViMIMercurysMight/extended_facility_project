@@ -27,7 +27,7 @@ export default {
 
 
         setFacilityStatuses(state: any, payload : any) {
-            state.statusesList = payload.data;
+            state.statusesList = payload;
           
         }
 
@@ -43,8 +43,8 @@ export default {
                 context.rootState.currentPage,
                 (data: any) => {
                     console.log(data);
-                    context.commit(SET_LOADED_PAGE, { data: data.pageItems }, { root: true });
-                    context.commit(SET_PAGE_COUNT, { data: data.pageCount }, { root: true });
+                    context.commit(SET_LOADED_PAGE,  data.pageItems , { root: true });
+                    context.commit(SET_PAGE_COUNT,  data.pageCount, { root: true });
                 },
                 (_: any) => console.log("errorOfLoadPage")
             );
@@ -54,14 +54,14 @@ export default {
         [LOAD_FACILITY_STATUSES](context: any) {
             DbApi.getAll(
                 "Facility",
-                (data: any) => { context.commit("setFacilityStatuses", { data: data });  },
+                (data: any) => { context.commit("setFacilityStatuses",  data );  },
                 (_: any) => console.log("errorOfLoadFacilityStatuses")
             );
         },
 
 
         [CREATE_FACILITY](context: any, payload : any ) {
-            DbApi.create("Facility", payload.data, async (data: any) => {
+            DbApi.create("Facility", payload, async (_: any) => {
                 await context.dispatch(LOAD_PAGE);
             },
                 (_: any) => console.log("ErrorOfCreationFacility")
@@ -69,16 +69,17 @@ export default {
         },
 
 
-        [DELETE_FACILITY](context: any, payload: any) {
-            DbApi.delete("Facility", payload.data,
+        [DELETE_FACILITY](context: any, payload: number) {
+            DbApi.delete("Facility", payload,
                async (data: any) => {
                    await context.dispatch(LOAD_PAGE);
+                   console.log("DELETE_FACILITY " + payload);
                 }, (_: any) => console.log("ErrorOfDeletion"));
         },
 
 
         [UPDATE_FACILITY](context: any, payload: any) {
-            DbApi.update("Facility", payload.data,
+            DbApi.update("Facility", payload,
                async (data: any) => {
                    await context.dispatch(LOAD_PAGE);
                 }, (_: any) => console.log("ErrorOfUpdateItem")

@@ -15,6 +15,8 @@ namespace Infrastructure.Database.Configurations
         public void Configure(EntityTypeBuilder<FacilityStatus> builder)
         {
 
+          //  builder.ToTable("Facility");
+
             builder.HasKey(x => x.Id);
 
 

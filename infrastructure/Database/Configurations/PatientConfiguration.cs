@@ -15,6 +15,9 @@ namespace Infrastructure.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<Patient> builder)
         {
+
+          //  builder.ToTable("Patient");
+
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id)
                    .UseIdentityColumn();

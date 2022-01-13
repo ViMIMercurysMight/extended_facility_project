@@ -36,15 +36,12 @@
         CREATE_FACILITY,
 
 
-        SET_PAGE_COUNT,
         SET_CURRENT_PAGE,
-        SET_LOADED_PAGE,
         IS_UPDATE_NOW,
         IS_CREATE_NOW,
         SET_UPDATE_ITEM,
         RESET,
         LOAD_PAGE,
-        LOAD_FACILITIES,
         LOAD_FACILITY_STATUSES
     } from "@/store/MutationTypes";
 
@@ -72,38 +69,38 @@
         methods: {
 
             changePage: function (page: number) {
-                this.$store.commit(SET_CURRENT_PAGE, { data: page });
+                this.$store.commit(SET_CURRENT_PAGE,  page );
                 this.$store.dispatch("Facility/" + LOAD_PAGE);
             },
 
 
             remove: function (id: number) {
-                this.$store.dispatch("Facility/" + DELETE_FACILITY, { data: id })
+                this.$store.dispatch("Facility/" + DELETE_FACILITY,  id )
             },
 
 
             create: function (data: any) {
-                this.$store.dispatch("Facility/" + CREATE_FACILITY, { data: data });
-                this.$store.commit(IS_CREATE_NOW, { data: false });
+                this.$store.dispatch("Facility/" + CREATE_FACILITY,  data );
+                this.$store.commit(IS_CREATE_NOW,  false );
                
             },
 
 
             update: function (updatedItem: any) {
-                this.$store.dispatch("Facility/" + UPDATE_FACILITY, { data: updatedItem });
-                this.$store.commit(IS_UPDATE_NOW, { data: false });
+                this.$store.dispatch("Facility/" + UPDATE_FACILITY,  updatedItem );
+                this.$store.commit(IS_UPDATE_NOW, false );
             },
 
 
 
             showCreateForm: function () {
-                this.$store.commit(IS_CREATE_NOW, { data: true });
+                this.$store.commit(IS_CREATE_NOW,  true );
             },
 
 
             showUpdateForm: function (updateItem: any) {
-                this.$store.commit(SET_UPDATE_ITEM, { data: updateItem });
-                this.$store.commit(IS_UPDATE_NOW, { data: true });
+                this.$store.commit(SET_UPDATE_ITEM, updateItem );
+                this.$store.commit(IS_UPDATE_NOW, true );
             },
 
 

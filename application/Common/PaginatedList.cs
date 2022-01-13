@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common
 {
-    public class PaginatedList<T,K> where K : class
+    public class PaginatedList<T, K, N> where K : class
     {
 
         public delegate T Mapper( K arg );
-
+        
+        public delegate System.Linq.Expressions.Expression<Func<K, N>> Includer( K arg );
 
         public List<T> PageItems { set; get; }
         public int Page      { set; get; }
@@ -20,28 +21,26 @@ namespace Application.Common
         public int PageCount { set; get; }
             
 
-        public PaginatedList( int page, int pageSize, DbSet<K> set, Mapper mapper, string includedNavProp = null )
+        public PaginatedList( int page, int pageSize, DbSet<K> query, Mapper mapper, System.Linq.Expressions.Expression<Func<K, N>> includedNavProp = null )
         {
             Page = page;
             PageSize = pageSize;
 
-            int total = set.Count();
+            int total = query.Count();
             PageCount = total != 0 ? 
                 total % pageSize == 0  ? (total / pageSize) - 1 : ( total / pageSize )  
                  : 0;
+        
 
-
-
-            PageItems = includedNavProp == null ? set
-
+            PageItems = includedNavProp == null ? query
                            .Skip(Page * PageSize)
                            .Take(PageSize)
                            .Select(p => mapper(p))
                            .ToListAsync()
-                           .Result : set
+                           .Result : query
                                        .Skip(Page * PageSize)
                                        .Take(PageSize)
-                                       .Include(includedNavProp)
+                                       .Include( includedNavProp )
                                        .Select(p => mapper(p))  
                                        .ToListAsync()
                                        .Result;

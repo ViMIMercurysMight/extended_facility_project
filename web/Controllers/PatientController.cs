@@ -74,8 +74,8 @@ namespace Web.Controllers
         {
            try
             {
-               var res = await _patientService.CreatePatient(patient);
-                return Json(res);
+               await _patientService.CreatePatient(patient);
+                return Json(patient);
             } 
             catch (Exception ex)
             {
@@ -89,8 +89,8 @@ namespace Web.Controllers
         {
             try
             {
-                var res = await _patientService.UpdatePatient(patient);
-                return Json(res);
+                await _patientService.UpdatePatient(patient);
+                return Json(patient);
             }
             catch (Exception ex) 
             {
@@ -106,8 +106,8 @@ namespace Web.Controllers
 
             try
             {
-               var res = await _patientService.DeletePatient((int)id);
-                return Json(res); 
+               await _patientService.DeletePatient((int)id);
+                return Json((int)id); 
             }
             catch (Exception ex) {
                 return Json(ex.Message);

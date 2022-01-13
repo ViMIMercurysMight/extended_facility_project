@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+using AutoMapper;
 
 namespace Application.Patient
 {
@@ -19,15 +19,28 @@ namespace Application.Patient
 
         public async Task<int> CreatePatient(PatientDTO patient)
         {
-            await _context.Patients.AddAsync(Map(patient));
-           return await _context.SaveChanges();
+            try
+            {
+
+                await _context.Patients.AddAsync(Map(patient));
+               return await _context.SaveChanges();
+      
+            } catch( ApplicationException ex)
+            {
+                throw ex;
+            }
 
         }
 
 
 
-        public async Task<Common.PaginatedList<PatientDTO, Domain.Entities.Patient>> GetPage(int page, int pageSize)
-             => new Common.PaginatedList<PatientDTO, Domain.Entities.Patient>(page, pageSize, _context.Patients, Map, "Facility");
+        public async Task<Common.PaginatedList<PatientDTO, Domain.Entities.Patient, Domain.Entities.Facility>> GetPage(int page, int pageSize)
+             => new Common.PaginatedList<PatientDTO, Domain.Entities.Patient, Domain.Entities.Facility>(
+                 page,
+                 pageSize, 
+                 _context.Patients,
+                 Map,
+                 p => p.Facility );
         
 
         public async Task<PatientDTO> GetPatient(int id)
@@ -36,58 +49,63 @@ namespace Application.Patient
 
         public async Task<int> DeletePatient(int id)
         {
-            Domain.Entities.Patient patient =
-               _context.Patients.FirstOrDefault(p => p.Id == id);
-
-            if (patient != null)
+            try
             {
-                _context.Patients.Remove(patient);
-                return await _context.SaveChanges();
-            }
+                Domain.Entities.Patient patient =
+                _context.Patients.FirstOrDefault(p => p.Id == id);
 
-            return -1;
+                if (patient == null)
+                    throw new ApplicationException("Patient Not Found");
+
+                _context.Patients.Remove(patient);
+               return  await _context.SaveChanges();
+
+            }
+            catch ( ApplicationException ex)
+            {
+                throw ex;
+            }
+         
         }
 
 
         public async Task<int> UpdatePatient(PatientDTO patient)
         {
+            try
+            {
+                _context.Patients.Update(Map(patient));
+                return await _context.SaveChanges();
 
-            _context.Patients.Update(Map(patient));
-            return await _context.SaveChanges();
+            } catch( ApplicationException ex)
+            {
+                throw ex;
+            }
+          
         }
 
 
 
-        private static Domain.Entities.Patient Map(PatientDTO patient) 
-          =>  new()
-            {
-                DateOfBirth  = patient.DateOfBirth,
-                FirstName    = patient.FirstName,
-                LastName     = patient.LastName,
-                Id           = patient.Id,
-                FacilityId   = patient.FacilityId,
-            };
+        private static Domain.Entities.Patient Map(PatientDTO patient)
+            => (new Mapper(new MapperConfiguration(
+                cfg => cfg.CreateMap<PatientDTO, Domain.Entities.Patient>()))
+            .Map<Domain.Entities.Patient>(patient));
 
 
-        private static PatientDTO Map(Domain.Entities.Patient patient) 
-            => new()
-             {
-                 Id          = patient.Id,
-                 FirstName   = patient.FirstName,
-                 LastName    = patient.LastName,
-                 FacilityId  = patient.FacilityId,
-                 DateOfBirth = patient.DateOfBirth,
-                 Facility    = new Facility.FacilityDTO()
-                 {
-                     Id         = patient.Facility.Id,
-                     Name       = patient.Facility.Name,
-                     Email      = patient.Facility.Email,
-                     PhoneNumber  = patient.Facility.PhoneNumber,
-                     Address      = patient.Facility.Address,
-                     FacilityStatus = new Facility.FacilityStatusDTO()
-                 }
-             };
 
+        private static PatientDTO Map(Domain.Entities.Patient patient)
+            => (new Mapper(new MapperConfiguration(
+                cfg => cfg.CreateMap<Domain.Entities.Patient, PatientDTO>()
+                .ForMember("Facility", opt => opt.MapFrom<Facility.FacilityDTO>(
+                    c => new Facility.FacilityDTO()
+                    {
+                        Id = c.Facility.Id,
+                        Name = c.Facility.Name,
+                        Email = c.Facility.Email,
+                        PhoneNumber = c.Facility.PhoneNumber,
+                        Address = c.Facility.Address,
+                        FacilityStatus = new Facility.FacilityStatusDTO()
+                    }))))).Map<PatientDTO>( patient );
+         
 
     }
 }
