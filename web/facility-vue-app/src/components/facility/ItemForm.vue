@@ -8,7 +8,7 @@
                 <label> Address <input class='form-control' type='text' v-model='innerItem.Address' required placeholder="Enter Address"/>     </label>
             </div>
             <div class='form-group'>
-                <label> Phone   <input class='form-control' type='text' v-model='innerItem.PhoneNumber' required placeholder="Enter Phone"/> </label>
+                <label> Phone   <input class='form-control' type='text' v-model='innerItem.Phone' required placeholder="Enter Phone"/> </label>
             </div>
             <div class='form-group'>
                 <label> Email   <input class='form-control' type="email" v-model='innerItem.Email' required placeholder="Enter Email"/>     </label>
