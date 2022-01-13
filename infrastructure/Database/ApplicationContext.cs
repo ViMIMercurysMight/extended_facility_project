@@ -23,8 +23,8 @@ namespace Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             => modelBuilder.ApplyConfigurationsFromAssembly(typeof(Database.Configurations.FaclityConfiguration).Assembly);
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) 
-                    : base(options) => Database.Migrate();
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+                    : base(options) { };
  
         public ApplicationContext() { }
 

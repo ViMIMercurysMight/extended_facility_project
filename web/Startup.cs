@@ -30,10 +30,9 @@ namespace web
             services.AddDbContext<Infrastructure.ApplicationContext>(options =>
                 options.UseSqlServer(conn));
 
-            services.AddScoped<Application.IApplicationDbContext, Infrastructure.ApplicationContext>();
+            services.AddScoped<Application.IApplicationDbContext>(provider => provider.GetService<Infrastructure.ApplicationContext>()); 
             services.AddScoped<Application.Facility.FacilityService>();
             services.AddScoped<Application.Patient.PatientService>();
-          //  services.AddDbContext<Infrastructure.ApplicationContext>();
             services.AddCors();
             services.AddSwaggerGen( );
 
@@ -54,6 +53,12 @@ namespace web
                     options.RoutePrefix = string.Empty;
                 });
 
+
+                using( var scope = app.ApplicationServices.CreateScope()) 
+                    using( var context = scope.ServiceProvider.GetService<Infrastructure.ApplicationContext>())
+                    {
+                    context.Database.Migrate();
+                    }
             }
             else
             {
