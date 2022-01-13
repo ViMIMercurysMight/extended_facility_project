@@ -19,12 +19,10 @@ namespace Web.Controllers
 
         private readonly Application.Facility.FacilityService _facilityService;
 
-        
 
-        public FacilityController( Infrastructure.ApplicationContext context )
-          =>  _facilityService = new Application.Facility.FacilityService(context);
-        
 
+        public FacilityController(Application.Facility.FacilityService facilityService)
+          => _facilityService = facilityService;
 
         public IActionResult Index() => View();
 

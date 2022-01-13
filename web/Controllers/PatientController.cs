@@ -20,9 +20,14 @@ namespace Web.Controllers
         private readonly Application.Patient.PatientService _patientService;
         private readonly Application.Facility.FacilityService _facilityService;
     
-        public PatientController( Infrastructure.ApplicationContext context ){
-            _patientService = new Application.Patient.PatientService(context);
-            _facilityService = new Application.Facility.FacilityService(context); 
+
+
+        public PatientController( 
+              Application.Patient.PatientService patientService
+            , Application.Facility.FacilityService facilityService 
+        ) {
+            _patientService = patientService;
+            _facilityService = facilityService;
         }
 
         public IActionResult Index() => Json("Main Patient Page Index Action");

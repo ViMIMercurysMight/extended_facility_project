@@ -30,7 +30,9 @@ namespace web
             services.AddDbContext<Infrastructure.ApplicationContext>(options =>
                 options.UseSqlServer(conn));
 
-
+            services.AddScoped<Application.IApplicationDbContext, Infrastructure.ApplicationContext>();
+            services.AddScoped<Application.Facility.FacilityService>();
+            services.AddScoped<Application.Patient.PatientService>();
           //  services.AddDbContext<Infrastructure.ApplicationContext>();
             services.AddCors();
             services.AddSwaggerGen( );
