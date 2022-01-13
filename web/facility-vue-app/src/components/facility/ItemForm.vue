@@ -47,7 +47,7 @@
                 innerItem : {
                     Name: this.item.name,
                     Address: this.item.address,
-                    Phone: this.item.phone,
+                    Phone: this.item.phoneNumber,
                     Email: this.item.email,
                     FacilityStatusId: this.item.facilityStatusId,
                     Id :this.item.id,

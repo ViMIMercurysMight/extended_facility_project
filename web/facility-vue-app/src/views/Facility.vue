@@ -29,7 +29,26 @@
 
     import ItemForm from "@/components/facility/ItemForm.vue";
     import Table from "@/components/facility/Table.vue";
-    
+
+    import {
+        UPDATE_FACILITY,
+        DELETE_FACILITY,
+        CREATE_FACILITY,
+
+
+        SET_PAGE_COUNT,
+        SET_CURRENT_PAGE,
+        SET_LOADED_PAGE,
+        IS_UPDATE_NOW,
+        IS_CREATE_NOW,
+        SET_UPDATE_ITEM,
+        RESET,
+        LOAD_PAGE,
+        LOAD_FACILITIES,
+        LOAD_FACILITY_STATUSES
+    } from "@/store/MutationTypes";
+
+
     export default defineComponent({
         name: "Facility",
 
@@ -41,9 +60,9 @@
 
 
         mounted: function () {
-            this.$store.commit("reset");
-            this.$store.dispatch("Facility/loadPage");
-            this.$store.dispatch("Facility/loadFacilityStatuses");
+            this.$store.commit(RESET);
+            this.$store.dispatch("Facility/" + LOAD_PAGE);
+            this.$store.dispatch("Facility/" + LOAD_FACILITY_STATUSES);
         },
 
         updated: function () {
@@ -53,38 +72,38 @@
         methods: {
 
             changePage: function (page: number) {
-                this.$store.commit("setCurrentPage", { data: page });
-                this.$store.dispatch("Facility/loadPage");
+                this.$store.commit(SET_CURRENT_PAGE, { data: page });
+                this.$store.dispatch("Facility/" + LOAD_PAGE);
             },
 
 
             remove: function (id: number) {
-                this.$store.dispatch("Facility/deleteFacility", { data: id })
+                this.$store.dispatch("Facility/" + DELETE_FACILITY, { data: id })
             },
 
 
             create: function (data: any) {
-                this.$store.dispatch("Facility/createFacility", { data: data });
-                this.$store.commit("isCreateNow", { data: false });
+                this.$store.dispatch("Facility/" + CREATE_FACILITY, { data: data });
+                this.$store.commit(IS_CREATE_NOW, { data: false });
                
             },
 
 
             update: function (updatedItem: any) {
-                this.$store.dispatch("Facility/updateFacility", { data: updatedItem });
-                this.$store.commit("isUpdateNow", { data: false });
+                this.$store.dispatch("Facility/" + UPDATE_FACILITY, { data: updatedItem });
+                this.$store.commit(IS_UPDATE_NOW, { data: false });
             },
 
 
 
             showCreateForm: function () {
-                this.$store.commit("isCreateNow", { data: true });
+                this.$store.commit(IS_CREATE_NOW, { data: true });
             },
 
 
             showUpdateForm: function (updateItem: any) {
-                this.$store.commit("setUpdateItem", { data: updateItem });
-                this.$store.commit("isUpdateNow", { data: true });
+                this.$store.commit(SET_UPDATE_ITEM, { data: updateItem });
+                this.$store.commit(IS_UPDATE_NOW, { data: true });
             },
 
 
