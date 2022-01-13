@@ -28,11 +28,6 @@ export default class DbAPI {
             }
         }).then(_ => successCallBack()).catch(_ => rejectCallBack());
     }
-    static getCountOfPages(controllerName, perPage, successCallBack, rejectCallBack) {
-        axios
-            .get(`${DbAPI.SERVER_BASE}/${controllerName}/GetCountOfPages`, { params: { perPage: perPage } })
-            .then(response => successCallBack(response.data)).catch(_ => rejectCallBack());
-    }
     static getItem(controllerName, id, sucessCallBack, rejectCallBack) {
         axios
             .get(`${DbAPI.SERVER_BASE}/${controllerName}/${id}`)

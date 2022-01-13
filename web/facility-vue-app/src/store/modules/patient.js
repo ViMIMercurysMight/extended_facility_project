@@ -11,11 +11,11 @@ export default {
         }
     },
     actions: {
-        updatePageCount(context) {
-            DbApi.getCountOfPages("Patient", context.rootState.perPage, (data) => { context.commit("setPageCount", { data: data }, { root: true }); }, (_) => console.log("loadErrorPageCount"));
-        },
         loadPage(context) {
-            DbApi.getItemPage("Patient", context.rootState.perPage, context.rootState.currentPage, (data) => { context.commit("setLoadedPage", { data: data }, { root: true }); }, (_) => console.log("errorOfLoadPage"));
+            DbApi.getItemPage("Patient", context.rootState.perPage, context.rootState.currentPage, (data) => {
+                context.commit("setPageCount", { data: data.pageCount }, { root: true });
+                context.commit("setLoadedPage", { data: data.pageItems }, { root: true });
+            }, (_) => console.log("errorOfLoadPage"));
         },
         loadFacilities(context) {
             DbApi.getAll("Patient", (data) => { context.commit("setFacilitiesList", { data: data }); }, (_) => console.log("errorOfLoadFacilityStatuses"));
@@ -23,13 +23,11 @@ export default {
         [CREATE_PATIENT](context, payload) {
             DbApi.create("Patient", payload.data, async (data) => {
                 await context.dispatch("loadPage");
-                await context.dispatch("updatePageCount");
             }, (_) => console.log("ErrorOfCreationFacility"));
         },
         [DELETE_PATIENT](context, payload) {
             DbApi.delete("Patient", payload.data, async (data) => {
                 await context.dispatch("loadPage");
-                await context.dispatch("updatePageCount");
             }, (_) => console.log("ErrorOfDeletion"));
         },
         [UPDATE_PATIENT](context, payload) {

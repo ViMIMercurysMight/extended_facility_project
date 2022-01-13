@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220111070350_addGetCountOfPatientStoreProc")]
-    partial class addGetCountOfPatientStoreProc
+    [Migration("20220112232005_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,9 +48,10 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FacilityStatusId");
+                    b.HasIndex("FacilityStatusId")
+                        .IsUnique();
 
-                    b.ToTable("Facility");
+                    b.ToTable("Facilities");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityStatus", b =>
@@ -61,12 +62,28 @@ namespace Infrastructure.Database.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("FacilityStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            Name = "InActive"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Active"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "OnHold"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
@@ -77,33 +94,35 @@ namespace Infrastructure.Database.Migrations
                         .UseIdentityColumn();
 
                     b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<int?>("FacilityId")
-                        .IsRequired()
-                        .HasColumnType("int")
-                        .HasColumnName("FacilityId");
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasMaxLength(125)
                         .HasColumnType("nvarchar(125)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasMaxLength(125)
                         .HasColumnType("nvarchar(125)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FacilityId");
+                    b.HasIndex("FacilityId")
+                        .IsUnique()
+                        .HasFilter("[FacilityId] IS NOT NULL");
 
-                    b.ToTable("Patient");
+                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("Domain.Entities.Facility", b =>
                 {
                     b.HasOne("Domain.Entities.FacilityStatus", "FacilityStatus")
-                        .WithMany()
-                        .HasForeignKey("FacilityStatusId")
+                        .WithOne("Facility")
+                        .HasForeignKey("Domain.Entities.Facility", "FacilityStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -113,11 +132,19 @@ namespace Infrastructure.Database.Migrations
             modelBuilder.Entity("Domain.Entities.Patient", b =>
                 {
                     b.HasOne("Domain.Entities.Facility", "Facility")
-                        .WithMany()
-                        .HasForeignKey("FacilityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne("Patient")
+                        .HasForeignKey("Domain.Entities.Patient", "FacilityId");
 
+                    b.Navigation("Facility");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Facility", b =>
+                {
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FacilityStatus", b =>
+                {
                     b.Navigation("Facility");
                 });
 #pragma warning restore 612, 618

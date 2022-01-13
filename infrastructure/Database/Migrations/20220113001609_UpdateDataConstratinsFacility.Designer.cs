@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Infrastructure.Database
+namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220106145757_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220113001609_UpdateDataConstratinsFacility")]
+    partial class UpdateDataConstratinsFacility
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,16 +29,21 @@ namespace Infrastructure.Database
                         .UseIdentityColumn();
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FacilityStatusId")
+                    b.Property<int>("FacilityStatusId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasDefaultValue(2)
                         .HasColumnName("StatusId");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -48,7 +53,7 @@ namespace Infrastructure.Database
 
                     b.HasIndex("FacilityStatusId");
 
-                    b.ToTable("Facility");
+                    b.ToTable("Facilities");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityStatus", b =>
@@ -59,12 +64,28 @@ namespace Infrastructure.Database
                         .UseIdentityColumn();
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("FacilityStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            Name = "InActive"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Active"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "OnHold"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
@@ -75,32 +96,35 @@ namespace Infrastructure.Database
                         .UseIdentityColumn();
 
                     b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<int?>("FacilityId")
-                        .HasColumnType("int")
-                        .HasColumnName("FacilityId");
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasMaxLength(125)
                         .HasColumnType("nvarchar(125)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasMaxLength(125)
                         .HasColumnType("nvarchar(125)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("Patient");
+                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("Domain.Entities.Facility", b =>
                 {
                     b.HasOne("Domain.Entities.FacilityStatus", "FacilityStatus")
-                        .WithMany()
-                        .HasForeignKey("FacilityStatusId");
+                        .WithMany("Facility")
+                        .HasForeignKey("FacilityStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("FacilityStatus");
                 });
@@ -108,9 +132,19 @@ namespace Infrastructure.Database
             modelBuilder.Entity("Domain.Entities.Patient", b =>
                 {
                     b.HasOne("Domain.Entities.Facility", "Facility")
-                        .WithMany()
+                        .WithMany("Patient")
                         .HasForeignKey("FacilityId");
 
+                    b.Navigation("Facility");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Facility", b =>
+                {
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FacilityStatus", b =>
+                {
                     b.Navigation("Facility");
                 });
 #pragma warning restore 612, 618

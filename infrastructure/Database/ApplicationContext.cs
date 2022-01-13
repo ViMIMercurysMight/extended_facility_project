@@ -8,8 +8,6 @@ using Application;
 using Domain.Entities;
 
 
-
-
 namespace Infrastructure
 {
     public class ApplicationContext 
@@ -17,29 +15,21 @@ namespace Infrastructure
         , IApplicationDbContext
     
     {
-        public DbSet<Facility> Facility { get; set; }
-        public DbSet<Patient>  Patient  { get; set; }
+        public DbSet<Facility> Facilities { get; set; }
+        public DbSet<Patient>  Patients  { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Facility>()
-                .Property( f => f.FacilityStatusId )
-                .IsRequired()
-                .HasDefaultValue( Domain.Enums.FacilityStatus.INACTIVE );
-        }
+            => modelBuilder.ApplyConfigurationsFromAssembly(typeof(Database.Configurations.FaclityConfiguration).Assembly);
 
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) 
+                    : base(options) => Database.Migrate();
+ 
+        public ApplicationContext() { }
 
-        protected override void OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(
-                "Data Source=.\\SQLEXPRESS;Initial Catalog=facilityDB;Integrated Security=True");
-        }
-
-
-        public override int SaveChanges()
-            => base.SaveChanges();
+        public async Task<int> SaveChanges()
+            => await base.SaveChangesAsync();
 
     }
 }

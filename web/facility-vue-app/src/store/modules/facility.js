@@ -11,11 +11,12 @@ export default {
         }
     },
     actions: {
-        updatePageCount(context) {
-            DbApi.getCountOfPages("Facility", context.rootState.perPage, (data) => { context.commit("setPageCount", { data: data }, { root: true }); }, (_) => console.log("loadErrorPageCount"));
-        },
         loadPage(context) {
-            DbApi.getItemPage("Facility", context.rootState.perPage, context.rootState.currentPage, (data) => { context.commit("setLoadedPage", { data: data }, { root: true }); }, (_) => console.log("errorOfLoadPage"));
+            DbApi.getItemPage("Facility", context.rootState.perPage, context.rootState.currentPage, (data) => {
+                console.log(data);
+                context.commit("setLoadedPage", { data: data.pageItems }, { root: true });
+                context.commit("setPageCount", { data: data.pageCount }, { root: true });
+            }, (_) => console.log("errorOfLoadPage"));
         },
         loadFacilityStatuses(context) {
             DbApi.getAll("Facility", (data) => { context.commit("setFacilityStatuses", { data: data }); }, (_) => console.log("errorOfLoadFacilityStatuses"));
@@ -23,13 +24,11 @@ export default {
         [CREATE_FACILITY](context, payload) {
             DbApi.create("Facility", payload.data, async (data) => {
                 await context.dispatch("loadPage");
-                await context.dispatch("updatePageCount");
             }, (_) => console.log("ErrorOfCreationFacility"));
         },
         [DELETE_FACILITY](context, payload) {
             DbApi.delete("Facility", payload.data, async (data) => {
                 await context.dispatch("loadPage");
-                await context.dispatch("updatePageCount");
             }, (_) => console.log("ErrorOfDeletion"));
         },
         [UPDATE_FACILITY](context, payload) {

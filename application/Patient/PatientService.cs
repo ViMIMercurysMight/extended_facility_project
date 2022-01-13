@@ -3,46 +3,91 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Application.Patient
 {
     public class PatientService
     {
 
-        private IApplicationDbContext _context;
-        
+        private readonly IApplicationDbContext _context;
+
         public PatientService(IApplicationDbContext context)
             => _context = context;
 
 
-        public void CreatePatient( Domain.Entities.Patient patient )
+        public async Task<int> CreatePatient(PatientDTO patient)
         {
-            _context.Patient.Add(patient);
-            _context.SaveChanges();
+            await _context.Patients.AddAsync(Map(patient));
+           return await _context.SaveChanges();
 
         }
 
 
-        public void DeletePatient( int id )
+
+        public async Task<Common.PaginatedList<PatientDTO, Domain.Entities.Patient>> GetPage(int page, int pageSize)
+             => new Common.PaginatedList<PatientDTO, Domain.Entities.Patient>(page, pageSize, _context.Patients, Map, "Facility");
+        
+
+        public async Task<PatientDTO> GetPatient(int id)
+              => (PatientDTO)_context.Patients.Where(p => p.Id == id).Include( p => p.Facility ).Select(p => Map(p));
+
+
+        public async Task<int> DeletePatient(int id)
         {
             Domain.Entities.Patient patient =
-                _context.Patient.FirstOrDefault( p => p.Id == id );
+               _context.Patients.FirstOrDefault(p => p.Id == id);
 
-            if( patient != null)
+            if (patient != null)
             {
-                _context.Patient.Remove(patient);
-                _context.SaveChanges();
+                _context.Patients.Remove(patient);
+                return await _context.SaveChanges();
             }
 
+            return -1;
         }
 
 
-        public void UpdatePatient( Domain.Entities.Patient patient )
+        public async Task<int> UpdatePatient(PatientDTO patient)
         {
 
-            _context.Patient.Update(patient);
-            _context.SaveChanges();
+            _context.Patients.Update(Map(patient));
+            return await _context.SaveChanges();
         }
+
+
+
+        private static Domain.Entities.Patient Map(PatientDTO patient) 
+          =>  new()
+            {
+                DateOfBirth  = patient.DateOfBirth,
+                FirstName    = patient.FirstName,
+                LastName     = patient.LastName,
+                Id           = patient.Id,
+                FacilityId   = patient.FacilityId,
+            };
+
+
+        private static PatientDTO Map(Domain.Entities.Patient patient) 
+            => new()
+             {
+                 Id          = patient.Id,
+                 FirstName   = patient.FirstName,
+                 LastName    = patient.LastName,
+                 FacilityId  = patient.FacilityId,
+                 DateOfBirth = patient.DateOfBirth,
+                 Facility    = new Facility.FacilityDTO()
+                 {
+                     Id         = patient.Facility.Id,
+                     Name       = patient.Facility.Name,
+                     Email      = patient.Facility.Email,
+                     PhoneNumber  = patient.Facility.PhoneNumber,
+                     Address      = patient.Facility.Address,
+                     FacilityStatus = new Facility.FacilityStatusDTO()
+                 }
+             };
+
 
     }
 }

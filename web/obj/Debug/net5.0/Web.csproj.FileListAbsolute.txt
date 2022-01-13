@@ -77,3 +77,10 @@ C:\Users\ViMi\source\repos\trainee_web_app\web\obj\Debug\net5.0\Web.genruntimeco
 C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\facility-vue-app\package-lock.json
 C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\facility-vue-app\package.json
 C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\facility-vue-app\tsconfig.json
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ViMi\source\repos\trainee_web_app\web\obj\Debug\net5.0\Web.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\Humanizer.dll
+C:\Users\ViMi\source\repos\trainee_web_app\web\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Design.dll

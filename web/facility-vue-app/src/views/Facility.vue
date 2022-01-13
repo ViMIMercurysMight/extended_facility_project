@@ -42,7 +42,6 @@
 
         mounted: function () {
             this.$store.commit("reset");
-            this.$store.dispatch("Facility/updatePageCount");
             this.$store.dispatch("Facility/loadPage");
             this.$store.dispatch("Facility/loadFacilityStatuses");
         },
@@ -52,11 +51,6 @@
         },
 
         methods: {
-
-            updatePageCount: function () {
-                this.$store.dispatch("Facility/updatePageCount");
-            },
-
 
             changePage: function (page: number) {
                 this.$store.commit("setCurrentPage", { data: page });

@@ -33,23 +33,17 @@ export default {
 
     actions: {
 
-        updatePageCount(context: any) {
-            DbApi.getCountOfPages(
-                "Facility",
-                context.rootState.perPage,
-                (data: any) => { context.commit("setPageCount", { data: data }, { root: true }); },
-                (_: any) => console.log("loadErrorPageCount")
-            );
-        },
-
 
         loadPage(context: any) {
-
             DbApi.getItemPage(
                 "Facility",
                 context.rootState.perPage,
                 context.rootState.currentPage,
-                (data: any) => { context.commit("setLoadedPage", { data: data }, { root : true });},
+                (data: any) => {
+                    console.log(data);
+                    context.commit("setLoadedPage", { data: data.pageItems }, { root: true });
+                    context.commit("setPageCount", { data: data.pageCount }, { root: true });
+                },
                 (_: any) => console.log("errorOfLoadPage")
             );
         },
@@ -67,7 +61,6 @@ export default {
         [CREATE_FACILITY](context: any, payload : any ) {
             DbApi.create("Facility", payload.data, async (data: any) => {
                 await context.dispatch("loadPage");
-                await context.dispatch("updatePageCount");
             },
                 (_: any) => console.log("ErrorOfCreationFacility")
             );
@@ -78,7 +71,6 @@ export default {
             DbApi.delete("Facility", payload.data,
                async (data: any) => {
                    await context.dispatch("loadPage");
-                   await context.dispatch("updatePageCount");
                 }, (_: any) => console.log("ErrorOfDeletion"));
         },
 

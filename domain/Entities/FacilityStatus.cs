@@ -10,11 +10,10 @@ namespace Domain.Entities
 {
     public class FacilityStatus
     {
-        [System.ComponentModel.DataAnnotations.Key]
-        public int Id { get; set; }
-
-
-        [System.ComponentModel.DataAnnotations.MaxLength(255)]
+        public int Id      { get; set; }
         public string Name { get; set; }
+
+
+        public List<Facility> Facility    { get; set; }   
     }
 }

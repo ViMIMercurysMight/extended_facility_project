@@ -7,7 +7,6 @@
                     <td>FirstName       </td>
                     <td>LastName        </td>
                     <td>Date Of Birth   </td>
-                    <td>Email           </td>
                     <td>FacilityName    </td>
                     <td>remove          </td>
                     <td>update          </td>

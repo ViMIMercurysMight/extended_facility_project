@@ -57,17 +57,6 @@ export default class DbAPI {
     }
 
 
-    static getCountOfPages(
-         controllerName     : string
-        ,perPage            : number
-        ,successCallBack    : any
-        ,rejectCallBack     : any
-    ) {
-        axios
-            .get(`${DbAPI.SERVER_BASE}/${controllerName}/GetCountOfPages`, { params: { perPage : perPage }})
-            .then(response => successCallBack(response.data)).catch(_ => rejectCallBack() );
-    }
-
 
     static getItem(
          controllerName  : string

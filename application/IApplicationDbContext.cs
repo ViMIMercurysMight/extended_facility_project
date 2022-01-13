@@ -9,10 +9,10 @@ namespace Application
 {
     public interface IApplicationDbContext 
     {
-        DbSet<Domain.Entities.Facility> Facility { set; get; }
-        DbSet<Domain.Entities.Patient>  Patient  { set; get; }
+        DbSet<Domain.Entities.Facility> Facilities { set; get; }
+        DbSet<Domain.Entities.Patient>  Patients   { set; get; }
 
-        int SaveChanges();
+        Task<int> SaveChanges();
 
     }
 }

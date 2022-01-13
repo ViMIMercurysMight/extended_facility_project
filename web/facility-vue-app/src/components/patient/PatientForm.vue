@@ -2,21 +2,18 @@
     <div>
         <form class='form'>
             <div class='form-group'>
-                <label> First Name    <input class='form-control' type="text" v-model="innerItem.FirstName" />        </label>
+                <label> First Name    <input class='form-control' type="text" v-model="innerItem.FirstName" required placeholder="Enter First Name"/>        </label>
             </div>
 
             <div class='form-group'>
-                <label> Last Name    <input class='form-control' type="text" v-model="innerItem.LastName" />        </label>
+                <label> Last Name    <input class='form-control' type="text" v-model="innerItem.LastName" required placeholder="Enter Last Name" />        </label>
             </div>
 
             <div class='form-group'>
-                <label> Date Of Birth    <input class='form-control' type="date" v-model="innerItem.DateOfBirth" />        </label>
+                <label> Date Of Birth    <input class='form-control' type="date" v-model="innerItem.DateOfBirth" required />        </label>
             </div>
 
-            <div class='form-group'>
-                <label> Email   <input class='form-control' type="email" v-model='innerItem.Email' />     </label>
-            </div>
-
+      
             <div v-if="facilityDisplay" class='form-group'>
                 <label>
                     Facilities
@@ -51,7 +48,6 @@
                     FirstName: this.item.firstName,
                     LastName: this.item.lastName,
                     DateOfBirth: this.item.dateOfBirth,
-                    Email: this.item.email,
                     FacilityId: this.item.facilityId,
                     Id: this.item.id,
                 }

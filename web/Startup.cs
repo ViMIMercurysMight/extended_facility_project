@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+using Swashbuckle.AspNetCore;
 
 namespace web
 {
@@ -26,11 +26,14 @@ namespace web
         public void ConfigureServices(IServiceCollection services)
         {
 
-    //        string conn = Configuration.GetConnectionString("facilityAppCon");
-            services.AddDbContext<Infrastructure.ApplicationContext>();
+            string conn = Configuration.GetConnectionString("facilityAppCon");
+            services.AddDbContext<Infrastructure.ApplicationContext>(options =>
+                options.UseSqlServer(conn));
 
+
+          //  services.AddDbContext<Infrastructure.ApplicationContext>();
             services.AddCors();
-
+            services.AddSwaggerGen( );
 
             services.AddControllersWithViews();
         }
@@ -41,6 +44,14 @@ namespace web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
+                });
+
             }
             else
             {
@@ -52,6 +63,8 @@ namespace web
             app.UseStaticFiles();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseRouting();
+
+
 
             app.UseAuthorization();
 

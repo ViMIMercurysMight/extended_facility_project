@@ -16,42 +16,34 @@ namespace Web.Controllers
 {
     public class PatientController : Controller
     {
-        private readonly ILogger<PatientController> _logger;
-
+ 
         private readonly Application.Patient.PatientService _patientService;
-        private readonly Infrastructure.ApplicationContext _context;
-
-        public PatientController(
-            ILogger<PatientController> logger,
-            Infrastructure.ApplicationContext context
-            )
-        {
-            _context = context;
+        private readonly Application.Facility.FacilityService _facilityService;
+    
+        public PatientController( Infrastructure.ApplicationContext context ){
             _patientService = new Application.Patient.PatientService(context);
-            _logger = logger;
+            _facilityService = new Application.Facility.FacilityService(context); 
         }
 
         public IActionResult Index() => Json("Main Patient Page Index Action");
   
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
 
         [HttpGet("Patient/{id:int}")]
         async public Task<IActionResult> GetPatient( int id )
         {
-            if (id == null)
-                return NotFound();
-            else
+            try
             {
-                var model = await _context.Patient.FindAsync(id);
+                var model = await _patientService.GetPatient(id);
                 return Json(model);
+
+            } catch(Exception ex)
+            {
+                return Json(ex.Message);
             }
-        
+
+
+
         }
 
 
@@ -60,13 +52,8 @@ namespace Web.Controllers
         {
             try
             {
-                var model = await _context.Patient
-                    .Skip(page * pageSize)
-                    .Except(_context.Patient.Skip((page * pageSize) + pageSize))
-                    .Include(e => e.Facility)
-                    .ToListAsync();
-
-                return Json(model);
+                var req = await _patientService.GetPage(page, pageSize);
+                return Json(req);
 
             } catch (Exception ex)
             {
@@ -78,52 +65,49 @@ namespace Web.Controllers
 
 
         [HttpPost("Patient/{id}")]
-        public IActionResult PostPatient( [FromBody][Bind("FirstName", "LastName", "DateOfBirth", "FacilityId")] Domain.Entities.Patient patient )
+        public async Task<IActionResult> PostPatient( [FromBody][Bind("FirstName", "LastName", "DateOfBirth", "FacilityId")] Application.Patient.PatientDTO patient )
         {
            try
             {
-                _patientService.CreatePatient(patient);
+               var res = await _patientService.CreatePatient(patient);
+                return Json(res);
             } 
             catch (Exception ex)
             {
                 return Json(ex.Message);
             }
-            return Json( true );
         }
 
 
         [HttpPut("Patient/{id}")]
-        public IActionResult PutPatient( [FromBody][Bind("Id", "FirstName", "LastName", "DateOfBirth", "FacilityId")] Domain.Entities.Patient patient )
+        public async Task<IActionResult> PutPatient( [FromBody][Bind("Id", "FirstName", "LastName", "DateOfBirth", "FacilityId")] Application.Patient.PatientDTO patient )
         {
             try
             {
-                _patientService.UpdatePatient(patient);
+                var res = await _patientService.UpdatePatient(patient);
+                return Json(res);
             }
             catch (Exception ex) 
             {
                 return Json(ex.Message);
             }
             
-            return Json( true );
         }
 
 
         [HttpDelete]
-        public IActionResult DeletePatient( int? id )
+        public async Task<IActionResult> DeletePatient( int? id )
         {
-            if (id == null)
-                return NotFound();
 
             try
             {
-                _patientService.DeletePatient((int)id);
+               var res = await _patientService.DeletePatient((int)id);
+                return Json(res); 
             }
             catch (Exception ex) {
                 return Json(ex.Message);
             }
 
-            
-            return Json( true  );
         }
 
 
@@ -133,7 +117,7 @@ namespace Web.Controllers
 
             try
             {
-                var model = await _context.Facility.ToListAsync();
+                var model = await _facilityService.GetAll();
                 return Json(model);
             }
             catch (Exception ex)
@@ -142,35 +126,6 @@ namespace Web.Controllers
             }
         }
 
-
-        [HttpGet]
-        public IActionResult GetCountOfPages(int perPage)
-        {
-            var listCount = 0;
-
-            using (_context)
-            {
-
-                SqlParameter param = new()
-                {
-                    ParameterName = "@count",
-                    SqlDbType = System.Data.SqlDbType.Int,
-                    Direction = System.Data.ParameterDirection.Output,
-
-                };
-                _context.Database.ExecuteSqlRaw("GetCountOfPatient @count OUT", param);
-
-
-                listCount = (int)param.Value;
-            }
-
-            if (listCount == 0)
-                return Json(listCount);
-
-            return Json(listCount % perPage == 0
-        ? (listCount / perPage) - 1
-        : listCount / perPage);
-        }
 
 
     }

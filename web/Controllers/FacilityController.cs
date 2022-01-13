@@ -17,21 +17,13 @@ namespace Web.Controllers
     public class FacilityController : Controller
     {
 
-        private readonly ILogger<FacilityController> _logger;
-        private readonly Infrastructure.ApplicationContext _context;
         private readonly Application.Facility.FacilityService _facilityService;
 
         
 
-        public FacilityController(
-            ILogger<FacilityController> logger,
-            Infrastructure.ApplicationContext context
-            )
-        {
-            _context = context;
-            _facilityService = new Application.Facility.FacilityService(context);
-            _logger = logger;
-        }
+        public FacilityController( Infrastructure.ApplicationContext context )
+          =>  _facilityService = new Application.Facility.FacilityService(context);
+        
 
 
         public IActionResult Index() => View();
@@ -42,8 +34,8 @@ namespace Web.Controllers
         {
             try
             {
-                var model = await _context.Facility.FindAsync(id);
-                return Json(model);
+                var req = await _facilityService.GetFacility(id);
+                return ((IActionResult)req);
             }
             catch( Exception ex)
             {
@@ -53,55 +45,16 @@ namespace Web.Controllers
 
 
 
-        [HttpGet]
-        public IActionResult GetCountOfPages( int perPage )
-        {
-            var listCount = 0;
-
-            using (_context)
-            {
-
-                SqlParameter param = new()
-                {
-                    ParameterName = "@count",
-                    SqlDbType = System.Data.SqlDbType.Int,
-                    Direction = System.Data.ParameterDirection.Output,
-
-                };
-                _context.Database.ExecuteSqlRaw("GetCountOfFacilities @count OUT", param);
-
-
-                listCount = (int)param.Value;
-            }
-
-            if (listCount == 0)
-                return Json(listCount);
-
-            return Json(listCount % perPage == 0
-        ? (listCount / perPage) - 1
-        : listCount / perPage);
-        }
-
 
         [HttpGet]
         public async Task<IActionResult> GetFacility( int page, int pageSize)
         {
+
             try
             {
-                if (_context.Facility.Count() > 0)
-                {
-
-                    var model = await _context.Facility
-                           .Skip(page * pageSize)
-                           .Except(_context.Facility.Skip((page * pageSize) + pageSize))
-                           .Include(e => e.FacilityStatus)
-                           .ToListAsync();
-
-                    return Json(model);
-                } else
-                {
-                    return Json(new { });
-                }
+                var req = await _facilityService.GetPage(page, pageSize);
+                return Json(req);
+              
             } catch( Exception ex)
             {
                 return Json(ex.Message);
@@ -110,49 +63,47 @@ namespace Web.Controllers
 
 
         [HttpPost]
-        public  IActionResult PostFacility([FromBody][Bind("Name", "Address", "PhoneNumber", "Email")] Domain.Entities.Facility facility )
+        public async Task<IActionResult> PostFacility([FromBody][Bind("Name", "Address", "PhoneNumber", "Email")] Application.Facility.FacilityDTO facility )
          {
 
             try
             {
-                _facilityService.CreateFacility( facility );
+                var res = await _facilityService.CreateFacility( facility );
+                return Json(res);
             }
             catch (Exception ex)
             {
                 return Json(ex.Message);
             }
 
-            return  Json( true );
 
         }
 
 
         [HttpPut]
-        public  IActionResult PutFacility([FromBody][Bind("Id", "Name", "Address", "PhoneNumber", "Email", "FacilityStatusId")] Domain.Entities.Facility facility)
+        public async Task<IActionResult> PutFacility([FromBody][Bind("Id", "Name", "Address", "PhoneNumber", "Email", "FacilityStatusId")] Application.Facility.FacilityDTO facility)
         {
             try
             {
-                 _facilityService.UpdateFacility( facility );
+                var res = await _facilityService.UpdateFacility( facility );
+                return Json(res);
             }
             catch (Exception ex)
             {
                 return Json(ex.Message);
             }
 
-            return Json( true );
         }
 
 
         [HttpDelete]
-        public  IActionResult DeleteFacility( int? id )
+        public async Task<IActionResult> DeleteFacility( int? id )
         {
-            if (id == null)
-                return NotFound();
-
 
             try
             {
-                 _facilityService.DeleteFacility((int)id);
+                var res = await _facilityService.DeleteFacility((int)id);
+                return Json(res);
             }
             catch (Exception ex)
             {
