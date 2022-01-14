@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
+
 namespace Application.Facility
 {
+
+    using Domain.Entities;
     public class FacilityService
     {
 
@@ -19,18 +22,33 @@ namespace Application.Facility
 
 
         public async Task<FacilityDTO> GetFacility(int id)
-            => (FacilityDTO)(_context.Facilities.Where(p => p.Id == id).Include( p => p.FacilityStatus ).Select(p => Map(p)));
+            => await _context.Facilities
+                                    .Where(p => p.Id == id)
+                                    .Include( p => p.FacilityStatus )
+                                    .Select(p => Map(p))
+                                    .FirstOrDefaultAsync();
 
 
 
-        public async Task<Common.PaginatedList<FacilityDTO, Domain.Entities.Facility, Domain.Entities.FacilityStatus>> GetPage( int page, int pageSize)
-          =>  new Common.PaginatedList<FacilityDTO, Domain.Entities.Facility, Domain.Entities.FacilityStatus>( 
-              page,
-              pageSize,
-              _context.Facilities, 
-              Map,
-              p =>  p.FacilityStatus);
+        public async Task<Common.PaginatedList<FacilityDTO, Facility, FacilityStatus>> GetPage(int page, int pageSize)
+        {
 
+            Common.PaginatedList<FacilityDTO, Facility, FacilityStatus> pagenatedList = new(page, pageSize);
+
+            pagenatedList = await Common.PaginatedList<FacilityDTO, Facility, FacilityStatus>.SetCount(
+                     _context.Facilities,
+                     pagenatedList );
+
+
+            pagenatedList = await Common.PaginatedList<FacilityDTO, Facility, FacilityStatus>.SetPageItems(
+              _context.Facilities
+               ,pagenatedList
+               , Map
+               , p => p.FacilityStatus);
+
+            return pagenatedList;
+
+        }
 
         public async Task<int> CreateFacility( FacilityDTO facility )
         {
@@ -88,22 +106,22 @@ namespace Application.Facility
 
 
 
-        private static Domain.Entities.Facility Map(FacilityDTO facility)
+        private static Facility Map(FacilityDTO facility)
             => (new Mapper(
                 new MapperConfiguration(
-                    cfg => cfg.CreateMap<FacilityDTO, Domain.Entities.Facility>()
+                    cfg => cfg.CreateMap<FacilityDTO,Facility>()
                     )
-                ).Map<Domain.Entities.Facility>(facility));
+                ).Map<Facility>(facility));
 
        
 
 
-        private static FacilityDTO Map(Domain.Entities.Facility facility)
+        private static FacilityDTO Map(Facility facility)
              => (new Mapper(new MapperConfiguration(
-                cfg => cfg.CreateMap<Domain.Entities.Facility, FacilityDTO>()
+                cfg => cfg.CreateMap<Facility, FacilityDTO>()
                 .ForMember(
                     "FacilityStatus",
-                    opt => opt.MapFrom<FacilityStatusDTO>(
+                    opt => opt.MapFrom(
                               c => new FacilityStatusDTO()
                               {
                                   Id = c.FacilityStatus.Id,

@@ -94,11 +94,17 @@
 
 
             showCreateForm: function () {
+                if (this.$store.state.isUpdateNow)
+                    this.$store.commit(IS_UPDATE_NOW, false);
+
                 this.$store.commit(IS_CREATE_NOW,  true );
             },
 
 
             showUpdateForm: function (updateItem: any) {
+                if (this.$store.state.isCreateNow)
+                    this.$store.commit(IS_CREATE_NOW, false);
+
                 this.$store.commit(SET_UPDATE_ITEM, updateItem );
                 this.$store.commit(IS_UPDATE_NOW, true );
             },

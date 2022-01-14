@@ -17,12 +17,13 @@ namespace Infrastructure.Database.Configurations
         public void Configure(EntityTypeBuilder<Facility> builder)
         {
 
-           // builder.ToTable("Facility");
+            builder.ToTable("Facility");
 
             builder.HasKey(f => f.Id);
             builder
                 .Property(e => e.Id)
                 .UseIdentityColumn();
+
 
 
             builder
@@ -34,9 +35,12 @@ namespace Infrastructure.Database.Configurations
                 .IsRequired();
 
 
+
+            builder.HasAlternateKey(p => p.Name);
             builder
                 .Property(p => p.Name)
                 .IsRequired();
+
 
 
             builder

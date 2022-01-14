@@ -42,16 +42,18 @@ namespace Infrastructure.Database.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Name");
+
                     b.HasIndex("FacilityStatusId");
 
-                    b.ToTable("Facilities");
+                    b.ToTable("Facility");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityStatus", b =>
@@ -113,7 +115,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patient");
                 });
 
             modelBuilder.Entity("Domain.Entities.Facility", b =>

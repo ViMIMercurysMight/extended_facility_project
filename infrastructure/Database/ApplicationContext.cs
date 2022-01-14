@@ -23,9 +23,11 @@ namespace Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             => modelBuilder.ApplyConfigurationsFromAssembly(typeof(Database.Configurations.FaclityConfiguration).Assembly);
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options)
-                    : base(options) { };
- 
+           public ApplicationContext(DbContextOptions<ApplicationContext> options)
+                     : base(options) { }
+
+        
+
         public ApplicationContext() { }
 
         public async Task<int> SaveChanges()

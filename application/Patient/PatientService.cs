@@ -8,6 +8,8 @@ using AutoMapper;
 
 namespace Application.Patient
 {
+
+    using Domain.Entities;
     public class PatientService
     {
 
@@ -34,17 +36,35 @@ namespace Application.Patient
 
 
 
-        public async Task<Common.PaginatedList<PatientDTO, Domain.Entities.Patient, Domain.Entities.Facility>> GetPage(int page, int pageSize)
-             => new Common.PaginatedList<PatientDTO, Domain.Entities.Patient, Domain.Entities.Facility>(
-                 page,
-                 pageSize, 
-                 _context.Patients,
-                 Map,
-                 p => p.Facility );
-        
+        public async Task<Common.PaginatedList<PatientDTO, Patient, Facility>> GetPage(int page, int pageSize)
+        {
+
+            Common.PaginatedList<PatientDTO, Patient, Facility> pagenatedList = new(page, pageSize);
+
+            pagenatedList = await Common.PaginatedList<PatientDTO, Patient, Facility>.SetCount(
+                     _context.Patients,
+                     pagenatedList);
+
+
+            pagenatedList = await Common.PaginatedList<PatientDTO, Patient, Facility>.SetPageItems(
+              _context.Patients
+               , pagenatedList
+               , Map
+               , p => p.Facility);
+
+            return pagenatedList;
+
+        }
+
+
+
 
         public async Task<PatientDTO> GetPatient(int id)
-              => (PatientDTO)_context.Patients.Where(p => p.Id == id).Include( p => p.Facility ).Select(p => Map(p));
+              => await _context.Patients
+                                .Where(p => p.Id == id)
+                                .Include(p => p.Facility)
+                                .Select(p => Map(p))
+                                .FirstOrDefaultAsync();
 
 
         public async Task<int> DeletePatient(int id)
@@ -85,25 +105,25 @@ namespace Application.Patient
 
 
 
-        private static Domain.Entities.Patient Map(PatientDTO patient)
+        private static Patient Map(PatientDTO patient)
             => (new Mapper(new MapperConfiguration(
-                cfg => cfg.CreateMap<PatientDTO, Domain.Entities.Patient>()))
-            .Map<Domain.Entities.Patient>(patient));
+                cfg => cfg.CreateMap<PatientDTO, Patient>()))
+            .Map<Patient>(patient));
 
 
 
-        private static PatientDTO Map(Domain.Entities.Patient patient)
+        private static PatientDTO Map(Patient patient)
             => (new Mapper(new MapperConfiguration(
-                cfg => cfg.CreateMap<Domain.Entities.Patient, PatientDTO>()
-                .ForMember("Facility", opt => opt.MapFrom<Facility.FacilityDTO>(
-                    c => new Facility.FacilityDTO()
+                cfg => cfg.CreateMap<Patient, PatientDTO>()
+                .ForMember("Facility", opt => opt.MapFrom(
+                    c => new Application.Facility.FacilityDTO()
                     {
                         Id = c.Facility.Id,
                         Name = c.Facility.Name,
                         Email = c.Facility.Email,
                         PhoneNumber = c.Facility.PhoneNumber,
                         Address = c.Facility.Address,
-                        FacilityStatus = new Facility.FacilityStatusDTO()
+                        FacilityStatus = new Application.Facility.FacilityStatusDTO()
                     }))))).Map<PatientDTO>( patient );
          
 

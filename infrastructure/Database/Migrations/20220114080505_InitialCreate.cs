@@ -21,22 +21,23 @@ namespace Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Facilities",
+                name: "Facility",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false, defaultValue: 2)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Facilities", x => x.Id);
+                    table.PrimaryKey("PK_Facility", x => x.Id);
+                    table.UniqueConstraint("AK_Facility_Name", x => x.Name);
                     table.ForeignKey(
-                        name: "FK_Facilities_FacilityStatus_StatusId",
+                        name: "FK_Facility_FacilityStatus_StatusId",
                         column: x => x.StatusId,
                         principalTable: "FacilityStatus",
                         principalColumn: "Id",
@@ -44,7 +45,7 @@ namespace Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patients",
+                name: "Patient",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -56,11 +57,11 @@ namespace Infrastructure.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.PrimaryKey("PK_Patient", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Patients_Facilities_FacilityId",
+                        name: "FK_Patient_Facility_FacilityId",
                         column: x => x.FacilityId,
-                        principalTable: "Facilities",
+                        principalTable: "Facility",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -81,26 +82,23 @@ namespace Infrastructure.Database.Migrations
                 values: new object[] { 3, "OnHold" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Facilities_StatusId",
-                table: "Facilities",
-                column: "StatusId",
-                unique: true);
+                name: "IX_Facility_StatusId",
+                table: "Facility",
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_FacilityId",
-                table: "Patients",
-                column: "FacilityId",
-                unique: true,
-                filter: "[FacilityId] IS NOT NULL");
+                name: "IX_Patient_FacilityId",
+                table: "Patient",
+                column: "FacilityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Patients");
+                name: "Patient");
 
             migrationBuilder.DropTable(
-                name: "Facilities");
+                name: "Facility");
 
             migrationBuilder.DropTable(
                 name: "FacilityStatus");

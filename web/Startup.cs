@@ -57,7 +57,7 @@ namespace web
                 using( var scope = app.ApplicationServices.CreateScope()) 
                     using( var context = scope.ServiceProvider.GetService<Infrastructure.ApplicationContext>())
                     {
-                    context.Database.Migrate();
+                        context.Database.Migrate();
                     }
             }
             else

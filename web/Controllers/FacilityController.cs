@@ -37,7 +37,7 @@ namespace Web.Controllers
             }
             catch( Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
         }
 
@@ -55,13 +55,15 @@ namespace Web.Controllers
               
             } catch( Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> PostFacility([FromBody][Bind("Name", "Address", "PhoneNumber", "Email")] Application.Facility.FacilityDTO facility )
+        public async Task<IActionResult> PostFacility(
+            [FromBody]
+            [Bind("Name", "Address", "PhoneNumber", "Email")] Application.Facility.FacilityDTO facility )
          {
 
             try
@@ -71,7 +73,7 @@ namespace Web.Controllers
             }
             catch (Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
 
 
@@ -79,7 +81,9 @@ namespace Web.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> PutFacility([FromBody][Bind("Id", "Name", "Address", "PhoneNumber", "Email", "FacilityStatusId")] Application.Facility.FacilityDTO facility)
+        public async Task<IActionResult> PutFacility(
+            [FromBody]
+            [Bind("Id", "Name", "Address", "PhoneNumber", "Email", "FacilityStatusId")] Application.Facility.FacilityDTO facility)
         {
             try
             {
@@ -88,7 +92,7 @@ namespace Web.Controllers
             }
             catch (Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
 
         }
@@ -104,7 +108,7 @@ namespace Web.Controllers
             }
             catch (Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
 
         }
@@ -114,8 +118,6 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-
-
             return Json(new[]
             {
                  new { Name = "Inactive", Id = Domain.Enums.FacilityStatus.INACTIVE },

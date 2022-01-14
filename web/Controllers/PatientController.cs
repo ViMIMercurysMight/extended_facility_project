@@ -17,7 +17,7 @@ namespace Web.Controllers
     public class PatientController : Controller
     {
  
-        private readonly Application.Patient.PatientService _patientService;
+        private readonly Application.Patient.PatientService   _patientService;
         private readonly Application.Facility.FacilityService _facilityService;
     
 
@@ -44,7 +44,7 @@ namespace Web.Controllers
 
             } catch(Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
 
 
@@ -62,7 +62,7 @@ namespace Web.Controllers
 
             } catch (Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
 
 
@@ -70,7 +70,9 @@ namespace Web.Controllers
 
 
         [HttpPost("Patient/{id}")]
-        public async Task<IActionResult> PostPatient( [FromBody][Bind("FirstName", "LastName", "DateOfBirth", "FacilityId")] Application.Patient.PatientDTO patient )
+        public async Task<IActionResult> PostPatient( 
+            [FromBody]
+            [Bind("FirstName", "LastName", "DateOfBirth", "FacilityId")] Application.Patient.PatientDTO patient )
         {
            try
             {
@@ -79,13 +81,15 @@ namespace Web.Controllers
             } 
             catch (Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
         }
 
 
         [HttpPut("Patient/{id}")]
-        public async Task<IActionResult> PutPatient( [FromBody][Bind("Id", "FirstName", "LastName", "DateOfBirth", "FacilityId")] Application.Patient.PatientDTO patient )
+        public async Task<IActionResult> PutPatient( 
+            [FromBody]
+            [Bind("Id", "FirstName", "LastName", "DateOfBirth", "FacilityId")] Application.Patient.PatientDTO patient )
         {
             try
             {
@@ -94,7 +98,7 @@ namespace Web.Controllers
             }
             catch (Exception ex) 
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
             
         }
@@ -110,7 +114,7 @@ namespace Web.Controllers
                 return Json((int)id); 
             }
             catch (Exception ex) {
-                return Json(ex.Message);
+                return Json(ex);
             }
 
         }
@@ -127,7 +131,7 @@ namespace Web.Controllers
             }
             catch (Exception ex)
             {
-                return Json(ex.Message);
+                return Json(ex);
             }
         }
 

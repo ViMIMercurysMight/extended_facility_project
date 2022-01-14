@@ -11,41 +11,57 @@ namespace Application.Common
     public class PaginatedList<T, K, N> where K : class
     {
 
-        public delegate T Mapper( K arg );
+        public delegate T Mapper(K arg);
+
         
-        public delegate System.Linq.Expressions.Expression<Func<K, N>> Includer( K arg );
-
         public List<T> PageItems { set; get; }
-        public int Page      { set; get; }
-        public int PageSize  { set; get; }
+        public int Page { set; get; }
+        public int PageSize { set; get; }
         public int PageCount { set; get; }
-            
 
-        public PaginatedList( int page, int pageSize, DbSet<K> query, Mapper mapper, System.Linq.Expressions.Expression<Func<K, N>> includedNavProp = null )
+
+        public PaginatedList(int page, int pageSize)
         {
             Page = page;
             PageSize = pageSize;
+        }
 
-            int total = query.Count();
-            PageCount = total != 0 ? 
-                total % pageSize == 0  ? (total / pageSize) - 1 : ( total / pageSize )  
-                 : 0;
-        
 
-            PageItems = includedNavProp == null ? query
-                           .Skip(Page * PageSize)
-                           .Take(PageSize)
+
+        public static async Task<PaginatedList<T,K,N>> SetCount(DbSet<K> query, PaginatedList<T, K, N> page)
+        {
+            int count = await query.CountAsync();
+
+            page.PageCount = count != 0 ?
+              count % page.PageSize == 0 ? (count / page.PageSize) - 1 : (count / page.PageSize)
+               : 0;
+
+            return page;
+        }
+
+
+
+        public static async Task<PaginatedList<T,K,N>> SetPageItems( 
+             DbSet<K> query
+            ,PaginatedList<T, K, N> page
+            ,Mapper mapper
+            ,System.Linq.Expressions.Expression<Func<K, N>> includedNavProp = null)
+        {
+            page.PageItems = includedNavProp == null ? await query
+                           .Skip(page.Page * page.PageSize)
+                           .Take(page.PageSize)
                            .Select(p => mapper(p))
                            .ToListAsync()
-                           .Result : query
-                                       .Skip(Page * PageSize)
-                                       .Take(PageSize)
-                                       .Include( includedNavProp )
-                                       .Select(p => mapper(p))  
+                            : await query
+                                       .Skip(page.Page * page.PageSize)
+                                       .Take(page.PageSize)
+                                       .Include(includedNavProp)
+                                       .Select(p => mapper(p))
                                        .ToListAsync()
-                                       .Result;
-        }
- 
+                                       ;
 
+
+            return page;
+        }
     }
 }

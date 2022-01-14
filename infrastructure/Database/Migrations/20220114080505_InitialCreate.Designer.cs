@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220112232005_InitialCreate")]
+    [Migration("20220114080505_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,9 +29,11 @@ namespace Infrastructure.Database.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FacilityStatusId")
@@ -41,17 +43,19 @@ namespace Infrastructure.Database.Migrations
                         .HasColumnName("StatusId");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FacilityStatusId")
-                        .IsUnique();
+                    b.HasAlternateKey("Name");
 
-                    b.ToTable("Facilities");
+                    b.HasIndex("FacilityStatusId");
+
+                    b.ToTable("Facility");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityStatus", b =>
@@ -111,18 +115,16 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FacilityId")
-                        .IsUnique()
-                        .HasFilter("[FacilityId] IS NOT NULL");
+                    b.HasIndex("FacilityId");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patient");
                 });
 
             modelBuilder.Entity("Domain.Entities.Facility", b =>
                 {
                     b.HasOne("Domain.Entities.FacilityStatus", "FacilityStatus")
-                        .WithOne("Facility")
-                        .HasForeignKey("Domain.Entities.Facility", "FacilityStatusId")
+                        .WithMany("Facility")
+                        .HasForeignKey("FacilityStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -132,8 +134,8 @@ namespace Infrastructure.Database.Migrations
             modelBuilder.Entity("Domain.Entities.Patient", b =>
                 {
                     b.HasOne("Domain.Entities.Facility", "Facility")
-                        .WithOne("Patient")
-                        .HasForeignKey("Domain.Entities.Patient", "FacilityId");
+                        .WithMany("Patient")
+                        .HasForeignKey("FacilityId");
 
                     b.Navigation("Facility");
                 });
