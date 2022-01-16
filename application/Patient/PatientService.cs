@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+
 
 namespace Application.Patient
 {
@@ -19,24 +19,27 @@ namespace Application.Patient
             => _context = context;
 
 
-        public async Task<int> CreatePatient(PatientDTO patient)
+        public async Task<Common.QueryResult<PatientDTO>> CreatePatient(PatientDTO patient)
         {
             try
             {
+                await _context.Patients.AddAsync(PatientDTO.Map(patient));
+                await _context.SaveChanges();
 
-                await _context.Patients.AddAsync(Map(patient));
-               return await _context.SaveChanges();
-      
-            } catch( ApplicationException ex)
+                return new() { Data = patient, IsSucced = true };
+
+            } catch(Exception ex)
             {
-                throw ex;
+                var exex = ex;
+
+                return new();
             }
 
         }
 
 
 
-        public async Task<Common.PaginatedList<PatientDTO, Patient, Facility>> GetPage(int page, int pageSize)
+        public async Task<Common.QueryResult<Common.PaginatedList<PatientDTO, Patient, Facility>>> GetPage(int page, int pageSize)
         {
 
             Common.PaginatedList<PatientDTO, Patient, Facility> pagenatedList = new(page, pageSize);
@@ -49,83 +52,112 @@ namespace Application.Patient
             pagenatedList = await Common.PaginatedList<PatientDTO, Patient, Facility>.SetPageItems(
               _context.Patients
                , pagenatedList
-               , Map
+               , PatientDTO.Map
                , p => p.Facility);
 
-            return pagenatedList;
+            return new()
+            {
+                Data = pagenatedList,
+                IsSucced = true,
 
+            };
         }
 
 
 
 
-        public async Task<PatientDTO> GetPatient(int id)
-              => await _context.Patients
+        public async Task<Common.QueryResult<PatientDTO>> GetPatient(int id)
+        {
+
+           PatientDTO patient = await _context.Patients
                                 .Where(p => p.Id == id)
                                 .Include(p => p.Facility)
-                                .Select(p => Map(p))
+                                .Select(p => PatientDTO.Map(p))
                                 .FirstOrDefaultAsync();
 
+            if (patient != null)
+                return new()
+                {
+                    Data = patient,
+                    IsSucced = true
+                };
 
-        public async Task<int> DeletePatient(int id)
+            else
+                return new()
+                {
+                    IsSucced = false,
+                    ErrorString = "Patient with ID doesn`t exist"
+                };
+
+        }
+
+
+
+        public async Task<Common.QueryResult<int>> DeletePatient(int id)
         {
-            try
-            {
-                Domain.Entities.Patient patient =
+
+            Patient patient =
                 _context.Patients.FirstOrDefault(p => p.Id == id);
 
-                if (patient == null)
-                    throw new ApplicationException("Patient Not Found");
+            if (patient == null)
+                return new()
+                {
+                    Data = id,
+                    IsSucced = false,
+                    ErrorString = "Patient with ID doesn`t exist"
+                };
 
-                _context.Patients.Remove(patient);
-               return  await _context.SaveChanges();
-
-            }
-            catch ( ApplicationException ex)
+            try
             {
-                throw ex;
+                _context.Patients.Remove(patient);
+                await _context.SaveChanges();
+
+
+                return new()
+                {
+                    Data = id,
+                    IsSucced = true
+                };
             }
+            catch (Exception ex)
+            {
+                var exec = ex;
+
+
+                return new();
+            }
+                
+         
          
         }
 
 
-        public async Task<int> UpdatePatient(PatientDTO patient)
+        public async Task<Common.QueryResult<PatientDTO>> UpdatePatient(PatientDTO patient)
         {
             try
             {
-                _context.Patients.Update(Map(patient));
-                return await _context.SaveChanges();
+                _context.Patients.Update(PatientDTO.Map(patient));
+                await _context.SaveChanges();
 
-            } catch( ApplicationException ex)
+                return new()
+                {
+                    Data = patient,
+                    IsSucced = true
+                };
+
+
+            } catch (Exception ex)
             {
-                throw ex;
+                var exec = ex;
+
+
+                return new();
             }
-          
+
+
+
         }
 
-
-
-        private static Patient Map(PatientDTO patient)
-            => (new Mapper(new MapperConfiguration(
-                cfg => cfg.CreateMap<PatientDTO, Patient>()))
-            .Map<Patient>(patient));
-
-
-
-        private static PatientDTO Map(Patient patient)
-            => (new Mapper(new MapperConfiguration(
-                cfg => cfg.CreateMap<Patient, PatientDTO>()
-                .ForMember("Facility", opt => opt.MapFrom(
-                    c => new Application.Facility.FacilityDTO()
-                    {
-                        Id = c.Facility.Id,
-                        Name = c.Facility.Name,
-                        Email = c.Facility.Email,
-                        PhoneNumber = c.Facility.PhoneNumber,
-                        Address = c.Facility.Address,
-                        FacilityStatus = new Application.Facility.FacilityStatusDTO()
-                    }))))).Map<PatientDTO>( patient );
-         
 
     }
 }

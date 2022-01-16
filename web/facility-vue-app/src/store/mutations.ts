@@ -6,6 +6,8 @@
     IS_CREATE_NOW,
     SET_UPDATE_ITEM,
     RESET,
+    IS_ERROR_NOW,
+    SET_ERROR_MESSAGE,
 
 } from "@/store/MutationTypes";
 
@@ -41,6 +43,14 @@ export default {
     },
 
 
+    [IS_ERROR_NOW](state: any, payload: boolean) {
+        state.isErrorNow = payload;
+    },
+
+    [SET_ERROR_MESSAGE](state: any, payload: string) {
+        state.errorMessage = payload;
+    },
+
     [RESET](state: any) {
         state.updateItem = {};
         state.isUpdateNow = false;
@@ -48,6 +58,8 @@ export default {
         state.currentPage = 0;
         state.pageCount = 10;
         state.pageItems = [];
+        state.isErrorNow = false;
+        state.errorMessage = "";
     }
 
 

@@ -10,6 +10,8 @@ export default createStore({
         pageItems: [],
 
 
+        errorMessage : "",
+        isErrorNow : false,
         isUpdateNow: false,
         isCreateNow: false,
 

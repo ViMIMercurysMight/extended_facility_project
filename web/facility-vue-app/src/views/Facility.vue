@@ -1,24 +1,38 @@
 ﻿<template>
-    <div class="facility">
-        <facility-list :change-page-callback='changePage'
-                       :update-callback='showUpdateForm'
-                       :create-callback='showCreateForm'
-                       :remove-callback='remove'>
-        </facility-list>
+    <div class="facility container-fluid">
+        <div v-if="this.$store.state.isErrorNow" class="alert alert-danger">
+            {{ this.$store.state.errorMessage }}
+        </div>
 
 
-        <item-form v-if='this.$store.state.isUpdateNow'
-                   :item='this.$store.state.updateItem'
-                   :status-display='true'
-                   :callback='update'>
-        </item-form>
+        <div class="row">
+
+            <facility-list :change-page-callback='changePage'
+                           :update-callback='showUpdateForm'
+                           :create-callback='showCreateForm'
+                           :remove-callback='remove'>
+            </facility-list>
+
+        </div>
 
 
-        <item-form v-if='this.$store.state.isCreateNow'
-                   :item="{}"
-                   :status-display='false'
-                   :callback="create">
-        </item-form>
+        <div class="row">
+
+            <item-form v-if='this.$store.state.isUpdateNow'
+                       :item='this.$store.state.updateItem'
+                       :status-display='true'
+                       :callback='update'>
+            </item-form>
+
+
+            <item-form v-if='this.$store.state.isCreateNow'
+                       :item="{}"
+                       :status-display='false'
+                       :callback="create">
+            </item-form>
+
+        </div> 
+    
     </div>
 </template>
 
@@ -102,9 +116,10 @@
 
 
             showUpdateForm: function (updateItem: any) {
+
                 if (this.$store.state.isCreateNow)
                     this.$store.commit(IS_CREATE_NOW, false);
-
+                this.$store.commit(IS_UPDATE_NOW, false);
                 this.$store.commit(SET_UPDATE_ITEM, updateItem );
                 this.$store.commit(IS_UPDATE_NOW, true );
             },
@@ -135,5 +150,13 @@
 
     a {
         color: #42b983;
+    }
+
+    input:invalid {
+        border-color: red;
+    }
+
+    input:valid {
+        border-color: green;
     }
 </style>

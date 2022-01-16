@@ -16,6 +16,9 @@ const LOAD_FACILITIES        = "loadFacilities" ;
 const LOAD_FACILITY_STATUSES = "loadFacilityStatuses";
 const RESET                  = "reset"          ;
 
+const SET_ERROR_MESSAGE      = "setErrorMessage";
+const IS_ERROR_NOW           = "isErrorNow"     ;
+
 export  {
     UPDATE_FACILITY,
     DELETE_FACILITY,
@@ -31,6 +34,8 @@ export  {
     SET_LOADED_PAGE,
     IS_UPDATE_NOW,
     IS_CREATE_NOW,
+    IS_ERROR_NOW,
+    SET_ERROR_MESSAGE,
     SET_UPDATE_ITEM,
     RESET,
     LOAD_PAGE,

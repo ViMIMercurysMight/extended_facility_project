@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 
 namespace Application.Facility
@@ -21,16 +20,29 @@ namespace Application.Facility
 
 
 
-        public async Task<FacilityDTO> GetFacility(int id)
-            => await _context.Facilities
+        public async Task<Common.QueryResult<FacilityDTO>> GetFacility(int id)
+        {
+
+
+          FacilityDTO res =  await _context.Facilities
                                     .Where(p => p.Id == id)
-                                    .Include( p => p.FacilityStatus )
-                                    .Select(p => Map(p))
+                                    .Include(p => p.FacilityStatus)
+                                    .Select(p => FacilityDTO.Map(p))
                                     .FirstOrDefaultAsync();
 
+            if (res != null)
+                return new Common.QueryResult<FacilityDTO>() { Data = res, IsSucced = true };
+            else
+                return new Common.QueryResult<FacilityDTO>() { 
+                    Data = null,
+                    IsSucced = false,
+                    ErrorString = "Element with Id Doesn`t exist" };
+        }
 
 
-        public async Task<Common.PaginatedList<FacilityDTO, Facility, FacilityStatus>> GetPage(int page, int pageSize)
+
+
+        public async Task<Common.QueryResult<Common.PaginatedList<FacilityDTO, Facility, FacilityStatus>>> GetPage(int page, int pageSize)
         {
 
             Common.PaginatedList<FacilityDTO, Facility, FacilityStatus> pagenatedList = new(page, pageSize);
@@ -43,93 +55,88 @@ namespace Application.Facility
             pagenatedList = await Common.PaginatedList<FacilityDTO, Facility, FacilityStatus>.SetPageItems(
               _context.Facilities
                ,pagenatedList
-               , Map
+               , FacilityDTO.Map
                , p => p.FacilityStatus);
 
-            return pagenatedList;
-
+            return new Common.QueryResult<Common.PaginatedList<FacilityDTO, Facility, FacilityStatus>>() {
+                Data = pagenatedList,
+                IsSucced=true 
+            };
+      
         }
 
-        public async Task<int> CreateFacility( FacilityDTO facility )
+        public async Task<Common.QueryResult<FacilityDTO>> CreateFacility( FacilityDTO facility )
         {
-            try
+          return  await Common.ExeptionFilter<FacilityDTO>.TryExecute( async () =>
             {
-                await _context.Facilities.AddAsync(Map(facility));
-                return await _context.SaveChanges();
+               await _context.Facilities.AddAsync(FacilityDTO.Map(facility));
+               await _context.SaveChanges();
 
-            } catch(ApplicationException ex)
-            {
-                throw ex;
-            }
-        }
+               return new Common.QueryResult<FacilityDTO>()
+               {
+                   Data = facility,
+                   IsSucced = true
+               };
 
-
-        public async Task<int> UpdateFacility( FacilityDTO facility )
-        {
-            try
-            {
-                _context.Facilities.Update(Map(facility));
-               return  await _context.SaveChanges();
-
-            } catch(ApplicationException ex)
-            {
-                throw ex;
-            }
-           
+            });
         }
 
 
-        public async Task<int> DeleteFacility( int id )
+
+        public async Task<Common.QueryResult<FacilityDTO>> UpdateFacility( FacilityDTO facility )
         {
-            try
-            {
-                Domain.Entities.Facility facility =
+                _context.Facilities.Update(FacilityDTO.Map(facility));
+                await _context.SaveChanges();
+
+                return new Common.QueryResult<FacilityDTO>() { Data = facility, IsSucced = true };
+                     
+        }
+
+
+        public async Task<Common.QueryResult<int> > DeleteFacility( int id )
+        {
+
+                Facility facility =
                 _context.Facilities.FirstOrDefault(p => p.Id == id);
 
-                if (facility == null)
-                    throw new ApplicationException("Facility Not Found");
+            if (facility == null)
+                return new Common.QueryResult<int>() { 
+                    Data = id, 
+                    IsSucced = false,
+                    ErrorString = "Facility with index not found" };
 
-                _context.Facilities.Remove(facility);
-                return await _context.SaveChanges();
-
-            }
-            catch (ApplicationException ex)
+            try
             {
-                throw ex;
+                _context.Facilities.Remove(facility);
+                await _context.SaveChanges();
+
+                return new()
+                {
+                    Data = id,
+                    IsSucced = true
+                };
             }
+            catch (Exception ex)
+            {
+                var exec = ex;
+
+                return new();
+            }
+
+
 
         }
 
 
-        public async Task<List<FacilityDTO>> GetAll() =>
-           await _context.Facilities.Include( p => p.FacilityStatus ).Select(p => Map(p)).ToListAsync();
-
-
-
-        private static Facility Map(FacilityDTO facility)
-            => (new Mapper(
-                new MapperConfiguration(
-                    cfg => cfg.CreateMap<FacilityDTO,Facility>()
-                    )
-                ).Map<Facility>(facility));
-
-       
-
-
-        private static FacilityDTO Map(Facility facility)
-             => (new Mapper(new MapperConfiguration(
-                cfg => cfg.CreateMap<Facility, FacilityDTO>()
-                .ForMember(
-                    "FacilityStatus",
-                    opt => opt.MapFrom(
-                              c => new FacilityStatusDTO()
-                              {
-                                  Id = c.FacilityStatus.Id,
-                                  Name = c.FacilityStatus.Name
-
-                              }))))).Map<FacilityDTO>(facility);
-    
-
+        public async Task<Common.QueryResult<List<FacilityDTO>>> GetAll() =>
+                   new()
+                   {
+                       Data = await _context.Facilities
+                                            .Include(p => p.FacilityStatus)
+                                            .Select(p => FacilityDTO.Map(p))
+                                            .ToListAsync(),
+                       IsSucced = true
+                   };
 
 }
 }

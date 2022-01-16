@@ -1,24 +1,34 @@
 ﻿<template>
-    <div class="patients">
-        <patient-list :change-page-callback='changePage'
-                      :update-callback='showUpdateForm'
-                      :create-callback='showCreateForm'
-                      :remove-callback='remove'>
-        </patient-list>
+    <div class="patients container">
+
+        <div v-if="this.$store.state.isErrorNow" class="alert alert-danger">
+            {{ this.$store.state.errorMessage }}
+        </div>
 
 
-        <patient-form v-if='this.$store.state.isUpdateNow'
-                      :item='this.$store.state.updateItem'
-                      :facility-display='true'
-                      :callback='update'>
-        </patient-form>
+        <div class="row">
+            <patient-list :change-page-callback='changePage'
+                          :update-callback='showUpdateForm'
+                          :create-callback='showCreateForm'
+                          :remove-callback='remove'>
+            </patient-list>
+        </div>
 
 
-        <patient-form v-if='this.$store.state.isCreateNow'
-                      :facility-display='true'
-                      :item="{}"
-                      :callback="create">
-        </patient-form>
+        <div class="row">
+            <patient-form v-if='this.$store.state.isUpdateNow'
+                          :item='this.$store.state.updateItem'
+                          :facility-display='true'
+                          :callback='update'>
+            </patient-form>
+
+
+            <patient-form v-if='this.$store.state.isCreateNow'
+                          :facility-display='true'
+                          :item="{}"
+                          :callback="create">
+            </patient-form>
+        </div>
     </div>
 </template>
 
@@ -84,13 +94,10 @@
             create: function (data: any) {
                 this.$store.dispatch("Patient/" + CREATE_PATIENT,  data );
                 this.$store.commit(IS_CREATE_NOW, false );
-
             },
 
 
             update: function (updatedItem: any) {
-
-  
                 this.$store.dispatch("Patient/" + UPDATE_PATIENT, updatedItem );
                 this.$store.commit(IS_UPDATE_NOW,  false );
             },
@@ -98,7 +105,6 @@
 
 
             showCreateForm: function () {
-
                 if (this.$store.state.isUpdateNow)
                     this.$store.commit(IS_UPDATE_NOW, false);
 
@@ -110,6 +116,7 @@
                 if (this.$store.state.isCreateNow)
                     this.$store.commit(IS_CREATE_NOW, false);
 
+                this.$store.commit(IS_UPDATE_NOW, false);
                 this.$store.commit(SET_UPDATE_ITEM, updateItem );
                 this.$store.commit(IS_UPDATE_NOW,  true );
             },
@@ -140,5 +147,13 @@
 
     a {
         color: #42b983;
+    }
+
+    input:invalid {
+        border-color: red;
+    }
+
+    input:valid {
+        border-color: green;
     }
 </style>
