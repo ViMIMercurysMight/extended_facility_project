@@ -39,12 +39,11 @@ namespace Web.Controllers
         {
             try
             {
-                var model = await _patientService.GetPatient(id);
-                return Json(model);
+                return Json(await _patientService.GetPatient(id));
 
             } catch(Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
 
 
@@ -57,12 +56,11 @@ namespace Web.Controllers
         {
             try
             {
-                var req = await _patientService.GetPage(page, pageSize);
-                return Json(req);
+                return Json(await _patientService.GetPage(page, pageSize));
 
             } catch (Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
 
 
@@ -76,12 +74,11 @@ namespace Web.Controllers
         {
            try
             {
-               await _patientService.CreatePatient(patient);
-                return Json(patient);
+                return Json(await _patientService.CreatePatient(patient));
             } 
             catch (Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
         }
 
@@ -93,12 +90,11 @@ namespace Web.Controllers
         {
             try
             {
-                await _patientService.UpdatePatient(patient);
-                return Json(patient);
+                return Json(await _patientService.UpdatePatient(patient));
             }
             catch (Exception ex) 
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
             
         }
@@ -110,11 +106,10 @@ namespace Web.Controllers
 
             try
             {
-               await _patientService.DeletePatient((int)id);
-                return Json((int)id); 
+                return Json(await _patientService.DeletePatient((int)id)); 
             }
             catch (Exception ex) {
-                return Json(ex);
+                return Json(ex.Message);
             }
 
         }
@@ -125,13 +120,12 @@ namespace Web.Controllers
         {
 
             try
-            {
-                var model = await _facilityService.GetAll();
-                return Json(model);
+            {;
+                return Json(await _facilityService.GetAll());
             }
             catch (Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
         }
 

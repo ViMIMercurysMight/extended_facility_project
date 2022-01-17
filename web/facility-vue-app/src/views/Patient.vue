@@ -1,34 +1,55 @@
 ﻿<template>
-    <div class="patients container">
-
-        <div v-if="this.$store.state.isErrorNow" class="alert alert-danger">
+    <div class="patients container-fluid m-2">
+        
+        <div v-if="this.$store.state.isErrorNow" class="alert alert-danger row">
             {{ this.$store.state.errorMessage }}
         </div>
 
-
         <div class="row">
-            <patient-list :change-page-callback='changePage'
-                          :update-callback='showUpdateForm'
-                          :create-callback='showCreateForm'
-                          :remove-callback='remove'>
-            </patient-list>
+            <div class="float-left page-title">
+                <h1>
+                    PATIENT PAGE
+
+                </h1>
+            </div>
+
+            <hr class="title-underline" />
+
         </div>
 
 
         <div class="row">
-            <patient-form v-if='this.$store.state.isUpdateNow'
-                          :item='this.$store.state.updateItem'
-                          :facility-display='true'
-                          :callback='update'>
-            </patient-form>
+            <div class="col-lg-8 col-md-8 col-sm-12">
+                <patient-list :change-page-callback='changePage'
+                              :update-callback='showUpdateForm'
+                              :create-callback='showCreateForm'
+                              :remove-callback='remove'>
+                </patient-list>
+            </div>
+
+            <div class="col-lg-3 col-md-11 col-sm-12">
+
+                <transition name="fade">
+
+                    <patient-form v-if='this.$store.state.isUpdateNow'
+                                  :item='this.$store.state.updateItem'
+                                  :facility-display='true'
+                                  :callback='update'
+                                  title='Update Form'>
+                    </patient-form>
+                </transition>
+
+                    <patient-form v-if='this.$store.state.isCreateNow'
+                                  :facility-display='true'
+                                  :item="{}"
+                                  :callback="create"
+                                  title='Create From'>
+                    </patient-form>
+            </div>
 
 
-            <patient-form v-if='this.$store.state.isCreateNow'
-                          :facility-display='true'
-                          :item="{}"
-                          :callback="create">
-            </patient-form>
         </div>
+
     </div>
 </template>
 
@@ -93,13 +114,11 @@
 
             create: function (data: any) {
                 this.$store.dispatch("Patient/" + CREATE_PATIENT,  data );
-                this.$store.commit(IS_CREATE_NOW, false );
             },
 
 
             update: function (updatedItem: any) {
                 this.$store.dispatch("Patient/" + UPDATE_PATIENT, updatedItem );
-                this.$store.commit(IS_UPDATE_NOW,  false );
             },
 
 
@@ -108,7 +127,8 @@
                 if (this.$store.state.isUpdateNow)
                     this.$store.commit(IS_UPDATE_NOW, false);
 
-                this.$store.commit(IS_CREATE_NOW,  true );
+                setTimeout(() =>
+                    this.$store.commit(IS_CREATE_NOW, true), 700);
             },
 
 
@@ -117,8 +137,10 @@
                     this.$store.commit(IS_CREATE_NOW, false);
 
                 this.$store.commit(IS_UPDATE_NOW, false);
-                this.$store.commit(SET_UPDATE_ITEM, updateItem );
-                this.$store.commit(IS_UPDATE_NOW,  true );
+                setTimeout(() => {
+                    this.$store.commit(SET_UPDATE_ITEM, updateItem);
+                    this.$store.commit(IS_UPDATE_NOW, true);
+                }, 500);
             },
 
 
@@ -131,6 +153,15 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
+    .page-title {
+        width:auto;
+    }
+
+    .title-underline {
+        width:90%;
+    }
+
     h3 {
         margin: 40px 0 0;
     }
@@ -149,11 +180,13 @@
         color: #42b983;
     }
 
-    input:invalid {
-        border-color: red;
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
     }
 
-    input:valid {
-        border-color: green;
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0;
     }
+ 
 </style>

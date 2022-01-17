@@ -18,7 +18,7 @@ export default class DbAPI {
             data: {
                 ...obj
             }
-        }).then(_ => sucessCallBack()).catch(_ => rejectCallBack());
+        }).then(response => sucessCallBack(response.data)).catch(response => rejectCallBack( response.data));
     }
 
 
@@ -35,7 +35,7 @@ export default class DbAPI {
             params: {
                 id: id
             }
-        }).then(_ => successCallBack()).catch(_ => rejectCallBack());
+        }).then(response => successCallBack(response.data)).catch( response => rejectCallBack( response.data));
     }
 
 
@@ -53,7 +53,7 @@ export default class DbAPI {
             data: {
                 ...obj
             }
-        }).then(_ => successCallBack()).catch(_ => rejectCallBack());
+        }).then(response => successCallBack(response.data)).catch( response => rejectCallBack( response.data));
     }
 
 
@@ -66,7 +66,7 @@ export default class DbAPI {
     ) {
         axios
             .get(`${DbAPI.SERVER_BASE}/${controllerName}/${id}`)
-            .then(response => sucessCallBack(response.data)).catch(_ => rejectCallBack());
+            .then(response => sucessCallBack(response.data)).catch(response => rejectCallBack(response.data));
     }
 
 
@@ -84,7 +84,7 @@ export default class DbAPI {
                     pageSize : perPage
                 }
             })
-            .then(response => sucessCallBack(response.data)).catch(_ => rejectCallBack());
+            .then(response => sucessCallBack(response.data)).catch( response => rejectCallBack( response.data));
     }
 
 
@@ -95,7 +95,7 @@ export default class DbAPI {
     ) {
         axios
             .get(`${DbAPI.SERVER_BASE}/${controllerName}/GetAll`)
-            .then(response => sucessCallBack(response.data)).catch(_ => rejectCallBack());
+            .then(response => sucessCallBack(response.data)).catch( response => rejectCallBack( response.data));
     }
     
 }

@@ -32,12 +32,11 @@ namespace Web.Controllers
         {
             try
             {
-                var req = await _facilityService.GetFacility(id);
-                return ((IActionResult)req);
+                return ((IActionResult)await _facilityService.GetFacility(id));
             }
             catch( Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
         }
 
@@ -50,12 +49,11 @@ namespace Web.Controllers
 
             try
             {
-                var req = await _facilityService.GetPage(page, pageSize);
-                return Json(req);
+                return Json(await _facilityService.GetPage(page, pageSize));
               
             } catch( Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
         }
 
@@ -68,12 +66,11 @@ namespace Web.Controllers
 
             try
             {
-                await _facilityService.CreateFacility( facility );
-                return Json( facility );
+                return Json(await _facilityService.CreateFacility(facility) );
             }
             catch (Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
 
 
@@ -87,12 +84,11 @@ namespace Web.Controllers
         {
             try
             {
-                 await _facilityService.UpdateFacility( facility );
-                return Json(facility);
+                return Json(await _facilityService.UpdateFacility(facility) );
             }
             catch (Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
 
         }
@@ -103,12 +99,11 @@ namespace Web.Controllers
         {
             try
             {
-                await _facilityService.DeleteFacility((int)id);
-                return Json((int)id);
+                return Json( await _facilityService.DeleteFacility((int)id));
             }
             catch (Exception ex)
             {
-                return Json(ex);
+                return Json(ex.Message);
             }
 
         }
@@ -116,15 +111,16 @@ namespace Web.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Json(new[]
+            try
             {
-                 new { Name = "Inactive", Id = Domain.Enums.FacilityStatus.INACTIVE },
-                 new { Name = "Active", Id = Domain.Enums.FacilityStatus.ACTIVE },
-                 new { Name = "OnHold", Id = Domain.Enums.FacilityStatus.ON_HOLD },
 
-            } ); 
+            } catch(Exception ex)
+            {
+                return Json(ex.Message);
+            }
+            return Json(await _facilityService.GetAllFacilityStatuses()); 
         }
 
     }

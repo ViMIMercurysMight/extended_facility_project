@@ -20,122 +20,105 @@ namespace Application.Patient
 
 
         public async Task<Common.QueryResult<PatientDTO>> CreatePatient(PatientDTO patient)
-        {
-            try
-            {
-                await _context.Patients.AddAsync(PatientDTO.Map(patient));
-                await _context.SaveChanges();
+         => await Common.ExeptionFilter<PatientDTO>.TryExecute(async () =>
+         {
 
-                return new() { Data = patient, IsSucced = true };
+                 await _context.Patients.AddAsync(PatientDTO.Map(patient));
+                 await _context.SaveChanges();
 
-            } catch(Exception ex)
-            {
-                var exex = ex;
+                 return new() { Data = patient, IsSucced = true };
 
-                return new();
-            }
-
-        }
+         });
 
 
 
         public async Task<Common.QueryResult<Common.PaginatedList<PatientDTO, Patient, Facility>>> GetPage(int page, int pageSize)
-        {
+         => await Common.ExeptionFilter< Common.PaginatedList<PatientDTO, Patient, Facility>>.TryExecute(async () =>
+         {
 
-            Common.PaginatedList<PatientDTO, Patient, Facility> pagenatedList = new(page, pageSize);
+             Common.PaginatedList<PatientDTO, Patient, Facility> pagenatedList = new(page, pageSize);
 
-            pagenatedList = await Common.PaginatedList<PatientDTO, Patient, Facility>.SetCount(
-                     _context.Patients,
-                     pagenatedList);
+             pagenatedList = await Common.PaginatedList<PatientDTO, Patient, Facility>.SetCount(
+                      _context.Patients,
+                      pagenatedList);
 
 
-            pagenatedList = await Common.PaginatedList<PatientDTO, Patient, Facility>.SetPageItems(
-              _context.Patients
-               , pagenatedList
-               , PatientDTO.Map
-               , p => p.Facility);
+             pagenatedList = await Common.PaginatedList<PatientDTO, Patient, Facility>.SetPageItems(
+               _context.Patients
+                , pagenatedList
+                , PatientDTO.Map
+                , p => p.Facility);
 
-            return new()
-            {
-                Data = pagenatedList,
-                IsSucced = true,
+             return new()
+             {
+                 Data = pagenatedList,
+                 IsSucced = true,
 
-            };
-        }
+             };
+         });
 
 
 
 
         public async Task<Common.QueryResult<PatientDTO>> GetPatient(int id)
-        {
+         => await Common.ExeptionFilter<PatientDTO>.TryExecute(async () =>
+         {
 
-           PatientDTO patient = await _context.Patients
-                                .Where(p => p.Id == id)
-                                .Include(p => p.Facility)
-                                .Select(p => PatientDTO.Map(p))
-                                .FirstOrDefaultAsync();
+             PatientDTO patient = await _context.Patients
+                                  .Where(p => p.Id == id)
+                                  .Include(p => p.Facility)
+                                  .Select(p => PatientDTO.Map(p))
+                                  .FirstOrDefaultAsync();
 
-            if (patient != null)
-                return new()
-                {
-                    Data = patient,
-                    IsSucced = true
-                };
+             if (patient != null)
+                 return new()
+                 {
+                     Data = patient,
+                     IsSucced = true
+                 };
 
-            else
-                return new()
-                {
-                    IsSucced = false,
-                    ErrorString = "Patient with ID doesn`t exist"
-                };
+             else
+                 return new()
+                 {
+                     IsSucced = false,
+                     ErrorMessage = "Patient with ID doesn`t exist"
+                 };
 
-        }
+         });
 
 
 
         public async Task<Common.QueryResult<int>> DeletePatient(int id)
-        {
+         => await Common.ExeptionFilter<int>.TryExecute(async () =>
+         {
 
-            Patient patient =
-                _context.Patients.FirstOrDefault(p => p.Id == id);
+             Patient patient =
+                 _context.Patients.FirstOrDefault(p => p.Id == id);
 
-            if (patient == null)
-                return new()
-                {
-                    Data = id,
-                    IsSucced = false,
-                    ErrorString = "Patient with ID doesn`t exist"
-                };
+             if (patient == null)
+                 return new()
+                 {
+                     Data = id,
+                     IsSucced = false,
+                     ErrorMessage = "Patient with ID doesn`t exist"
+                 };
 
-            try
-            {
-                _context.Patients.Remove(patient);
-                await _context.SaveChanges();
-
-
-                return new()
-                {
-                    Data = id,
-                    IsSucced = true
-                };
-            }
-            catch (Exception ex)
-            {
-                var exec = ex;
+             _context.Patients.Remove(patient);
+             await _context.SaveChanges();
 
 
-                return new();
-            }
-                
-         
-         
-        }
+             return new()
+             {
+                 Data = id,
+                 IsSucced = true
+             };
+
+
+         });
 
 
         public async Task<Common.QueryResult<PatientDTO>> UpdatePatient(PatientDTO patient)
-        {
-            try
-            {
+               => await Common.ExeptionFilter<PatientDTO>.TryExecute( async () => { 
                 _context.Patients.Update(PatientDTO.Map(patient));
                 await _context.SaveChanges();
 
@@ -145,18 +128,7 @@ namespace Application.Patient
                     IsSucced = true
                 };
 
-
-            } catch (Exception ex)
-            {
-                var exec = ex;
-
-
-                return new();
-            }
-
-
-
-        }
+        });
 
 
     }

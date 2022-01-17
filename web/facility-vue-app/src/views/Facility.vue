@@ -1,38 +1,60 @@
 ﻿<template>
-    <div class="facility container-fluid">
-        <div v-if="this.$store.state.isErrorNow" class="alert alert-danger">
+    <div class="facility container-fluid m-2">
+        <div v-if="this.$store.state.isErrorNow" class="alert alert-danger row">
             {{ this.$store.state.errorMessage }}
         </div>
 
 
         <div class="row">
+            <div class="float-left page-title">
+                <h1>FACILITY PAGE</h1>
+            </div>
 
-            <facility-list :change-page-callback='changePage'
-                           :update-callback='showUpdateForm'
-                           :create-callback='showCreateForm'
-                           :remove-callback='remove'>
-            </facility-list>
+            <hr class="title-underline" />
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12">
+                <facility-list :change-page-callback='changePage'
+                               :update-callback='showUpdateForm'
+                               :create-callback='showCreateForm'
+                               :remove-callback='remove'>
+                </facility-list>
+
+            </div>
+
+
+
+
+            <div class="col-lg-3 col-md-11 col-sm-12">
+
+                <transition name="fade">
+                    <item-form v-if='this.$store.state.isUpdateNow'
+                               :item='this.$store.state.updateItem'
+                               :status-display='true'
+                               :callback='update'
+                               title='Update Form'>
+                    </item-form>
+                </transition>
+               
+
+
+               <item-form v-if='this.$store.state.isCreateNow'
+                               :item="{}"
+                               :status-display='false'
+                               :callback="create"
+                               title='Create Form'>
+                </item-form>
+                
+
+            </div>
+
+      
 
         </div>
 
 
-        <div class="row">
-
-            <item-form v-if='this.$store.state.isUpdateNow'
-                       :item='this.$store.state.updateItem'
-                       :status-display='true'
-                       :callback='update'>
-            </item-form>
-
-
-            <item-form v-if='this.$store.state.isCreateNow'
-                       :item="{}"
-                       :status-display='false'
-                       :callback="create">
-            </item-form>
-
-        </div> 
-    
     </div>
 </template>
 
@@ -94,15 +116,12 @@
 
 
             create: function (data: any) {
-                this.$store.dispatch("Facility/" + CREATE_FACILITY,  data );
-                this.$store.commit(IS_CREATE_NOW,  false );
-               
+                this.$store.dispatch("Facility/" + CREATE_FACILITY,  data );            
             },
 
 
             update: function (updatedItem: any) {
                 this.$store.dispatch("Facility/" + UPDATE_FACILITY,  updatedItem );
-                this.$store.commit(IS_UPDATE_NOW, false );
             },
 
 
@@ -111,7 +130,8 @@
                 if (this.$store.state.isUpdateNow)
                     this.$store.commit(IS_UPDATE_NOW, false);
 
-                this.$store.commit(IS_CREATE_NOW,  true );
+                setTimeout(() =>
+                    this.$store.commit(IS_CREATE_NOW, true), 700);
             },
 
 
@@ -119,9 +139,13 @@
 
                 if (this.$store.state.isCreateNow)
                     this.$store.commit(IS_CREATE_NOW, false);
+
                 this.$store.commit(IS_UPDATE_NOW, false);
-                this.$store.commit(SET_UPDATE_ITEM, updateItem );
-                this.$store.commit(IS_UPDATE_NOW, true );
+                setTimeout(() => {
+                    this.$store.commit(SET_UPDATE_ITEM, updateItem);
+                    this.$store.commit(IS_UPDATE_NOW, true);
+                }, 500);
+              
             },
 
 
@@ -134,6 +158,17 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
+ 
+    .page-title {
+        width: auto;
+    }
+
+
+    .title-underline {
+        width: 90%;
+    }
+
     h3 {
         margin: 40px 0 0;
     }
@@ -152,11 +187,13 @@
         color: #42b983;
     }
 
-    input:invalid {
-        border-color: red;
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
     }
 
-    input:valid {
-        border-color: green;
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0;
     }
+ 
 </style>

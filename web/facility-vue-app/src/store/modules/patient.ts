@@ -8,7 +8,9 @@ import {
     SET_PAGE_COUNT,
     SET_LOADED_PAGE,
     LOAD_FACILITIES,
-    SET_CURRENT_PAGE
+    SET_CURRENT_PAGE,
+    IS_ERROR_NOW,
+    SET_ERROR_MESSAGE
 } from "../MutationTypes";
 
 import DbApi from "@/api/AppDBApi";
@@ -40,10 +42,17 @@ export default {
                 context.rootState.perPage,
                 context.rootState.currentPage,
                 (data: any) => {
-                    context.commit(SET_PAGE_COUNT, data.pageCount , { root: true });
-                    context.commit(SET_LOADED_PAGE, data.pageItems , { root: true });
+                    if (data.isSucced) {
+                        context.commit(IS_ERROR_NOW, false, { root: true });
+                        context.commit(SET_PAGE_COUNT, data.data.pageCount, { root: true });
+                        context.commit(SET_LOADED_PAGE, data.data.pageItems, { root: true });
+                    } else {
+
+                        context.commit(IS_ERROR_NOW, true, { root: true });
+                        context.commit(SET_ERROR_MESSAGE, data.errorMessage, { root: true });
+                    }
                 },
-                (_: any) => console.log("errorOfLoadPage")
+                (errorMessage: string) => Error(errorMessage)
             );
         },
 
@@ -51,17 +60,35 @@ export default {
         [LOAD_FACILITIES](context: any) {
             DbApi.getAll(
                 "Patient",
-                (data: any) => { context.commit("setFacilitiesList",  data ); },
-                (_: any) => console.log("errorOfLoadFacilityStatuses")
+                (data: any) => {
+                    if (data.isSucced) {
+                        context.commit(IS_ERROR_NOW, false, { root: true });
+                        context.commit("setFacilitiesList", data.data);
+                    } else {
+
+                        context.commit(IS_ERROR_NOW, true, { root: true });
+                        context.commit(SET_ERROR_MESSAGE, data.errorMessage, { root: true });
+                    }
+                },
+                (errorMessage: string) => Error(errorMessage)
             );
         },
 
 
         [CREATE_PATIENT](context: any, payload: any) {
-            DbApi.create("Patient", payload, async (_: any) => {
-                await context.dispatch(LOAD_PAGE);
+            DbApi.create("Patient", payload, async (data: any) => {
+
+                if (data.isSucced) {
+
+                    context.commit(IS_ERROR_NOW, false, { root: true });
+                    await context.dispatch(LOAD_PAGE);
+                } else {
+                    context.commit(IS_ERROR_NOW, true, { root: true });
+                    context.commit(SET_ERROR_MESSAGE, data.errorMessage, { root: true });
+                }
+
             },
-                (_: any) => console.log("ErrorOfCreationFacility")
+                (errorMessage: string) => Error(errorMessage)
             );
         },
 
@@ -69,16 +96,28 @@ export default {
         [DELETE_PATIENT](context: any, payload: number) {
             DbApi.delete("Patient", payload,
                 async (data: any) => {
-                    await context.dispatch(LOAD_PAGE);
-                }, (_: any) => console.log("ErrorOfDeletion"));
+                    if (data.isSucced) {
+                        context.commit(IS_ERROR_NOW, false, { root: true });
+                        await context.dispatch(LOAD_PAGE);
+                    } else {
+                        context.commit(IS_ERROR_NOW, true, { root: true });
+                        context.commit(SET_ERROR_MESSAGE, data.errorMessage, { root: true });
+                    }
+                }, (errorMessage: string) => Error(errorMessage));
         },
 
 
         [UPDATE_PATIENT](context: any, payload: any) {
             DbApi.update("Patient", payload,
                 async (data: any) => {
-                    await context.dispatch(LOAD_PAGE);
-                }, (_: any) => console.log("ErrorOfUpdateItem")
+                    if (data.isSucced) {
+                        context.commit(IS_ERROR_NOW, false, { root: true });
+                        await context.dispatch(LOAD_PAGE);
+                    } else {
+                        context.commit(IS_ERROR_NOW, true, { root: true });
+                        context.commit(SET_ERROR_MESSAGE, data.errorMessage, { root: true });
+                    }
+                }, (errorMessage: string) => Error(errorMessage)
             );
 
         },

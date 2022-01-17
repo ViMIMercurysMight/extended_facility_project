@@ -19,7 +19,11 @@ const RESET                  = "reset"          ;
 const SET_ERROR_MESSAGE      = "setErrorMessage";
 const IS_ERROR_NOW           = "isErrorNow"     ;
 
-export  {
+const IS_UPDATE_TRANSITED = "isUpdateTransited";
+
+export {
+
+    IS_UPDATE_TRANSITED, 
     UPDATE_FACILITY,
     DELETE_FACILITY,
     CREATE_FACILITY,

@@ -1,30 +1,36 @@
 ﻿<template>
     <div>
-        <table class='table thead-dark'>
-            <thead>
-                <tr>
-                    <td>Id              </td>
-                    <td>Name            </td>
-                    <td>Address         </td>
-                    <td>Phone Number    </td>
-                    <td>Email           </td>
-                    <td>FacilityStatus  </td>
-                    <td>remove          </td>
-                    <td>update          </td>
-                </tr>
-            </thead>
+        <div class="float-right create-btn-container">
+            <button v-on:click='createCallback' class='btn btn-outline-info'> Create </button>
+        </div>
 
-            <tbody>
-                <facility-item v-for='item in this.$store.state.pageItems'
-                               :key ="item.Id"
-                               :update-callback ="updateCallback"
-                               :remove-callback ="removeCallback"
-                               :item='item'></facility-item>
-            </tbody>
-        </table>
+        <div>
+            <table class='table thead-dark'>
+                <thead>
+                    <tr>
+                        <td>Id              </td>
+                        <td>Name            </td>
+                        <td>Address         </td>
+                        <td>Phone    </td>
+                        <td>Email           </td>
+                        <td>Status  </td>
+                        <td>          </td>
+                        <td>          </td>
+                    </tr>
+                </thead>
 
-        <pagination :page-count='pageCount' :change-page-callback='changePageCallback'></pagination>
-        <button v-on:click='createCallback' class='btn btn-info'> Create </button>
+                <tbody>
+                    <facility-item v-for='item in this.$store.state.pageItems'
+                                   :key="item.Id"
+                                   :update-callback="updateCallback"
+                                   :remove-callback="removeCallback"
+                                   :item='item'></facility-item>
+                </tbody>
+            </table>
+
+            <pagination :page-count='pageCount' :change-page-callback='changePageCallback'></pagination>
+
+        </div>
 
     </div>
 </template>
@@ -39,7 +45,7 @@
     import FacilityItem from "@/components/facility/TableItem.vue";
 
     export default defineComponent({
-        name : "facility-list",
+        name: "facility-list",
         props: ["items", "createCallback", 'updateCallback', 'removeCallback', 'pageCount', 'changePageCallback'],
 
         components: {
@@ -48,11 +54,38 @@
         },
 
         data() {
-             return {
+            return {
                 showUpdate: false,
                 updatedItemId: -1,
-                }
+            }
         },
     })
 
 </script>
+
+
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+    .create-btn-container {
+        width: 10%;
+        margin: 16px;
+    }
+</style>
+
+
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+
+    @media screen and ( max-width : 700px)  {
+        table {
+            font-size : 2vw;
+            padding:0px;
+        }
+    }
+
+
+
+
+</style>

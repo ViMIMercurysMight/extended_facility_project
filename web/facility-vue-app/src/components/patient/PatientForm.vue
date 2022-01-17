@@ -1,37 +1,43 @@
 ﻿<template>
     <div class="card">
-        <form class='form'>
-            <div class='form-group'>
+        <div class="mr-1">
+            <h1>{{title}}</h1>
+        </div>
+        <form  v-on:submit.prevent='callback( innerItem )'>
+            <div class='form-group ta-left m-1'>
                 <label for="patientFirstName" class="form-label"> First Name </label>
-                <input class='form-control' type="text" v-model="innerItem.FirstName" id="patientFirstName" required placeholder="Enter First Name"/>        
+                <input class='form-control' type="text" v-model="innerItem.FirstName" id="patientFirstName" required placeholder="Enter First Name" />
             </div>
 
-            <div class='form-group'>
+            <div class='form-group ta-left m-1'>
                 <label for="patientLastName" class="form-label"> Last Name     </label>
-                <input class='form-control' type="text" v-model="innerItem.LastName" id="patientLastName" required placeholder="Enter Last Name" />     
+                <input class='form-control' type="text" v-model="innerItem.LastName" id="patientLastName" required placeholder="Enter Last Name" />
             </div>
 
-            <div class='form-group'>
+            <div class='form-group ta-left m-1'>
                 <label for="dateOfBirth" class="form-label"> Date Of Birth    </label>
                 <input class='form-control' type="date" v-model="innerItem.DateOfBirth" id="dateOfBirth" required />
             </div>
 
-      
-            <div v-if="facilityDisplay" class='form-group'>
+
+            <div v-if="facilityDisplay" class='form-group ta-left m-1'>
                 <label class="form-label" for="patientFacility">
                     Facilities
                 </label>
 
                 <select class='form-control' v-model="innerItem.FacilityId" id="patientFacility">
-                  <option v-for="facility in this.$store.state.Patient.facilitiList" :value='facility.id' :key="facility.id"> {{ facility.name  }} </option>
+                    <option v-for="facility in this.$store.state.Patient.facilitiList" :value='facility.id' :key="facility.id"> {{ facility.name  }} </option>
                 </select>
 
             </div>
+
+            <button
+                    type="submit"
+                    class='btn btn-success float-left w-100'>
+                Save
+            </button>
         </form>
-        <button v-on:click='callback( innerItem )'
-                class='btn btn-success float-left'>
-            Commit
-        </button>
+      
     </div>
 </template>
 
@@ -45,7 +51,7 @@
 
     export default defineComponent({
         name: "patient-form",
-        props: ["item", 'callback', "facilityDisplay"],
+        props: ["item", 'callback', "facilityDisplay", "title"],
 
         data() {
             return {
@@ -61,4 +67,40 @@
     });
 
 </script>
+
+
+
+
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+
+    .ta-left {
+        text-align: left;
+    }
+
+
+    @media screen and (max-width:760px) {
+        .card {
+            width: 100%;
+          
+        }
+    }
+
+
+    input:invalid {
+        border-color: red;
+    }
+
+    input:valid {
+        border-color: green;
+    }
+
+
+</style>
+
+
+
+
+
 

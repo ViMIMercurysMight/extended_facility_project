@@ -28,7 +28,7 @@ namespace Application.Common
             return new()
             {
                 IsSucced = false,
-                ErrorString = ex.Message
+                ErrorMessage = ex.InnerException.Message
             };
         }
 

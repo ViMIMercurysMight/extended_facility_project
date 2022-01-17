@@ -6,8 +6,8 @@
         <td> {{ item.phoneNumber ? item.phoneNumber : ""}}         </td>
         <td> {{ item.email ? item.email : ""}}               </td>
         <td> {{ item.facilityStatus ? item.facilityStatus.name : ""}} </td>
-        <td> <button v-on:click='removeCallback(item.id ? item.id : 0)' class='btn btn-danger'> Delete </button></td>
-        <td> <button v-on:click='updateCallback(item ? item : {})' class='btn btn-warning'>    Update </button></td>
+        <td> <button v-on:click='removeCallback(item.id ? item.id : 0)' class='btn btn-outline-danger btn-sm'> Delete </button></td>
+        <td> <button v-on:click='updateCallback(item ? item : {})' class='btn btn-outline-warning btn-sm'>    Update </button></td>
     </tr>
 </template>
 
@@ -16,8 +16,60 @@
     import { defineComponent } from "vue";
 
     export default defineComponent({
-        name : "facility-item",
+        name: "facility-item",
         props: ["item", "updateCallback", "removeCallback"],
     });
 
 </script>
+
+
+
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+    @media screen and (max-width:760px) {
+        button {
+            width: 0.7vw;
+            font-size: 0px;
+        }
+
+        tr{
+            font-size : 2vw;
+            margin:0;
+            padding:0;
+        }
+    }
+
+    @media screen and (min-width:800px) and (max-width:900px) {
+        button {
+            font-size: 2.5vw;
+        }
+
+        tr {
+            font-size: 2.5vw;
+        }
+    }
+
+
+    @media screen and (min-width:900px) and (max-width : 1000px) {
+        button {
+            font-size: 3.5vw;
+        }
+
+        tr {
+            font-size: 3vw;
+        }
+    }
+
+
+    @media screen and (min-width:1000px) {
+        button {
+            font-size: 1vw;
+        }
+
+        tr {
+            font-size: 1vw;
+        }
+    }
+</style>
+

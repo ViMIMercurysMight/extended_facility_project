@@ -8,6 +8,7 @@
     RESET,
     IS_ERROR_NOW,
     SET_ERROR_MESSAGE,
+    IS_UPDATE_TRANSITED,
 
 } from "@/store/MutationTypes";
 
@@ -51,14 +52,19 @@ export default {
         state.errorMessage = payload;
     },
 
+    [IS_UPDATE_TRANSITED](state: any, payload: boolean) {
+        state.isUpdateTransited = payload;
+    },
+
     [RESET](state: any) {
         state.updateItem = {};
         state.isUpdateNow = false;
-        state.isCreateNow = false;
+        state.isCreateNow = true;
         state.currentPage = 0;
-        state.pageCount = 10;
+        state.pageCount = 0;
         state.pageItems = [];
         state.isErrorNow = false;
+        state.isUpdateTransited = false;
         state.errorMessage = "";
     }
 

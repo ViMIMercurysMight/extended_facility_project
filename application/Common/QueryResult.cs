@@ -9,7 +9,7 @@ namespace Application.Common
     public class QueryResult<T>
     {
 
-        public string ErrorString { get; set; }
+        public string ErrorMessage { get; set; }
         public Boolean IsSucced { get; set; }
         public T       Data     { get; set; }
 

@@ -13,11 +13,13 @@ export default createStore({
         errorMessage : "",
         isErrorNow : false,
         isUpdateNow: false,
-        isCreateNow: false,
+        isCreateNow: true,
 
+
+        isUpdateTransited : false,
         updateItem: {},
 
-        pageCount  : 10,
+        pageCount  : 0,
         currentPage: 0,
 
         perPage: 10
