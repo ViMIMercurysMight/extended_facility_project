@@ -7,7 +7,7 @@
 
         <div class="row">
             <div class="float-left page-title">
-                <h1>FACILITY PAGE</h1>
+                <h1>FACILITY PAGE [{{commonRecords}}]</h1>
             </div>
 
             <hr class="title-underline" />
@@ -34,7 +34,7 @@
                                :item='this.$store.state.updateItem'
                                :status-display='true'
                                :callback='update'
-                               title='Update Form'>
+                               title='Edit Facility'>
                     </item-form>
                 </transition>
                
@@ -44,7 +44,7 @@
                                :item="{}"
                                :status-display='false'
                                :callback="create"
-                               title='Create Form'>
+                               title='New Facility'>
                 </item-form>
                 
 
@@ -100,6 +100,13 @@
 
         updated: function () {
             console.log(this.$store.state);
+        },
+
+
+        computed: {
+            commonRecords: function () {
+                return this.$store.state.totalRecords;
+            }
         },
 
         methods: {
@@ -166,7 +173,7 @@
 
 
     .title-underline {
-        width: 90%;
+        width: 99%;
     }
 
     h3 {

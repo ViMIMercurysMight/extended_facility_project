@@ -4,7 +4,7 @@
             <li class="page-item ">
                 <a class='page-link'
                    v-on:click.prevent='changePageCallback( 0 )'
-                   href=''> 0 </a>
+                   href=''> 1 </a>
             </li>
 
             <li 
@@ -14,7 +14,7 @@
                 <a class='page-link'
                 v-on:click.prevent = 'changePageCallback( i )'
                 href = '' >
-                {{ i }}
+                {{ i+1 }}
                 </a>
             </li>
 

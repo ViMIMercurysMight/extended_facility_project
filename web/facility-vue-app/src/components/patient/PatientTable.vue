@@ -1,11 +1,11 @@
 ﻿<template>
 
     <div>
-        <div class="float-right create-btn-container">
-            <button v-on:click='createCallback' class='btn btn-outline-info'> Create </button>
+        <div class="row float-right create-btn-container">
+            <button v-on:click='createCallback' class='btn btn-outline-info'> Create New </button>
         </div>
 
-        <div>
+        <div class="row">
             <table class='table thead-dark'>
                 <thead>
                     <tr>
@@ -68,7 +68,7 @@
 <style scoped lang="scss">
     .create-btn-container {
         width: 10%;
-        margin: 16px;
+        margin-top: 16px;
     }
 </style>
 

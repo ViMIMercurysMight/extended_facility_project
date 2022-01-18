@@ -8,7 +8,7 @@
         <div class="row">
             <div class="float-left page-title">
                 <h1>
-                    PATIENT PAGE
+                    PATIENT PAGE [{{commonRecords}}]
 
                 </h1>
             </div>
@@ -35,7 +35,7 @@
                                   :item='this.$store.state.updateItem'
                                   :facility-display='true'
                                   :callback='update'
-                                  title='Update Form'>
+                                  title='Edit Patient'>
                     </patient-form>
                 </transition>
 
@@ -43,7 +43,7 @@
                                   :facility-display='true'
                                   :item="{}"
                                   :callback="create"
-                                  title='Create From'>
+                                  title='New Patient'>
                     </patient-form>
             </div>
 
@@ -96,6 +96,15 @@
 
         updated: function () {
             console.log(this.$store.state);
+        },
+
+
+        computed: {
+            commonRecords: function () {
+                return this.$store.state.totalRecords;
+            },
+
+     
         },
 
         methods: {
@@ -159,7 +168,7 @@
     }
 
     .title-underline {
-        width:90%;
+        width:99%;
     }
 
     h3 {

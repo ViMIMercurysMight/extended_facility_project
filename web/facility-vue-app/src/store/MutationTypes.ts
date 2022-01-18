@@ -20,9 +20,10 @@ const SET_ERROR_MESSAGE      = "setErrorMessage";
 const IS_ERROR_NOW           = "isErrorNow"     ;
 
 const IS_UPDATE_TRANSITED = "isUpdateTransited";
-
+const SET_TOTAL_RECORDS = "setTotalRecords";
 export {
 
+    SET_TOTAL_RECORDS,
     IS_UPDATE_TRANSITED, 
     UPDATE_FACILITY,
     DELETE_FACILITY,

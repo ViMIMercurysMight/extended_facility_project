@@ -22,6 +22,8 @@ export default createStore({
         pageCount  : 0,
         currentPage: 0,
 
+
+        totalRecords: 0,
         perPage: 10
     },
 

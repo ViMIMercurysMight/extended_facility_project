@@ -5,8 +5,8 @@
         <td> {{ item.lastName ? item.lastName : ""}}             </td>
         <td> {{ item.dateOfBirth ? item.dateOfBirth.toLocaleString() : ""}}         </td>
         <td> {{ item.facility ? item.facility.name : ""}} </td>
-        <td> <button v-on:click='removeCallback(item.id ? item.id : -1)' class='btn btn-outline-danger btn-sm'> Delete </button></td>
-        <td> <button v-on:click='updateCallback(item ? item : {})' class='btn btn-outline-warning btn-sm'>    Update </button></td>
+        <td> <a v-on:click='removeCallback(item.id ? item.id : -1)' class='remove-btn'></a></td>
+        <td> <a v-on:click='updateCallback(item ? item : {})' class='update-btn'></a></td>
     </tr>
 </template>
 
@@ -27,6 +27,25 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
+
+    a {
+        text-decoration : none;
+    }
+
+    .update-btn:before {
+        content: "\f040";
+        font-family: FontAwesome;
+        color : yellow;
+    }
+
+    .remove-btn:before {
+        content: "\f00d";
+        font-family: FontAwesome;
+        color : red;
+        
+    }
+
     @media screen and (max-width:760px) {
         button {
             width: 0.7vw;

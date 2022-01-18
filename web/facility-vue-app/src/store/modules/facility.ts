@@ -9,7 +9,8 @@
     LOAD_FACILITY_STATUSES,
     SET_CURRENT_PAGE,
     SET_ERROR_MESSAGE,
-    IS_ERROR_NOW
+    IS_ERROR_NOW,
+    SET_TOTAL_RECORDS
 } from "../MutationTypes";
 
 
@@ -48,6 +49,7 @@ export default {
                         context.commit(IS_ERROR_NOW, false, { root: true });
                         context.commit(SET_LOADED_PAGE, data.data.pageItems, { root: true });
                         context.commit(SET_PAGE_COUNT, data.data.pageCount, { root: true });
+                        context.commit(SET_TOTAL_RECORDS, data.data.total, { root: true });
                     } else {
 
                         context.commit(IS_ERROR_NOW, true, { root: true });

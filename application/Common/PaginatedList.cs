@@ -18,7 +18,7 @@ namespace Application.Common
         public int Page { set; get; }
         public int PageSize { set; get; }
         public int PageCount { set; get; }
-
+        public int Total { set; get; }
 
         public PaginatedList(int page, int pageSize)
         {
@@ -31,6 +31,8 @@ namespace Application.Common
         public static async Task<PaginatedList<T,K,N>> SetCount(DbSet<K> query, PaginatedList<T, K, N> page)
         {
             int count = await query.CountAsync();
+
+            page.Total = count; 
 
             page.PageCount = count != 0 ?
               count % page.PageSize == 0 ? (count / page.PageSize) - 1 : (count / page.PageSize)

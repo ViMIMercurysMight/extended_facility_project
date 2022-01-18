@@ -9,6 +9,7 @@
     IS_ERROR_NOW,
     SET_ERROR_MESSAGE,
     IS_UPDATE_TRANSITED,
+    SET_TOTAL_RECORDS,
 
 } from "@/store/MutationTypes";
 
@@ -56,6 +57,11 @@ export default {
         state.isUpdateTransited = payload;
     },
 
+
+    [SET_TOTAL_RECORDS](state: any, payload: number) {
+        state.totalRecords = payload;
+    },
+
     [RESET](state: any) {
         state.updateItem = {};
         state.isUpdateNow = false;
@@ -66,6 +72,7 @@ export default {
         state.isErrorNow = false;
         state.isUpdateTransited = false;
         state.errorMessage = "";
+        state.totalRecords = 0;
     }
 
 

@@ -1,8 +1,9 @@
 ﻿<template>
     <div class="card">
-        <div class="mr-1">
-            <h1>{{title}}</h1>
-        </div>
+        <div class="card-body">
+            <div class="mr-1 card-title">
+                <h1>{{title}}</h1>
+            </div>
             <form v-on:submit.prevent='callback( innerItem )'>
 
                 <div class='form-group ta-left m-1'>
@@ -34,13 +35,17 @@
                     </select>
 
                 </div>
-                <button 
-                        type="submit"
-                        class='btn btn-success float-left w-100'>
-                    Save
-                </button>
+
+                <div>
+                    <button type="submit"
+                            class='btn btn-success float-left w-auto'>
+                        Save
+                    </button>
+                </div>
+              
             </form>
 
+        </div>     
     </div>
 </template>
 
@@ -75,6 +80,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
+
 
     .ta-left {
         text-align: left;

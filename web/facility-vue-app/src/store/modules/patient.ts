@@ -10,7 +10,8 @@ import {
     LOAD_FACILITIES,
     SET_CURRENT_PAGE,
     IS_ERROR_NOW,
-    SET_ERROR_MESSAGE
+    SET_ERROR_MESSAGE,
+    SET_TOTAL_RECORDS
 } from "../MutationTypes";
 
 import DbApi from "@/api/AppDBApi";
@@ -46,6 +47,7 @@ export default {
                         context.commit(IS_ERROR_NOW, false, { root: true });
                         context.commit(SET_PAGE_COUNT, data.data.pageCount, { root: true });
                         context.commit(SET_LOADED_PAGE, data.data.pageItems, { root: true });
+                        context.commit(SET_TOTAL_RECORDS, data.data.total, { root: true });
                     } else {
 
                         context.commit(IS_ERROR_NOW, true, { root: true });
