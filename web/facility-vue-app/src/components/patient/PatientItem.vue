@@ -5,8 +5,8 @@
         <td> {{ item.lastName ? item.lastName : ""}}             </td>
         <td> {{ item.dateOfBirth ? item.dateOfBirth.toLocaleString() : ""}}         </td>
         <td> {{ item.facility ? item.facility.name : ""}} </td>
-        <td> <a v-on:click='removeCallback(item.id ? item.id : -1)' class='remove-btn'></a></td>
-        <td> <a v-on:click='updateCallback(item ? item : {})' class='update-btn'></a></td>
+        <td> <a title="remove patient" v-on:click='removeCallback(item.id ? item.id : -1)' class='remove-btn'></a></td>
+        <td> <a title="edit patient" v-on:click='updateCallback(item ? item : {})' class='update-btn'></a></td>
     </tr>
 </template>
 

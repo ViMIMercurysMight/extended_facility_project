@@ -6,8 +6,9 @@
         <td> {{ item.phoneNumber ? item.phoneNumber : ""}}         </td>
         <td> {{ item.email ? item.email : ""}}               </td>
         <td> {{ item.facilityStatus ? item.facilityStatus.name : ""}} </td>
-        <td> <a v-on:click='removeCallback(item.id ? item.id : 0)' class='remove-btn '> </a></td>
-        <td> <a v-on:click='updateCallback(item ? item : {})' class='update-btn'> </a></td>
+
+        <td> <a title="remove facility" v-on:click='removeCallback(item.id ? item.id : -1)' class='remove-btn'></a></td>
+        <td> <a title="edit facility " v-on:click='updateCallback(item ? item : {})' class='update-btn'></a></td>
     </tr>
 </template>
 
