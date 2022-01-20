@@ -67,7 +67,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     .create-btn-container {
-        width: 10%;
+        width: fit-content;
         margin-top: 16px;
     }
 </style>

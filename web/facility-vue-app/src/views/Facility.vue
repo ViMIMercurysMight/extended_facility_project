@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="facility container-fluid m-2">
+    <div class="container">
         <div v-if="this.$store.state.isErrorNow" class="alert alert-danger row">
             {{ this.$store.state.errorMessage }}
         </div>
@@ -7,15 +7,15 @@
 
         <div class="row">
             <div class="float-left page-title">
-                <h1>FACILITY PAGE [{{commonRecords}}]</h1>
+                <h1>FACILITY</h1>
             </div>
 
             <hr class="title-underline" />
 
         </div>
 
-        <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-12">
+        <div class="row grid-wrap">
+            <div class="grid-below col-lg-8 col-md-8 col-sm-12">
                 <facility-list :change-page-callback='changePage'
                                :update-callback='showUpdateForm'
                                :create-callback='showCreateForm'
@@ -27,7 +27,7 @@
 
 
 
-            <div class="col-lg-3 col-md-11 col-sm-12">
+            <div class=" grid-above col-lg-4 col-md-12 col-sm-12">
 
                 <transition name="fade">
                     <item-form v-if='this.$store.state.isUpdateNow'
@@ -103,12 +103,6 @@
         },
 
 
-        computed: {
-            commonRecords: function () {
-                return this.$store.state.totalRecords;
-            }
-        },
-
         methods: {
 
             changePage: function (page: number) {
@@ -118,7 +112,8 @@
 
 
             remove: function (id: number) {
-                this.$store.dispatch("Facility/" + DELETE_FACILITY,  id )
+                if (confirm("Are you sure "))
+                   this.$store.dispatch("Facility/" + DELETE_FACILITY,  id )
             },
 
 
@@ -163,9 +158,28 @@
 </script>
 
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="css">
+
+
+    @media screen and (max-width:800px) {
+        .grid-wrap {
+            display: grid;
+            grid-template-areas: 'a'
+                                 'b';
+                                 
+        }
+
+        .grid-above {
+            grid-area : a;
+        }
+
+
+        .grid-below {
+            grid-area : b;
+        }
+    }
  
     .page-title {
         width: auto;

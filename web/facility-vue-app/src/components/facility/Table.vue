@@ -69,24 +69,9 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     .create-btn-container {
-        width: 10%;
+        width: fit-content;
         margin-top: 16px;
     }
 </style>
 
 
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-
-    @media screen and ( max-width : 700px)  {
-        table {
-            font-size : 2vw;
-            padding:0px;
-        }
-    }
-
-
-
-
-</style>

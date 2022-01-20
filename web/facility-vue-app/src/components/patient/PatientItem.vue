@@ -33,18 +33,19 @@
         text-decoration : none;
     }
 
+
     .update-btn:before {
         content: "\f040";
         font-family: FontAwesome;
-        color : yellow;
+        color: #ffc107;
     }
 
     .remove-btn:before {
         content: "\f00d";
         font-family: FontAwesome;
-        color : red;
-        
+        color: #dc3545;
     }
+
 
     @media screen and (max-width:760px) {
         button {

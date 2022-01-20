@@ -18,6 +18,9 @@
                 </a>
             </li>
 
+            <li>
+                &nbsp;&nbsp;&nbsp; {{pageRow}}
+            </li>
         </ul>
     </nav>
 
@@ -25,6 +28,7 @@
 
 </template>
 
+ 
 
 <script lang="ts">
     import { defineComponent } from 'vue';
@@ -33,6 +37,16 @@
     export default defineComponent({
         name: "pagination",
         props: ['changePageCallback'],
+
+
+        computed: {
+            pageRow: function () {
+                return  ((this.$store.state.currentPage * this.$store.state.perPage) + this.$store.state.perPage) + " / " + this.$store.state.totalRecords;
+            }
+        }
+
+
     });
+
 
 </script>

@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="patients container-fluid m-2">
+    <div class="container">
         
         <div v-if="this.$store.state.isErrorNow" class="alert alert-danger row">
             {{ this.$store.state.errorMessage }}
@@ -8,7 +8,7 @@
         <div class="row">
             <div class="float-left page-title">
                 <h1>
-                    PATIENT PAGE [{{commonRecords}}]
+                    PATIENT
 
                 </h1>
             </div>
@@ -18,8 +18,8 @@
         </div>
 
 
-        <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-12">
+        <div class="row grid-wrap">
+            <div class="grid-below col-lg-8 col-md-8 col-sm-12">
                 <patient-list :change-page-callback='changePage'
                               :update-callback='showUpdateForm'
                               :create-callback='showCreateForm'
@@ -27,7 +27,7 @@
                 </patient-list>
             </div>
 
-            <div class="col-lg-3 col-md-11 col-sm-12">
+            <div class="grid-above col-lg-4 col-md-12 col-sm-12">
 
                 <transition name="fade">
 
@@ -99,14 +99,6 @@
         },
 
 
-        computed: {
-            commonRecords: function () {
-                return this.$store.state.totalRecords;
-            },
-
-     
-        },
-
         methods: {
 
   
@@ -117,7 +109,8 @@
 
 
             remove: function (id: number) {
-                this.$store.dispatch("Patient/" + DELETE_PATIENT, id )
+                if (confirm("Are you sure "))
+                    this.$store.dispatch("Patient/" + DELETE_PATIENT, id )
             },
 
 
@@ -161,7 +154,27 @@
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped lang="css">
+
+
+
+    @media screen and (max-width:800px) {
+        .grid-wrap {
+            display: grid;
+            grid-template-areas: 'a' 'b';
+        }
+
+        .grid-above {
+            grid-area: a;
+        }
+
+
+        .grid-below {
+            grid-area: b;
+        }
+    }
+
+
 
     .page-title {
         width:auto;
