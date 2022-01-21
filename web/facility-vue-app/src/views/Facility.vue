@@ -15,7 +15,7 @@
         </div>
 
         <div class="row grid-wrap">
-            <div class="grid-below col-lg-8 col-md-8 col-sm-12">
+            <div class="grid-below col-lg-8 col-md-12 col-sm-12">
                 <facility-list :change-page-callback='changePage'
                                :update-callback='showUpdateForm'
                                :create-callback='showCreateForm'
@@ -163,7 +163,7 @@
 <style scoped lang="css">
 
 
-    @media screen and (max-width:800px) {
+    @media screen and (max-width:900px) {
         .grid-wrap {
             display: grid;
             grid-template-areas: 'a'

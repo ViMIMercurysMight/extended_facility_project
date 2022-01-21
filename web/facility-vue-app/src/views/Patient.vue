@@ -19,7 +19,7 @@
 
 
         <div class="row grid-wrap">
-            <div class="grid-below col-lg-8 col-md-8 col-sm-12">
+            <div class="grid-below col-lg-8 col-md-12 col-sm-12">
                 <patient-list :change-page-callback='changePage'
                               :update-callback='showUpdateForm'
                               :create-callback='showCreateForm'

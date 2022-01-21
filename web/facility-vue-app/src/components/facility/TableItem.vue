@@ -46,38 +46,26 @@
         color: #dc3545;
     }
 
-    @media screen and (max-width:760px) {
-        button {
-            width: 0.7vw;
-            font-size: 0px;
-        }
 
-        tr{
-            font-size : 2vw;
-            margin:0;
-            padding:0;
+    @media screen and ( max-width: 1400px) and (min-width : 900px) {
+        tr {
+            font-size: 1vw;
         }
     }
 
-    @media screen and (min-width:800px) and (max-width:900px) {
-        button {
-            font-size: 2.5vw;
-        }
-
+    @media screen and (max-width:900px) and (min-width:600px){
         tr {
-            font-size: 2.5vw;
+            font-size:1.5vw;
         }
     }
 
-
-    @media screen and (min-width:900px) and (max-width : 1000px) {
-        button {
-            font-size: 3.5vw;
-        }
-
+    @media screen and (max-width:600px) and (min-width:400px) {
         tr {
-            font-size: 3vw;
+
+            font-size: 1.5vw;
         }
+
+       
     }
 
 
