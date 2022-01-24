@@ -6,8 +6,7 @@
         <td> {{ item.phoneNumber ? item.phoneNumber : ""}}         </td>
         <td> {{ item.email ? item.email : ""}}               </td>
         <td> {{ item.facilityStatus ? item.facilityStatus.name : ""}} </td>
-
-        <td> <a title="remove facility" v-on:click='removeCallback(item.id ? item.id : -1)' class='remove-btn'></a></td>
+        <td>  <a title="remove facility" v-on:click='removeCallback( this.item.id ? this.item.id : -1)' class='remove-btn'></a></td>
         <td> <a title="edit facility " v-on:click='updateCallback(item ? item : {})' class='update-btn'></a></td>
     </tr>
 </template>
@@ -15,10 +14,33 @@
 
 <script lang="ts">
     import { defineComponent } from "vue";
+import { SET_MODAL_DATA, SET_MODAL_DISPLAY } from "../../store/MutationTypes";
+
 
     export default defineComponent({
         name: "facility-item",
         props: ["item", "updateCallback", "removeCallback"],
+
+        data: function () {
+            return {
+                isDisplayModal : false
+            }
+        },
+
+        methods: {
+            remove: function () {
+
+                this.$store.commit(SET_MODAL_DATA, this.item.id ? this.item.id : -1);
+
+                setTimeout(() => {
+                    this.$store.commit(SET_MODAL_DISPLAY, true);
+                }, 50);
+            },
+
+
+        },
+
+     
     });
 
 </script>

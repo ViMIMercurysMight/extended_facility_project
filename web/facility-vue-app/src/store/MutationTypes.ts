@@ -21,7 +21,15 @@ const IS_ERROR_NOW           = "isErrorNow"     ;
 
 const IS_UPDATE_TRANSITED = "isUpdateTransited";
 const SET_TOTAL_RECORDS = "setTotalRecords";
+
+const SET_MODAL_DISPLAY = "setModalDisplay";
+const SET_MODAL_DATA = "setModalData";
+
+
 export {
+
+    SET_MODAL_DISPLAY,
+    SET_MODAL_DATA,
 
     SET_TOTAL_RECORDS,
     IS_UPDATE_TRANSITED, 

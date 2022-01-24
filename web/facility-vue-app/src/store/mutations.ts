@@ -10,6 +10,9 @@
     SET_ERROR_MESSAGE,
     IS_UPDATE_TRANSITED,
     SET_TOTAL_RECORDS,
+    SET_MODAL_DISPLAY,
+ 
+    SET_MODAL_DATA,
 
 } from "@/store/MutationTypes";
 
@@ -62,6 +65,15 @@ export default {
         state.totalRecords = payload;
     },
 
+    [SET_MODAL_DISPLAY](state: any, payload: boolean) {
+        state.displayRemoveModal = payload;
+    },
+
+    [SET_MODAL_DATA](state: any, payload: number) {
+        state.modalData = payload;
+    },
+
+
     [RESET](state: any) {
         state.updateItem = {};
         state.isUpdateNow = false;
@@ -73,6 +85,8 @@ export default {
         state.isUpdateTransited = false;
         state.errorMessage = "";
         state.totalRecords = 0;
+        state.displayRemoveModal = false;
+        state.modalData = -1;
     }
 
 

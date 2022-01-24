@@ -5,6 +5,9 @@
         </div>
 
 
+
+
+
         <div class="row">
             <div class="float-left page-title">
                 <h1>FACILITY</h1>
@@ -13,6 +16,8 @@
             <hr class="title-underline" />
 
         </div>
+
+
 
         <div class="row grid-wrap">
             <div class="grid-below col-lg-8 col-md-12 col-sm-12">
@@ -37,20 +42,20 @@
                                title='Edit Facility'>
                     </item-form>
                 </transition>
-               
 
 
-               <item-form v-if='this.$store.state.isCreateNow'
-                               :item="{}"
-                               :status-display='false'
-                               :callback="create"
-                               title='New Facility'>
+
+                <item-form v-if='this.$store.state.isCreateNow'
+                           :item="{}"
+                           :status-display='false'
+                           :callback="create"
+                           title='New Facility'>
                 </item-form>
-                
+
 
             </div>
 
-      
+
 
         </div>
 
@@ -65,7 +70,6 @@
 
     import ItemForm from "@/components/facility/ItemForm.vue";
     import Table from "@/components/facility/Table.vue";
-
     import {
         UPDATE_FACILITY,
         DELETE_FACILITY,

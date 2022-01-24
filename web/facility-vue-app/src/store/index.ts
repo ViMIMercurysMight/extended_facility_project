@@ -24,7 +24,10 @@ export default createStore({
 
 
         totalRecords: 0,
-        perPage: 10
+        perPage: 10,
+
+        modalData : -1,
+        displayRemoveModal: false,
     },
 
     mutations: {
